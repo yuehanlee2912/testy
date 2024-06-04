@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "793852338308",
+    "project_id": "testy-44da4",
+    "storage_bucket": "testy-44da4.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:793852338308:android:34b75fd3e4e8caa0c6a2d1",
+        "android_client_info": {
+          "package_name": "com.example.testy"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA6WQQuXubTWmcEFN_5sGXS5epH4b5hEeg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
