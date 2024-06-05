@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:testy/components/drawer.dart';
 import 'package:testy/pages/profile_page.dart';
+import 'package:testy/pages/message_board.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -31,6 +32,17 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
+  void goToBoardPage() {
+    Navigator.pop(context);
+
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => const MessageBoard(),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -48,12 +60,34 @@ class _HomePageState extends State<HomePage> {
       drawer: MyDrawer(
         onProfileTap: goToProfilePage,
         onSignOut: signOut,
+        onBoardTap: goToBoardPage,
       ),
       body: Center(
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             //logged in as
-            Text("Logged in as: " + currentUser.email!),
+            const SizedBox(height: 40),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 40.0),
+              child: Column(
+                children: [
+                  Text(
+                    "Welcome Back!\n",
+                    style: TextStyle(
+                      fontSize: 34,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  Text(
+                    currentUser.email!,
+                    style: TextStyle(
+                      fontSize: 22,
+                    ),
+                  ),
+                ],
+              ),
+            ),
           ],
         ),
       ),

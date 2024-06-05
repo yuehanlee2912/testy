@@ -4,8 +4,12 @@ import 'package:testy/components/my_list_tile.dart';
 class MyDrawer extends StatelessWidget {
   final void Function()? onSignOut;
   final void Function()? onProfileTap;
+  final void Function()? onBoardTap;
   const MyDrawer(
-      {super.key, required this.onProfileTap, required this.onSignOut});
+      {super.key,
+      required this.onProfileTap,
+      required this.onSignOut,
+      required this.onBoardTap});
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +21,7 @@ class MyDrawer extends StatelessWidget {
           Column(
             children: [
               //header
-              DrawerHeader(
+              const DrawerHeader(
                 child: Icon(
                   Icons.home,
                   color: Colors.white,
@@ -35,6 +39,12 @@ class MyDrawer extends StatelessWidget {
                 icon: Icons.person,
                 text: "P R O F I L E",
                 onTap: onProfileTap,
+              ),
+
+              MyListTile(
+                icon: Icons.message,
+                text: "B O A R D",
+                onTap: onBoardTap,
               ),
             ],
           ),
