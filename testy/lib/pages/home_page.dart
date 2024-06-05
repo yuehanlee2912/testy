@@ -36,23 +36,14 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       backgroundColor: Colors.grey[300],
       appBar: AppBar(
-        title: Center(
-          child: Text(
-            "Bridge",
-            style: TextStyle(color: Colors.white),
+        iconTheme: IconThemeData(color: Colors.grey[300]),
+        title: Text(
+          "Bridge",
+          style: TextStyle(
+            color: Colors.grey[300],
           ),
         ),
         backgroundColor: Colors.grey[900],
-        elevation: 0,
-        actions: [
-          IconButton(
-            onPressed: signOut,
-            icon: Icon(
-              Icons.logout,
-              color: Colors.white,
-            ),
-          ),
-        ],
       ),
       drawer: MyDrawer(
         onProfileTap: goToProfilePage,
