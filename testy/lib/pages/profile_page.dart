@@ -71,11 +71,11 @@ class _ProfilePageState extends State<ProfilePage> {
         title: Text(
           "Profile Page",
           style: TextStyle(
-            color: Colors.grey[300],
+            color: Colors.grey[900],
           ),
         ),
-        backgroundColor: Colors.grey[900],
-        iconTheme: IconThemeData(color: Colors.grey[300]),
+        backgroundColor: Colors.white,
+        iconTheme: IconThemeData(color: Colors.grey[900]),
       ),
       body: StreamBuilder<DocumentSnapshot>(
         stream: FirebaseFirestore.instance

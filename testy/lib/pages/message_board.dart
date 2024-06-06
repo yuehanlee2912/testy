@@ -47,11 +47,11 @@ class _MessageBoardState extends State<MessageBoard> {
         title: Text(
           "Message Board",
           style: TextStyle(
-            color: Colors.grey[300],
+            color: Colors.grey[900],
           ),
         ),
-        backgroundColor: Colors.grey[900],
-        iconTheme: IconThemeData(color: Colors.grey[300]),
+        backgroundColor: Colors.grey[300],
+        iconTheme: IconThemeData(color: Colors.grey[900]),
       ),
       body: Center(
         child: Column(

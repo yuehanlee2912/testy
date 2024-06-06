@@ -58,7 +58,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
         children: [
           Text(
             'Reset\nPassword',
-            textAlign: TextAlign.left,
+            textAlign: TextAlign.start,
             style: TextStyle(
               color: Colors.black,
               fontSize: 50,
