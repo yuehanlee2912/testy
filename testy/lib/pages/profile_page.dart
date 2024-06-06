@@ -133,7 +133,13 @@ class _ProfilePageState extends State<ProfilePage> {
                   text: userData['address'],
                   sectionName: 'address',
                   onPressed: () => editField('address'),
-                )
+                ),
+
+                MyTextBox(
+                  text: userData['phone'],
+                  sectionName: 'phone',
+                  onPressed: () => editField('phone'),
+                ),
               ],
             );
           } else if (snapshot.hasError) {
