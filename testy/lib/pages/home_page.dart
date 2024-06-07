@@ -1,5 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:testy/components/dashboard_button.dart';
+import 'package:testy/components/dashboard_services.dart';
 import 'package:testy/components/drawer.dart';
 import 'package:testy/pages/profile_page.dart';
 import 'package:testy/pages/message_board.dart';
@@ -45,6 +47,10 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    //padding constants
+    final double horizontalPadding = 40;
+    final double verticalPadding = 25;
+
     return Scaffold(
       backgroundColor: Colors.grey[300],
       appBar: AppBar(
@@ -62,34 +68,78 @@ class _HomePageState extends State<HomePage> {
         onSignOut: signOut,
         onBoardTap: goToBoardPage,
       ),
-      body: Center(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            //logged in as
-            const SizedBox(height: 40),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 40.0),
-              child: Column(
-                children: [
-                  Text(
-                    "Welcome Back!\n",
-                    style: TextStyle(
-                      fontSize: 34,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  Text(
-                    currentUser.email!,
-                    style: TextStyle(
-                      fontSize: 22,
-                    ),
-                  ),
-                ],
-              ),
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(24.0),
+            child: Row(
+              children: [
+                Text('Logged in as:'),
+              ],
             ),
-          ],
-        ),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(left: 25.0),
+            child: Text(
+              currentUser.email!,
+              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+            ),
+          ),
+
+          const SizedBox(height: 200),
+
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 25),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                DashboardButton(
+                  iconImagePath: 'lib/assets/visitor.png',
+                  buttonText: 'Book',
+                ),
+                DashboardButton(
+                  iconImagePath: 'lib/assets/history.png',
+                  buttonText: 'History',
+                ),
+                DashboardButton(
+                  iconImagePath: 'lib/assets/guard.png',
+                  buttonText: 'Guard',
+                ),
+              ],
+            ),
+          ),
+
+          SizedBox(height: 40),
+
+          //book services
+
+          Padding(
+            padding: const EdgeInsets.only(left: 25.0, bottom: 25),
+            child: Text(
+              'Services',
+              style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 25.0),
+            child: Column(
+              children: [
+                //food services
+                DashboardServices(
+                    iconImagePath: 'lib/assets/food.png',
+                    tileSubTitle: 'For food deliveries',
+                    tileTitle: 'Food Services'),
+
+                //maintainence services
+                DashboardServices(
+                    iconImagePath: 'lib/assets/maintainence.png',
+                    tileSubTitle: 'For maintainence services',
+                    tileTitle: 'Maintainence'),
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }

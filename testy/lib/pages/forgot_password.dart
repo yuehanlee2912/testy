@@ -54,17 +54,22 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
         ),
       ),
       body: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Text(
-            'Reset\nPassword',
-            textAlign: TextAlign.start,
-            style: TextStyle(
-              color: Colors.black,
-              fontSize: 50,
-              fontWeight: FontWeight.bold,
+          Padding(
+            padding: const EdgeInsets.only(left: 25.0),
+            child: Text(
+              'Reset\nPassword',
+              textAlign: TextAlign.start,
+              style: TextStyle(
+                color: Colors.black,
+                fontSize: 50,
+                fontWeight: FontWeight.bold,
+              ),
             ),
           ),
+          const SizedBox(height: 50),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 25.0),
             child: Text(
@@ -83,15 +88,18 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
             ),
           ),
           const SizedBox(height: 20),
-          MaterialButton(
-              onPressed: passwordReset,
-              child: Text(
-                'Send Reset Password',
-                style: TextStyle(
-                  color: Colors.white,
+          Padding(
+            padding: const EdgeInsets.only(left: 25.0),
+            child: MaterialButton(
+                onPressed: passwordReset,
+                child: Text(
+                  'Send Reset Password',
+                  style: TextStyle(
+                    color: Colors.white,
+                  ),
                 ),
-              ),
-              color: Colors.grey[900])
+                color: Colors.grey[900]),
+          )
         ],
       ),
     );
