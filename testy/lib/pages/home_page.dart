@@ -72,7 +72,7 @@ class _HomePageState extends State<HomePage> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Padding(
-            padding: const EdgeInsets.all(24.0),
+            padding: const EdgeInsets.only(top: 24.0, left: 24.0, right: 24.0),
             child: Row(
               children: [
                 Text('Logged in as:'),
@@ -87,8 +87,22 @@ class _HomePageState extends State<HomePage> {
             ),
           ),
 
-          const SizedBox(height: 200),
+          Padding(
+            padding: const EdgeInsets.only(left: 150, top: 15),
+            child: Image.asset('lib/assets/house.png', height: 100),
+          ),
+          const SizedBox(height: 25),
+          Padding(
+            padding: const EdgeInsets.only(left: 25.0),
+            child: Text("Current Residence:", style: TextStyle(fontSize: 20)),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(left: 25.0),
+            child: Text("Kota Kemuning",
+                style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold)),
+          ),
 
+          const SizedBox(height: 30),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 25),
             child: Row(
