@@ -1,8 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:testy/components/button.dart';
 import 'package:testy/components/text_field.dart';
+import 'package:testy/pages/qr_page.dart';
 
 class BookVisitor extends StatefulWidget {
   const BookVisitor({super.key});
@@ -17,13 +19,66 @@ class _BookVisitorState extends State<BookVisitor> {
   final phoneNumTextController = TextEditingController();
   final carPlateTextController = TextEditingController();
 
+  String currentUser() {
+    final User? user = FirebaseAuth.instance.currentUser;
+    if (user == null) {
+      throw Exception("No user is currently signed in.");
+    }
+    return user.uid;
+  }
+
+  void goToQrPage() {
+    Navigator.pop(context);
+
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => const QrPage(),
+      ),
+    );
+  }
+
+  String timeBooked() {
+    final Timestamp timeStamp = Timestamp.now();
+    final DateTime dateTime = timeStamp.toDate().toLocal();
+    final DateFormat formatter = DateFormat('yyyy-MM-dd HH:mm:ss');
+    final String formatted = formatter.format(dateTime);
+    return formatted;
+  }
+
   void bookNow() async {
-    await FirebaseFirestore.instance.collection("Visitors").add({
-      'visitor name': nameTextController.text,
-      'IC Number': icNumTextController.text,
-      'Phone Number': phoneNumTextController.text,
-      'Car Plate Number': carPlateTextController.text,
-    });
+    final FirebaseAuth auth = FirebaseAuth.instance;
+    final String userEmail =
+        auth.currentUser!.email!; // shouldnt give error if user is logged in
+
+    CollectionReference usersCollection =
+        FirebaseFirestore.instance.collection('Users');
+    DocumentReference userDoc = usersCollection.doc(userEmail);
+
+    print(userDoc.get().then((value) => print(value.data())));
+
+    userDoc.get().then((DocumentSnapshot value) async {
+      if (value.exists) {
+        Map<String, dynamic> data = value.data() as Map<String, dynamic>;
+
+        await FirebaseFirestore.instance.collection("Visitors").add({
+          'visitor name': nameTextController.text,
+          'IC Number': icNumTextController.text,
+          'Phone Number': phoneNumTextController.text,
+          'Car Plate Number': carPlateTextController.text,
+          "Resident Address": data['address'],
+          'Time Booked': timeBooked(),
+          'Resident UUID': currentUser()
+        });
+
+        goToQrPage();
+
+        nameTextController.clear();
+        icNumTextController.clear();
+        phoneNumTextController.clear();
+        carPlateTextController.clear();
+      }
+    }).catchError((e) {});
   }
 
   @override
