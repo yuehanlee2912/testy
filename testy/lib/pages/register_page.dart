@@ -54,6 +54,7 @@ class _RegisterPageState extends State<RegisterPage> {
           'username': emailTextController.text.split('@')[0],
           'address': 'Not Set',
           'phone': 'Not Set',
+          'role': 'User',
         },
       );
 

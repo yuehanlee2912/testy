@@ -41,7 +41,7 @@ class _BookVisitorState extends State<BookVisitor> {
   String timeBooked() {
     final Timestamp timeStamp = Timestamp.now();
     final DateTime dateTime = timeStamp.toDate().toLocal();
-    final DateFormat formatter = DateFormat('yyyy-MM-dd HH:mm:ss');
+    final DateFormat formatter = DateFormat('yyyy-MM-dd HH:mm');
     final String formatted = formatter.format(dateTime);
     return formatted;
   }
