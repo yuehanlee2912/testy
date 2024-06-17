@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:testy/components/dashboard_button.dart';
 import 'package:testy/components/dashboard_services.dart';
 import 'package:testy/components/drawer.dart';
+import 'package:testy/pages/login_page.dart';
 import 'package:testy/pages/profile_page.dart';
 import 'package:testy/pages/message_board.dart';
 import 'package:testy/pages/book_visitor.dart';
@@ -21,6 +22,8 @@ class _HomePageState extends State<HomePage> {
 
   void signOut() {
     FirebaseAuth.instance.signOut();
+    Navigator.of(context)
+        .pushReplacement(MaterialPageRoute(builder: (context) => LoginPage()));
   }
 
   //go to profile
@@ -73,7 +76,7 @@ class _HomePageState extends State<HomePage> {
       body: StreamBuilder<DocumentSnapshot>(
         stream: FirebaseFirestore.instance
             .collection("Users")
-            .doc(currentUser.email)
+            .doc(currentUser.uid)
             .snapshots(),
         builder: (context, snapshot) {
           if (snapshot.hasData) {

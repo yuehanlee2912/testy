@@ -1,7 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:testy/auth/auth.dart';
-import 'package:testy/auth/login_or_register.dart';
+import 'package:testy/pages/register_page.dart';
 import 'package:testy/firebase_options.dart';
 
 void main() async {
@@ -19,7 +18,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return const MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: AuthPage(),
+      home: Register(),
     );
   }
 }
