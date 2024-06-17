@@ -12,9 +12,13 @@ class MyTextBox extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Color accentColor = Color.fromARGB(255, 5, 25, 86);
+    Color bgColor = Color.fromARGB(255, 52, 81, 161);
+    Color textColor = Colors.white;
+    Color lightBlueColor = Color.fromARGB(255, 133, 162, 242);
     return Container(
       decoration: BoxDecoration(
-          color: Colors.grey[200], borderRadius: BorderRadius.circular(8)),
+          color: accentColor, borderRadius: BorderRadius.circular(8)),
       padding: const EdgeInsets.only(
         left: 20,
         bottom: 20,
@@ -30,21 +34,21 @@ class MyTextBox extends StatelessWidget {
               Text(
                 sectionName,
                 style: TextStyle(
-                  color: Colors.grey[500],
+                  color: lightBlueColor,
                 ),
               ),
               IconButton(
                 onPressed: onPressed,
                 icon: Icon(
                   Icons.settings,
-                  color: Colors.grey[400],
+                  color: lightBlueColor,
                 ),
               )
             ],
           ),
 
           //text
-          Text(text),
+          Text(text, style: TextStyle(color: textColor)),
         ],
       ),
     );

@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:testy/components/text_field.dart';
 import 'package:testy/components/posts.dart';
@@ -39,19 +40,24 @@ class _MessageBoardState extends State<MessageBoard> {
     });
   }
 
+  Color accentColor = Color.fromARGB(255, 5, 25, 86);
+  Color bgColor = Color.fromARGB(255, 52, 81, 161);
+  Color textColor = Colors.white;
+  Color lightBlueColor = Color.fromARGB(255, 133, 162, 242);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey[300],
+      backgroundColor: bgColor,
       appBar: AppBar(
+        backgroundColor: bgColor,
         title: Text(
           "Message Board",
           style: TextStyle(
-            color: Colors.grey[900],
+            color: textColor,
           ),
         ),
-        backgroundColor: Colors.grey[300],
-        iconTheme: IconThemeData(color: Colors.grey[900]),
+        iconTheme: IconThemeData(color: textColor),
       ),
       body: Center(
         child: Column(
@@ -112,6 +118,7 @@ class _MessageBoardState extends State<MessageBoard> {
                   IconButton(
                     onPressed: postMessage,
                     icon: const Icon(Icons.arrow_circle_up),
+                    color: textColor,
                   )
                 ],
               ),
@@ -120,7 +127,7 @@ class _MessageBoardState extends State<MessageBoard> {
             //logged in as
             Text(
               "Logged in as:" + currentUser.email!,
-              style: TextStyle(color: Colors.grey),
+              style: TextStyle(color: lightBlueColor),
             ),
 
             const SizedBox(height: 50),

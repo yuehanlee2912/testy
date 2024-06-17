@@ -35,15 +35,21 @@ class _RegisterState extends State<Register> {
   var _currentItemSelected = "User";
   var role = "User";
 
+  Color accentColor = Color.fromARGB(255, 5, 25, 86);
+  Color bgColor = Color.fromARGB(255, 52, 81, 161);
+  Color textColor = Colors.white;
+  Color lightBlueColor = Color.fromARGB(255, 133, 162, 242);
+  Color purpleColor = Color.fromARGB(255, 179, 27, 219);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.orange[900],
+      backgroundColor: bgColor,
       body: SingleChildScrollView(
         child: Column(
           children: <Widget>[
             Container(
-              color: Colors.orangeAccent[700],
+              color: bgColor,
               width: MediaQuery.of(context).size.width,
               height: MediaQuery.of(context).size.height,
               child: SingleChildScrollView(
@@ -289,14 +295,6 @@ class _RegisterState extends State<Register> {
                         SizedBox(
                           height: 20,
                         ),
-                        Text(
-                          "WEBFUN",
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 30,
-                            color: Colors.yellowAccent[400],
-                          ),
-                        ),
                       ],
                     ),
                   ),
@@ -328,7 +326,8 @@ class _RegisterState extends State<Register> {
       'role': role,
       'username': emailController.text.split('@')[0],
       'address': 'Not Set',
-      'phone': 'Not Set'
+      'phone': 'Not Set',
+      'name': 'Not Set',
     });
     Navigator.pushReplacement(
         context, MaterialPageRoute(builder: (context) => LoginPage()));

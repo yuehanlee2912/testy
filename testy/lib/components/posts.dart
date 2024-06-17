@@ -113,9 +113,14 @@ class _PostsState extends State<Posts> {
 
   @override
   Widget build(BuildContext context) {
+    Color accentColor = Color.fromARGB(255, 5, 25, 86);
+    Color bgColor = Color.fromARGB(255, 52, 81, 161);
+    Color textColor = Colors.white;
+    Color lightBlueColor = Color.fromARGB(255, 133, 162, 242);
+
     return Container(
       decoration: BoxDecoration(
-        color: Colors.grey[200],
+        color: accentColor,
         borderRadius: BorderRadius.circular(8),
       ),
       margin: EdgeInsets.only(top: 25, left: 25, right: 25),
@@ -127,7 +132,7 @@ class _PostsState extends State<Posts> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               //message
-              Text(widget.message),
+              Text(widget.message, style: TextStyle(color: textColor)),
 
               const SizedBox(height: 5),
               //user
@@ -135,15 +140,15 @@ class _PostsState extends State<Posts> {
                 children: [
                   Text(
                     widget.user,
-                    style: TextStyle(color: Colors.grey[400]),
+                    style: TextStyle(color: lightBlueColor),
                   ),
                   Text(
                     " • ",
-                    style: TextStyle(color: Colors.grey[400]),
+                    style: TextStyle(color: lightBlueColor),
                   ),
                   Text(
                     widget.time,
-                    style: TextStyle(color: Colors.grey[400]),
+                    style: TextStyle(color: lightBlueColor),
                   ),
                 ],
               ),
@@ -171,7 +176,7 @@ class _PostsState extends State<Posts> {
                   Text(
                     widget.likes.length.toString(),
                     style: TextStyle(
-                      color: Colors.grey,
+                      color: textColor,
                     ),
                   ),
                 ],
@@ -193,7 +198,7 @@ class _PostsState extends State<Posts> {
                   Text(
                     '0',
                     style: TextStyle(
-                      color: Colors.grey,
+                      color: Colors.white,
                     ),
                   ),
                 ],

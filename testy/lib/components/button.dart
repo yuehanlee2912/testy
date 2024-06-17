@@ -7,12 +7,16 @@ class MyButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Color accentColor = Color.fromARGB(255, 5, 25, 86);
+    Color bgColor = Color.fromARGB(255, 52, 81, 161);
+    Color textColor = Colors.white;
+    Color lightBlueColor = Color.fromARGB(255, 133, 162, 242);
     return GestureDetector(
       onTap: onTap,
       child: Container(
         padding: const EdgeInsets.all(25),
         decoration: BoxDecoration(
-          color: Colors.black,
+          color: accentColor,
           borderRadius: BorderRadius.circular(8),
         ),
         child: Center(

@@ -60,22 +60,22 @@ class _ProfilePageState extends State<ProfilePage> {
 
     //update in firestore
     if (newValue.trim().length > 0) {
-      await usersCollection.doc(currentUser.email).update({field: newValue});
+      await usersCollection.doc(currentUser.uid).update({field: newValue});
     }
   }
 
   @override
   Widget build(BuildContext context) {
+    Color accentColor = Color.fromARGB(255, 5, 25, 86);
+    Color bgColor = Color.fromARGB(255, 52, 81, 161);
+    Color textColor = Colors.white;
+    Color lightBlueColor = Color.fromARGB(255, 133, 162, 242);
+
     return Scaffold(
+      backgroundColor: bgColor,
       appBar: AppBar(
-        title: Text(
-          "Profile Page",
-          style: TextStyle(
-            color: Colors.grey[900],
-          ),
-        ),
-        backgroundColor: Colors.white,
-        iconTheme: IconThemeData(color: Colors.grey[900]),
+        backgroundColor: bgColor,
+        iconTheme: IconThemeData(color: textColor),
       ),
       body: StreamBuilder<DocumentSnapshot>(
         stream: FirebaseFirestore.instance
@@ -94,7 +94,8 @@ class _ProfilePageState extends State<ProfilePage> {
                 //profile pic
                 Icon(
                   Icons.person,
-                  size: 72,
+                  size: 100,
+                  color: accentColor,
                 ),
 
                 const SizedBox(height: 10),
@@ -104,7 +105,8 @@ class _ProfilePageState extends State<ProfilePage> {
                   currentUser.email!,
                   textAlign: TextAlign.center,
                   style: TextStyle(
-                    color: Colors.grey[700],
+                    color: textColor,
+                    fontSize: 20,
                   ),
                 ),
 
@@ -117,27 +119,32 @@ class _ProfilePageState extends State<ProfilePage> {
                   child: Text(
                     'My Details',
                     style: TextStyle(
-                      color: Colors.grey[600],
+                      color: lightBlueColor,
                     ),
                   ),
                 ),
 
+                MyTextBox(
+                  text: userData['name'],
+                  sectionName: 'Name',
+                  onPressed: () => editField('name'),
+                ),
                 //username
                 MyTextBox(
                   text: userData['username'],
-                  sectionName: 'username',
+                  sectionName: 'Username',
                   onPressed: () => editField('username'),
                 ),
 
                 MyTextBox(
                   text: userData['address'],
-                  sectionName: 'address',
+                  sectionName: 'Address',
                   onPressed: () => editField('address'),
                 ),
 
                 MyTextBox(
                   text: userData['phone'],
-                  sectionName: 'phone',
+                  sectionName: 'Phone',
                   onPressed: () => editField('phone'),
                 ),
               ],

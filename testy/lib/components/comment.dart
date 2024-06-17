@@ -9,9 +9,15 @@ class Comment extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Color accentColor = Color.fromARGB(255, 5, 25, 86);
+    Color bgColor = Color.fromARGB(255, 52, 81, 161);
+    Color textColor = Colors.white;
+    Color lightBlueColor = Color.fromARGB(255, 133, 162, 242);
+    Color purpleColor = Color.fromARGB(255, 179, 27, 219);
+
     return Container(
       decoration: BoxDecoration(
-        color: Colors.grey[300],
+        color: bgColor,
         borderRadius: BorderRadius.circular(4),
       ),
       margin: const EdgeInsets.only(bottom: 5),
@@ -20,7 +26,7 @@ class Comment extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           //comment
-          Text(text),
+          Text(text, style: TextStyle(color: textColor)),
 
           const SizedBox(height: 5),
           //user + time
@@ -28,15 +34,15 @@ class Comment extends StatelessWidget {
             children: [
               Text(
                 user,
-                style: TextStyle(color: Colors.grey[400]),
+                style: TextStyle(color: lightBlueColor),
               ),
               Text(
                 "•",
-                style: TextStyle(color: Colors.grey[400]),
+                style: TextStyle(color: lightBlueColor),
               ),
               Text(
                 time,
-                style: TextStyle(color: Colors.grey[400]),
+                style: TextStyle(color: lightBlueColor),
               ),
             ],
           ),

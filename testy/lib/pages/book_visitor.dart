@@ -81,13 +81,17 @@ class _BookVisitorState extends State<BookVisitor> {
     }).catchError((e) {});
   }
 
+  Color accentColor = Color.fromARGB(255, 5, 25, 86);
+  Color bgColor = Color.fromARGB(255, 52, 81, 161);
+  Color textColor = Colors.white;
+  Color lightBlueColor = Color.fromARGB(255, 133, 162, 242);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey[300],
+      backgroundColor: bgColor,
       appBar: AppBar(
-        title: Text('Book A Visitor'),
-        backgroundColor: Colors.grey[300],
+        backgroundColor: bgColor,
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -99,7 +103,10 @@ class _BookVisitorState extends State<BookVisitor> {
               padding: const EdgeInsets.only(left: 25.0),
               child: Text(
                 'Please insert your \nvisitor\'s details:',
-                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                style: TextStyle(
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
+                    color: textColor),
               ),
             ),
             const SizedBox(height: 40),

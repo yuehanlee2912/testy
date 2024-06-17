@@ -28,9 +28,6 @@ class _HomePageState extends State<HomePage> {
 
   //go to profile
   void goToProfilePage() {
-    Navigator.pop(context);
-
-    //go to profile page
     Navigator.push(
       context,
       MaterialPageRoute(
@@ -40,8 +37,6 @@ class _HomePageState extends State<HomePage> {
   }
 
   void goToBoardPage() {
-    Navigator.pop(context);
-
     Navigator.push(
       context,
       MaterialPageRoute(
@@ -52,21 +47,27 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    //padding constants
-    final double horizontalPadding = 40;
-    final double verticalPadding = 25;
+    Color accentColor = Color.fromARGB(255, 5, 25, 86);
+    Color bgColor = Color.fromARGB(255, 52, 81, 161);
+    Color textColor = Colors.white;
+    Color lightBlueColor = Color.fromARGB(255, 133, 162, 242);
 
     return Scaffold(
-      backgroundColor: Colors.grey[300],
+      backgroundColor: bgColor,
       appBar: AppBar(
-        iconTheme: IconThemeData(color: Colors.grey[900]),
-        title: Text(
-          "Bridge",
-          style: TextStyle(
-            color: Colors.grey[900],
-          ),
-        ),
-        backgroundColor: Colors.grey[300],
+        iconTheme: IconThemeData(color: Colors.white),
+        backgroundColor: bgColor,
+        actions: <Widget>[
+          Padding(
+            padding: const EdgeInsets.only(right: 15.0),
+            child: IconButton(
+                onPressed: goToProfilePage,
+                icon: const Icon(
+                  Icons.person,
+                  size: 30,
+                )),
+          )
+        ],
       ),
       drawer: MyDrawer(
         onProfileTap: goToProfilePage,
@@ -87,79 +88,105 @@ class _HomePageState extends State<HomePage> {
               children: [
                 Padding(
                   padding:
-                      const EdgeInsets.only(top: 24.0, left: 24.0, right: 24.0),
+                      const EdgeInsets.only(top: 24.0, left: 25.0, right: 24.0),
                   child: Row(
                     children: [
-                      Text('Logged in as:'),
+                      Text(
+                        'What\'s up, ' + userData['name'] + "!",
+                        style: TextStyle(
+                            color: textColor,
+                            fontSize: 35,
+                            fontWeight: FontWeight.bold),
+                      ),
                     ],
                   ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(left: 25.0),
-                  child: Text(
-                    currentUser.email!,
-                    style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-                  ),
-                ),
-
-                Padding(
-                  padding: const EdgeInsets.only(left: 150, top: 15),
-                  child: Image.asset('lib/assets/house.png', height: 100),
                 ),
                 const SizedBox(height: 25),
-                Padding(
-                  padding: const EdgeInsets.only(left: 25.0),
-                  child: Text("Current Residence:",
-                      style: TextStyle(fontSize: 15)),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(left: 25.0),
-                  child: Text(userData['address'],
-                      style:
-                          TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-                ),
-
-                const SizedBox(height: 30),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 25),
+                Container(
+                  decoration: BoxDecoration(
+                      color: accentColor,
+                      borderRadius: BorderRadius.circular(20)),
+                  margin: const EdgeInsets.symmetric(horizontal: 25),
+                  padding: const EdgeInsets.all(15),
                   child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      DashboardButton(
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => const BookVisitor(),
-                            ),
-                          );
-                        },
-                        iconImagePath: 'lib/assets/visitor.png',
-                        buttonText: 'Book',
-                      ),
-                      DashboardButton(
-                        onTap: () {},
-                        iconImagePath: 'lib/assets/history.png',
-                        buttonText: 'History',
-                      ),
-                      DashboardButton(
-                        onTap: () {},
-                        iconImagePath: 'lib/assets/guard.png',
-                        buttonText: 'Guard',
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            "Current Residence",
+                            style:
+                                TextStyle(fontSize: 15, color: lightBlueColor),
+                          ),
+                          const SizedBox(height: 10),
+                          Text(userData['address'],
+                              style: TextStyle(
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white)),
+                        ],
                       ),
                     ],
                   ),
                 ),
-
-                SizedBox(height: 40),
-
-                //book services
-
+                const SizedBox(height: 30),
                 Padding(
-                  padding: const EdgeInsets.only(left: 25.0, bottom: 25),
+                  padding: const EdgeInsets.only(left: 25.0, bottom: 15),
+                  child: Text("Dashboard",
+                      style: TextStyle(
+                          color: lightBlueColor,
+                          fontSize: 25,
+                          fontWeight: FontWeight.bold)),
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 25.0,
+                  ),
+                  child: Container(
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(20),
+                        color: accentColor),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 25),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          DashboardButton(
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => const BookVisitor(),
+                                ),
+                              );
+                            },
+                            iconImagePath: 'lib/assets/visitor.png',
+                            buttonText: 'Book',
+                          ),
+                          DashboardButton(
+                            onTap: () {},
+                            iconImagePath: 'lib/assets/history.png',
+                            buttonText: 'History',
+                          ),
+                          DashboardButton(
+                            onTap: () {},
+                            iconImagePath: 'lib/assets/guard.png',
+                            buttonText: 'Guard',
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding:
+                      const EdgeInsets.only(left: 25.0, bottom: 15, top: 30),
                   child: Text(
                     'Services',
-                    style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
+                    style: TextStyle(
+                        fontSize: 25,
+                        fontWeight: FontWeight.bold,
+                        color: lightBlueColor),
                   ),
                 ),
                 Padding(

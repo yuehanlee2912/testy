@@ -4,6 +4,7 @@ class MyListTile extends StatelessWidget {
   final IconData icon;
   final String text;
   final void Function()? onTap;
+
   const MyListTile(
       {super.key, required this.icon, required this.text, required this.onTap});
 
@@ -12,7 +13,7 @@ class MyListTile extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.only(left: 10.0),
       child: ListTile(
-        leading: Icon(icon, color: Colors.white),
+        leading: Icon(icon, color: Color.fromARGB(255, 133, 162, 242)),
         onTap: onTap,
         title: Text(
           text,

@@ -10,7 +10,7 @@ class CommentButton extends StatelessWidget {
       onTap: onTap,
       child: const Icon(
         Icons.comment,
-        color: Colors.grey,
+        color: Color.fromARGB(255, 133, 162, 242),
       ),
     );
   }

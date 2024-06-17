@@ -13,38 +13,40 @@ class DashboardButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Color accentColor = Color.fromARGB(255, 5, 25, 86);
+    Color bgColor = Color.fromARGB(255, 52, 81, 161);
+    Color textColor = Colors.white;
+    Color lightBlueColor = Color.fromARGB(255, 133, 162, 242);
+
     return GestureDetector(
       onTap: onTap,
       child: Column(
         children: [
           //icon
           Container(
-            height: 90,
-            padding: EdgeInsets.all(20),
+            height: 80,
+            padding: EdgeInsets.only(top: 30),
             decoration: BoxDecoration(
-              //color: Colors.grey[100],
               borderRadius: BorderRadius.circular(20),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.white,
-                  blurRadius: 30,
-                  spreadRadius: 10,
-                ),
-              ],
+              color: accentColor,
             ),
             child: Center(
               child: Image.asset(
                 iconImagePath,
+                color: textColor,
               ),
             ),
           ),
-          const SizedBox(height: 4),
-          Text(
-            buttonText,
-            style: TextStyle(
-              fontSize: 20,
-              fontWeight: FontWeight.bold,
-              color: Colors.grey[700],
+
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 20.0, horizontal: 15),
+            child: Text(
+              buttonText,
+              style: TextStyle(
+                fontSize: 14,
+                fontWeight: FontWeight.bold,
+                color: textColor,
+              ),
             ),
           )
         ],
