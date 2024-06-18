@@ -2,19 +2,19 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:testy/pages/login_page.dart';
 
-class Teacher extends StatefulWidget {
-  const Teacher({super.key});
+class Admin extends StatefulWidget {
+  const Admin({super.key});
 
   @override
-  State<Teacher> createState() => _TeacherState();
+  State<Admin> createState() => _AdminState();
 }
 
-class _TeacherState extends State<Teacher> {
+class _AdminState extends State<Admin> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Teacher"),
+        title: Text("Admin"),
         actions: [
           IconButton(
             onPressed: () {

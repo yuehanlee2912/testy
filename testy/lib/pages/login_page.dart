@@ -1,9 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:testy/components/Teacher.dart';
+import 'package:testy/components/Admin.dart';
 import 'package:testy/components/button.dart';
-import 'package:testy/components/student.dart';
+import 'package:testy/components/User.dart';
 import 'package:testy/pages/admin_page.dart';
 import 'package:testy/pages/forgot_password.dart';
 import 'package:testy/pages/home_page.dart';

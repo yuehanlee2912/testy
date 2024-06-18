@@ -3,19 +3,19 @@ import 'package:flutter/material.dart';
 
 import 'package:testy/pages/login_page.dart';
 
-class Student extends StatefulWidget {
-  const Student({super.key});
+class AppUser extends StatefulWidget {
+  const AppUser({super.key});
 
   @override
-  State<Student> createState() => _StudentState();
+  State<AppUser> createState() => _AppUserState();
 }
 
-class _StudentState extends State<Student> {
+class _AppUserState extends State<AppUser> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Student"),
+        title: Text("User"),
         actions: [
           IconButton(
             onPressed: () {
