@@ -12,6 +12,7 @@ class Posts extends StatefulWidget {
   final String time;
   final String postId;
   final List<String> likes;
+  final int commentsCount; // Use int instead of List<String>
 
   const Posts({
     super.key,
@@ -20,6 +21,7 @@ class Posts extends StatefulWidget {
     required this.postId,
     required this.likes,
     required this.time,
+    required this.commentsCount,
   });
 
   @override
@@ -73,6 +75,14 @@ class _PostsState extends State<Posts> {
       "CommentText": commentText,
       "CommentedBy": currentUser.email,
       "CommentTime": Timestamp.now()
+    }).then((_) {
+      // Increment comments count
+      FirebaseFirestore.instance
+          .collection('Message Board')
+          .doc(widget.postId)
+          .update({
+        'commentsCount': FieldValue.increment(1),
+      });
     });
   }
 
@@ -113,18 +123,18 @@ class _PostsState extends State<Posts> {
 
   @override
   Widget build(BuildContext context) {
-    Color accentColor = Color.fromARGB(255, 5, 25, 86);
-    Color bgColor = Color.fromARGB(255, 52, 81, 161);
+    Color accentColor = const Color.fromARGB(255, 5, 25, 86);
+    Color bgColor = const Color.fromARGB(255, 52, 81, 161);
     Color textColor = Colors.white;
-    Color lightBlueColor = Color.fromARGB(255, 133, 162, 242);
+    Color lightBlueColor = const Color.fromARGB(255, 133, 162, 242);
 
     return Container(
       decoration: BoxDecoration(
         color: accentColor,
         borderRadius: BorderRadius.circular(8),
       ),
-      margin: EdgeInsets.only(top: 25, left: 25, right: 25),
-      padding: EdgeInsets.all(25),
+      margin: const EdgeInsets.only(top: 25, left: 25, right: 25),
+      padding: const EdgeInsets.all(25),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -194,9 +204,9 @@ class _PostsState extends State<Posts> {
 
                   const SizedBox(height: 5),
 
-                  //like count
+                  //comment count
                   Text(
-                    '0',
+                    widget.commentsCount.toString(), // Display comments count
                     style: TextStyle(
                       color: Colors.white,
                     ),

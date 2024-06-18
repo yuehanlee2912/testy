@@ -36,11 +36,21 @@ class _QrPageState extends State<QrPage> {
 
   @override
   Widget build(BuildContext context) {
+    Color accentColor = Color.fromARGB(255, 5, 25, 86);
+    Color bgColor = Color.fromARGB(255, 52, 81, 161);
+    Color textColor = Colors.white;
+    Color lightBlueColor = Color.fromARGB(255, 133, 162, 242);
+    Color purpleColor = Color.fromARGB(255, 179, 27, 219);
+
     return Scaffold(
-      backgroundColor: Colors.grey[300],
+      backgroundColor: bgColor,
       appBar: AppBar(
-        title: const Text("Book A Visitor"),
-        backgroundColor: Colors.grey[300],
+        title: Text(
+          "Book A Visitor",
+          style: TextStyle(color: lightBlueColor),
+        ),
+        backgroundColor: bgColor,
+        iconTheme: IconThemeData(color: lightBlueColor),
       ),
       body: Padding(
         padding: const EdgeInsets.only(left: 65.0),
@@ -50,6 +60,7 @@ class _QrPageState extends State<QrPage> {
             QrImageView(
               data: currentUserAndTimeBooked(),
               size: 280,
+              backgroundColor: Colors.white,
               embeddedImageStyle: QrEmbeddedImageStyle(
                 size: const Size(100, 100),
               ),

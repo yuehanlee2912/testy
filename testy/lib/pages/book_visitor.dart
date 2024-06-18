@@ -48,12 +48,12 @@ class _BookVisitorState extends State<BookVisitor> {
 
   void bookNow() async {
     final FirebaseAuth auth = FirebaseAuth.instance;
-    final String userEmail =
-        auth.currentUser!.email!; // shouldnt give error if user is logged in
+    final String userUid =
+        auth.currentUser!.uid; // shouldnt give error if user is logged in
 
     CollectionReference usersCollection =
         FirebaseFirestore.instance.collection('Users');
-    DocumentReference userDoc = usersCollection.doc(userEmail);
+    DocumentReference userDoc = usersCollection.doc(userUid);
 
     print(userDoc.get().then((value) => print(value.data())));
 

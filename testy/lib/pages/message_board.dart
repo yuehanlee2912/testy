@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:testy/components/text_field.dart';
 import 'package:testy/components/posts.dart';
@@ -21,7 +20,6 @@ class _MessageBoardState extends State<MessageBoard> {
   final textController = TextEditingController();
 
   //post message
-
   void postMessage() {
     //only post if something in textfield
     if (textController.text.isNotEmpty) {
@@ -31,6 +29,7 @@ class _MessageBoardState extends State<MessageBoard> {
         'Message': textController.text,
         'TimeStamp': Timestamp.now(),
         'Likes': [],
+        'commentsCount': 0, // Initialize comments count to 0
       });
     }
 
@@ -40,10 +39,10 @@ class _MessageBoardState extends State<MessageBoard> {
     });
   }
 
-  Color accentColor = Color.fromARGB(255, 5, 25, 86);
-  Color bgColor = Color.fromARGB(255, 52, 81, 161);
+  Color accentColor = const Color.fromARGB(255, 5, 25, 86);
+  Color bgColor = const Color.fromARGB(255, 52, 81, 161);
   Color textColor = Colors.white;
-  Color lightBlueColor = Color.fromARGB(255, 133, 162, 242);
+  Color lightBlueColor = const Color.fromARGB(255, 133, 162, 242);
 
   @override
   Widget build(BuildContext context) {
@@ -85,6 +84,8 @@ class _MessageBoardState extends State<MessageBoard> {
                           postId: post.id,
                           likes: List<String>.from(post['Likes'] ?? []),
                           time: formatDate(post['TimeStamp']),
+                          commentsCount:
+                              post['commentsCount'] ?? 0, // Pass comments count
                         );
                       },
                     );
@@ -126,7 +127,7 @@ class _MessageBoardState extends State<MessageBoard> {
 
             //logged in as
             Text(
-              "Logged in as:" + currentUser.email!,
+              "Logged in as: ${currentUser.email!}",
               style: TextStyle(color: lightBlueColor),
             ),
 
