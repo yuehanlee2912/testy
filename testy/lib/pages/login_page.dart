@@ -1,9 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:testy/components/Admin.dart';
-import 'package:testy/components/button.dart';
-import 'package:testy/components/User.dart';
 import 'package:testy/pages/admin_page.dart';
 import 'package:testy/pages/forgot_password.dart';
 import 'package:testy/pages/home_page.dart';
@@ -221,7 +218,9 @@ class _LoginPageState extends State<LoginPage> {
                                 fontSize: 15,
                                 color: lightBlueColor)),
                         GestureDetector(
-                          onTap: () => goToRegister(),
+                          onTap: () {
+                            Navigator.push(context, _createRoute(Register()));
+                          },
                           child: Text('Register Now',
                               style: TextStyle(
                                 color: textColor,
@@ -297,4 +296,22 @@ class _LoginPageState extends State<LoginPage> {
       }
     }
   }
+}
+
+Route _createRoute(Widget child) {
+  return PageRouteBuilder(
+    pageBuilder: (context, animation, secondaryAnimation) => child,
+    transitionsBuilder: (context, animation, secondaryAnimation, child) {
+      const begin = Offset(1.0, 0.0);
+      const end = Offset.zero;
+      const curve = Curves.ease;
+
+      var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+
+      return SlideTransition(
+        position: animation.drive(tween),
+        child: child,
+      );
+    },
+  );
 }

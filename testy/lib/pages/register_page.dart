@@ -45,6 +45,11 @@ class _RegisterState extends State<Register> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: bgColor,
+      appBar: AppBar(
+        iconTheme: IconThemeData(color: textColor),
+        title: Text("Create an account", style: TextStyle(color: textColor)),
+        backgroundColor: bgColor,
+      ),
       body: SingleChildScrollView(
         child: Column(
           children: <Widget>[
@@ -59,24 +64,53 @@ class _RegisterState extends State<Register> {
                     key: _formkey,
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         SizedBox(
-                          height: 80,
+                          height: 30,
                         ),
-                        Text(
-                          "Register Now",
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white,
-                            fontSize: 40,
+                        Padding(
+                          padding: const EdgeInsets.only(left: 8.0),
+                          child: Text(
+                            "Please fill in your details to start",
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 15,
+                            ),
                           ),
                         ),
                         SizedBox(
-                          height: 10,
+                          height: 15,
                         ),
-                        SizedBox(
-                          height: 50,
+                        TextFormField(
+                          controller: name,
+                          decoration: InputDecoration(
+                            filled: true,
+                            fillColor: Colors.white,
+                            hintText: 'Name',
+                            enabled: true,
+                            contentPadding: const EdgeInsets.only(
+                                left: 14.0, bottom: 8.0, top: 15.0),
+                            focusedBorder: OutlineInputBorder(
+                              borderSide: new BorderSide(color: Colors.white),
+                              borderRadius: new BorderRadius.circular(20),
+                            ),
+                            enabledBorder: UnderlineInputBorder(
+                              borderSide: new BorderSide(color: Colors.white),
+                              borderRadius: new BorderRadius.circular(20),
+                            ),
+                          ),
+                          validator: (value) {
+                            if (value!.isEmpty) {
+                              return "Name cannot be empty";
+                            } else {
+                              return null;
+                            }
+                          },
+                          onChanged: (value) {},
+                        ),
+                        const SizedBox(
+                          height: 20,
                         ),
                         TextFormField(
                           controller: emailController,
@@ -114,6 +148,34 @@ class _RegisterState extends State<Register> {
                         SizedBox(
                           height: 20,
                         ),
+                        TextFormField(
+                          controller: mobile,
+                          decoration: InputDecoration(
+                            filled: true,
+                            fillColor: Colors.white,
+                            hintText: 'Phone',
+                            enabled: true,
+                            contentPadding: const EdgeInsets.only(
+                                left: 14.0, bottom: 8.0, top: 15.0),
+                            focusedBorder: OutlineInputBorder(
+                              borderSide: new BorderSide(color: Colors.white),
+                              borderRadius: new BorderRadius.circular(20),
+                            ),
+                            enabledBorder: UnderlineInputBorder(
+                              borderSide: new BorderSide(color: Colors.white),
+                              borderRadius: new BorderRadius.circular(20),
+                            ),
+                          ),
+                          validator: (value) {
+                            if (value!.isEmpty) {
+                              return "Phone cannot be empty";
+                            } else {
+                              return null;
+                            }
+                          },
+                          onChanged: (value) {},
+                        ),
+                        const SizedBox(height: 20),
                         TextFormField(
                           obscureText: _isObscure,
                           controller: passwordController,
@@ -253,48 +315,49 @@ class _RegisterState extends State<Register> {
                               elevation: 5.0,
                               height: 40,
                               onPressed: () {
-                                CircularProgressIndicator();
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => LoginPage(),
-                                  ),
-                                );
-                              },
-                              child: Text(
-                                "Login",
-                                style: TextStyle(
-                                  fontSize: 20,
-                                ),
-                              ),
-                              color: Colors.white,
-                            ),
-                            MaterialButton(
-                              shape: RoundedRectangleBorder(
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(20.0))),
-                              elevation: 5.0,
-                              height: 40,
-                              onPressed: () {
                                 setState(() {
                                   showProgress = true;
                                 });
                                 signUp(emailController.text,
                                     passwordController.text, role);
                               },
-                              child: Text(
-                                "Register",
-                                style: TextStyle(
-                                  fontSize: 20,
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 125.0, vertical: 15),
+                                child: Text(
+                                  "Register",
+                                  style: TextStyle(
+                                    fontSize: 20,
+                                    color: textColor,
+                                  ),
                                 ),
                               ),
-                              color: Colors.white,
+                              color: accentColor,
                             ),
                           ],
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 20,
                         ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text("Already have an account?    ",
+                                style: TextStyle(
+                                    color: lightBlueColor,
+                                    fontWeight: FontWeight.bold)),
+                            GestureDetector(
+                                onTap: () {
+                                  ScreenNavigator(cx: context).navigate(
+                                      LoginPage(),
+                                      NavigatorTweens.leftToRight());
+                                },
+                                child: Text("Login now",
+                                    style: TextStyle(
+                                        color: textColor,
+                                        fontWeight: FontWeight.bold))),
+                          ],
+                        )
                       ],
                     ),
                   ),
@@ -326,10 +389,64 @@ class _RegisterState extends State<Register> {
       'role': role,
       'username': emailController.text.split('@')[0],
       'address': 'Not Set',
-      'phone': 'Not Set',
-      'name': 'Not Set',
+      'phone': mobile.text,
+      'name': name.text,
     });
     Navigator.pushReplacement(
         context, MaterialPageRoute(builder: (context) => LoginPage()));
+  }
+}
+
+class ScreenNavigator {
+  final BuildContext cx;
+  ScreenNavigator({
+    required this.cx,
+  });
+  navigate(Widget page, Tween<Offset> tween) {
+    Navigator.push(
+      cx,
+      PageRouteBuilder(
+        pageBuilder: (context, animation, secondaryAnimation) {
+          return page;
+        },
+        transitionDuration: Durations.long1,
+        transitionsBuilder: (context, animation, secondaryAnimation, child) {
+          // create CurveTween
+          const Curve curve = Curves.easeInOut;
+          final CurveTween curveTween = CurveTween(curve: curve);
+          // chain Tween with CurveTween
+          final Animatable<Offset> chainedTween = tween.chain(curveTween);
+          final Animation<Offset> offsetAnimation =
+              animation.drive(chainedTween);
+          return SlideTransition(position: offsetAnimation, child: child);
+        },
+      ),
+    );
+  }
+}
+
+class NavigatorTweens {
+  static Tween<Offset> bottomToTop() {
+    const Offset begin = Offset(0.0, 1.0);
+    const Offset end = Offset(0.0, 0.0);
+    return Tween(begin: begin, end: end);
+  }
+
+  static Tween<Offset> topToBottom() {
+    const Offset begin = Offset(0.0, -1.0);
+    const Offset end = Offset(0.0, 0.0);
+    return Tween(begin: begin, end: end);
+  }
+
+  static Tween<Offset> leftToRight() {
+    const Offset begin = Offset(-1.0, 0.0);
+    const Offset end = Offset(0.0, 0.0);
+    return Tween(begin: begin, end: end);
+  }
+
+  static Tween<Offset> rightToLeft() {
+    const Offset begin = Offset(1.0, 0.0);
+    const Offset end = Offset(0.0, 0.0);
+    return Tween(begin: begin, end: end);
   }
 }
