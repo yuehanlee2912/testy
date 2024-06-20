@@ -41,20 +41,24 @@ class _RegisterState extends State<Register> {
   Color lightBlueColor = Color.fromARGB(255, 133, 162, 242);
   Color purpleColor = Color.fromARGB(255, 179, 27, 219);
 
+  void goToLoginPage() {
+    Navigator.of(context)
+        .pushReplacement(MaterialPageRoute(builder: (context) => LoginPage()));
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: bgColor,
-      appBar: AppBar(
-        iconTheme: IconThemeData(color: textColor),
-        title: Text("Create an account", style: TextStyle(color: textColor)),
-        backgroundColor: bgColor,
-      ),
       body: SingleChildScrollView(
         child: Column(
           children: <Widget>[
             Container(
-              color: bgColor,
+              decoration: const BoxDecoration(
+                  image: DecorationImage(
+                      image: NetworkImage(
+                          'https://img.freepik.com/free-vector/dark-graphic-wavy-wallpaper_23-2148400270.jpg?size=626&ext=jpg&ga=GA1.1.2116175301.1717804800&semt=ais_user'),
+                      fit: BoxFit.cover)),
               width: MediaQuery.of(context).size.width,
               height: MediaQuery.of(context).size.height,
               child: SingleChildScrollView(
@@ -66,11 +70,17 @@ class _RegisterState extends State<Register> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        SizedBox(
-                          height: 30,
-                        ),
+                        const SizedBox(height: 100),
                         Padding(
                           padding: const EdgeInsets.only(left: 8.0),
+                          child: Text("Create an account",
+                              style: TextStyle(
+                                  color: textColor,
+                                  fontSize: 30,
+                                  fontWeight: FontWeight.bold)),
+                        ),
+                        const Padding(
+                          padding: const EdgeInsets.only(left: 8.0, top: 30),
                           child: Text(
                             "Please fill in your details to start",
                             style: TextStyle(
@@ -79,7 +89,7 @@ class _RegisterState extends State<Register> {
                             ),
                           ),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 15,
                         ),
                         TextFormField(
@@ -347,11 +357,7 @@ class _RegisterState extends State<Register> {
                                     color: lightBlueColor,
                                     fontWeight: FontWeight.bold)),
                             GestureDetector(
-                                onTap: () {
-                                  ScreenNavigator(cx: context).navigate(
-                                      LoginPage(),
-                                      NavigatorTweens.leftToRight());
-                                },
+                                onTap: goToLoginPage,
                                 child: Text("Login now",
                                     style: TextStyle(
                                         color: textColor,

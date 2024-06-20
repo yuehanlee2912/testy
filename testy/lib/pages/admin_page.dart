@@ -7,6 +7,7 @@ import 'package:testy/pages/carpark_page.dart';
 import 'package:testy/pages/login_page.dart';
 import 'package:testy/pages/residents.dart';
 import 'package:testy/pages/visitors.dart';
+import 'package:testy/pages/scan_qr.dart';
 
 class AdminPage extends StatefulWidget {
   const AdminPage({super.key});
@@ -47,6 +48,11 @@ class _AdminPageState extends State<AdminPage> {
     void goToProfile() {
       Navigator.of(context).pushReplacement(
           MaterialPageRoute(builder: (context) => AdminProfilePage()));
+    }
+
+    void goToScanQr() {
+      Navigator.of(context)
+          .pushReplacement(MaterialPageRoute(builder: (context) => ScanQr()));
     }
 
     //user
@@ -109,6 +115,22 @@ class _AdminPageState extends State<AdminPage> {
                               ],
                             ),
                             const SizedBox(height: 30),
+                            GestureDetector(
+                              onTap: goToScanQr,
+                              child: Container(
+                                decoration: BoxDecoration(
+                                    color: bgColor,
+                                    borderRadius: BorderRadius.circular(20)),
+                                child: ListTile(
+                                  leading: Icon(Icons.group, color: textColor),
+                                  title: Text("Scan QR",
+                                      style: TextStyle(
+                                          color: textColor,
+                                          fontWeight: FontWeight.bold)),
+                                ),
+                              ),
+                            ),
+                            const SizedBox(height: 20),
                             GestureDetector(
                               onTap: goToVisitors,
                               child: Container(

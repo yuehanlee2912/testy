@@ -56,7 +56,7 @@ class _HomePageState extends State<HomePage> {
       backgroundColor: bgColor,
       appBar: AppBar(
         iconTheme: IconThemeData(color: Colors.white),
-        backgroundColor: bgColor,
+        backgroundColor: Color.fromARGB(255, 58, 76, 178),
         actions: <Widget>[
           Padding(
             padding: const EdgeInsets.only(right: 15.0),
@@ -74,151 +74,158 @@ class _HomePageState extends State<HomePage> {
         onSignOut: signOut,
         onBoardTap: goToBoardPage,
       ),
-      body: StreamBuilder<DocumentSnapshot>(
-        stream: FirebaseFirestore.instance
-            .collection("Users")
-            .doc(currentUser.uid)
-            .snapshots(),
-        builder: (context, snapshot) {
-          if (snapshot.hasData) {
-            final userData = snapshot.data!.data() as Map<String, dynamic>;
+      body: Container(
+        decoration: const BoxDecoration(
+            image: DecorationImage(
+                image: NetworkImage(
+                    'https://static.vecteezy.com/system/resources/previews/009/362/398/original/blue-dynamic-shape-abstract-background-suitable-for-web-and-mobile-app-backgrounds-eps-10-vector.jpg'),
+                fit: BoxFit.cover)),
+        child: StreamBuilder<DocumentSnapshot>(
+          stream: FirebaseFirestore.instance
+              .collection("Users")
+              .doc(currentUser.uid)
+              .snapshots(),
+          builder: (context, snapshot) {
+            if (snapshot.hasData) {
+              final userData = snapshot.data!.data() as Map<String, dynamic>;
 
-            return Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Padding(
-                  padding:
-                      const EdgeInsets.only(top: 24.0, left: 25.0, right: 24.0),
-                  child: Row(
-                    children: [
-                      Text(
-                        'What\'s up, ' + userData['name'] + "!",
-                        style: TextStyle(
-                            color: textColor,
-                            fontSize: 35,
-                            fontWeight: FontWeight.bold),
-                      ),
-                    ],
+              return Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(
+                        top: 24.0, left: 25.0, right: 24.0),
+                    child: Row(
+                      children: [
+                        Text(
+                          'What\'s up, ' + userData['name'] + "!",
+                          style: TextStyle(
+                              color: textColor,
+                              fontSize: 35,
+                              fontWeight: FontWeight.bold),
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-                const SizedBox(height: 25),
-                Container(
-                  decoration: BoxDecoration(
-                      color: accentColor,
-                      borderRadius: BorderRadius.circular(20)),
-                  margin: const EdgeInsets.symmetric(horizontal: 25),
-                  padding: const EdgeInsets.all(15),
-                  child: Row(
-                    children: [
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            "Current Residence",
-                            style:
-                                TextStyle(fontSize: 15, color: lightBlueColor),
-                          ),
-                          const SizedBox(height: 10),
-                          Text(userData['address'],
-                              style: TextStyle(
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.white)),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
-                const SizedBox(height: 30),
-                Padding(
-                  padding: const EdgeInsets.only(left: 25.0, bottom: 15),
-                  child: Text("Dashboard",
-                      style: TextStyle(
-                          color: lightBlueColor,
-                          fontSize: 25,
-                          fontWeight: FontWeight.bold)),
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 25.0,
-                  ),
-                  child: Container(
+                  const SizedBox(height: 25),
+                  Container(
                     decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(20),
-                        color: accentColor),
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 25),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          DashboardButton(
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => const BookVisitor(),
-                                ),
-                              );
-                            },
-                            iconImagePath: 'lib/assets/visitor.png',
-                            buttonText: 'Book',
-                          ),
-                          DashboardButton(
-                            onTap: () {},
-                            iconImagePath: 'lib/assets/history.png',
-                            buttonText: 'History',
-                          ),
-                          DashboardButton(
-                            onTap: () {},
-                            iconImagePath: 'lib/assets/guard.png',
-                            buttonText: 'Guard',
-                          ),
-                        ],
+                        color: accentColor,
+                        borderRadius: BorderRadius.circular(20)),
+                    margin: const EdgeInsets.symmetric(horizontal: 25),
+                    padding: const EdgeInsets.all(15),
+                    child: Row(
+                      children: [
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              "Current Residence",
+                              style: TextStyle(
+                                  fontSize: 15, color: lightBlueColor),
+                            ),
+                            const SizedBox(height: 10),
+                            Text(userData['address'],
+                                style: TextStyle(
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.white)),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(height: 30),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 25.0, bottom: 15),
+                    child: Text("Dashboard",
+                        style: TextStyle(
+                            color: accentColor,
+                            fontSize: 25,
+                            fontWeight: FontWeight.bold)),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 25.0,
+                    ),
+                    child: Container(
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(20),
+                          color: accentColor),
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 25),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            DashboardButton(
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => const BookVisitor(),
+                                  ),
+                                );
+                              },
+                              iconImagePath: 'lib/assets/visitor.png',
+                              buttonText: 'Book',
+                            ),
+                            DashboardButton(
+                              onTap: () {},
+                              iconImagePath: 'lib/assets/history.png',
+                              buttonText: 'History',
+                            ),
+                            DashboardButton(
+                              onTap: () {},
+                              iconImagePath: 'lib/assets/guard.png',
+                              buttonText: 'Guard',
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ),
-                ),
-                Padding(
-                  padding:
-                      const EdgeInsets.only(left: 25.0, bottom: 15, top: 30),
-                  child: Text(
-                    'Services',
-                    style: TextStyle(
-                        fontSize: 25,
-                        fontWeight: FontWeight.bold,
-                        color: lightBlueColor),
+                  Padding(
+                    padding:
+                        const EdgeInsets.only(left: 25.0, bottom: 15, top: 30),
+                    child: Text(
+                      'Services',
+                      style: TextStyle(
+                          fontSize: 25,
+                          fontWeight: FontWeight.bold,
+                          color: accentColor),
+                    ),
                   ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 25.0),
-                  child: Column(
-                    children: [
-                      //food services
-                      DashboardServices(
-                          iconImagePath: 'lib/assets/food.png',
-                          tileSubTitle: 'For food deliveries',
-                          tileTitle: 'Food Services'),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 25.0),
+                    child: Column(
+                      children: [
+                        //food services
+                        DashboardServices(
+                            iconImagePath: 'lib/assets/food.png',
+                            tileSubTitle: 'For food deliveries',
+                            tileTitle: 'Food Services'),
 
-                      //maintainence services
-                      DashboardServices(
-                          iconImagePath: 'lib/assets/maintainence.png',
-                          tileSubTitle: 'For maintainence services',
-                          tileTitle: 'Maintainence'),
-                    ],
+                        //maintainence services
+                        DashboardServices(
+                            iconImagePath: 'lib/assets/maintainence.png',
+                            tileSubTitle: 'For maintainence services',
+                            tileTitle: 'Maintainence'),
+                      ],
+                    ),
                   ),
-                ),
-              ],
-            );
-          } else if (snapshot.hasError) {
-            return Center(
-              child: Text('Error${snapshot.error}'),
-            );
-          }
+                ],
+              );
+            } else if (snapshot.hasError) {
+              return Center(
+                child: Text('Error${snapshot.error}'),
+              );
+            }
 
-          return const Center(
-            child: CircularProgressIndicator(),
-          );
-        },
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          },
+        ),
       ),
     );
   }

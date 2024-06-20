@@ -49,10 +49,14 @@ class _LoginPageState extends State<LoginPage> {
     return Scaffold(
       body: SingleChildScrollView(
         child: Container(
+          decoration: const BoxDecoration(
+              image: DecorationImage(
+                  image: NetworkImage(
+                      'https://img.freepik.com/free-vector/dark-graphic-wavy-wallpaper_23-2148400270.jpg?size=626&ext=jpg&ga=GA1.1.2116175301.1717804800&semt=ais_user'),
+                  fit: BoxFit.cover)),
           constraints: BoxConstraints(
             minHeight: MediaQuery.of(context).size.height,
           ),
-          color: bgColor,
           width: MediaQuery.of(context).size.width,
           child: Center(
             child: Container(
@@ -63,7 +67,7 @@ class _LoginPageState extends State<LoginPage> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    SizedBox(
+                    const SizedBox(
                       height: 30,
                     ),
                     Text(
@@ -74,9 +78,12 @@ class _LoginPageState extends State<LoginPage> {
                         fontSize: 40,
                       ),
                     ),
-                    SizedBox(
-                      height: 20,
+                    const SizedBox(
+                      height: 5,
                     ),
+                    Text("Sign in to continue",
+                        style: TextStyle(color: textColor, fontSize: 20)),
+                    const SizedBox(height: 40),
                     TextFormField(
                       controller: emailController,
                       decoration: InputDecoration(
@@ -194,9 +201,9 @@ class _LoginPageState extends State<LoginPage> {
                           },
                           child: Padding(
                             padding: const EdgeInsets.symmetric(
-                                horizontal: 150, vertical: 15),
+                                horizontal: 125, vertical: 15),
                             child: Text(
-                              "Login",
+                              "Sign in",
                               style: TextStyle(
                                 fontSize: 20,
                                 color: textColor,

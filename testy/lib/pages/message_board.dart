@@ -49,7 +49,7 @@ class _MessageBoardState extends State<MessageBoard> {
     return Scaffold(
       backgroundColor: bgColor,
       appBar: AppBar(
-        backgroundColor: bgColor,
+        backgroundColor: Colors.transparent,
         title: Text(
           "Message Board",
           style: TextStyle(
@@ -58,81 +58,88 @@ class _MessageBoardState extends State<MessageBoard> {
         ),
         iconTheme: IconThemeData(color: textColor),
       ),
-      body: Center(
-        child: Column(
-          children: [
-            //message board
-            Expanded(
-              child: StreamBuilder(
-                stream: FirebaseFirestore.instance
-                    .collection("Message Board")
-                    .orderBy(
-                      "TimeStamp",
-                      descending: false,
-                    )
-                    .snapshots(),
-                builder: (context, snapshot) {
-                  if (snapshot.hasData) {
-                    return ListView.builder(
-                      itemCount: snapshot.data!.docs.length,
-                      itemBuilder: (context, index) {
-                        //get message
-                        final post = snapshot.data!.docs[index];
-                        return Posts(
-                          message: post['Message'],
-                          user: post['UserEmail'],
-                          postId: post.id,
-                          likes: List<String>.from(post['Likes'] ?? []),
-                          time: formatDate(post['TimeStamp']),
-                          commentsCount:
-                              post['commentsCount'] ?? 0, // Pass comments count
-                        );
-                      },
-                    );
-                  } else if (snapshot.hasError) {
-                    return Center(
-                      child: Text('Error: ${snapshot.error}'),
-                    );
-                  }
+      body: Container(
+        decoration: const BoxDecoration(
+            image: DecorationImage(
+                image: NetworkImage(
+                    'https://i.pinimg.com/originals/d2/bf/d3/d2bfd3ea45910c01255ae022181148c4.png'),
+                fit: BoxFit.cover)),
+        child: Center(
+          child: Column(
+            children: [
+              //message board
+              Expanded(
+                child: StreamBuilder(
+                  stream: FirebaseFirestore.instance
+                      .collection("Message Board")
+                      .orderBy(
+                        "TimeStamp",
+                        descending: false,
+                      )
+                      .snapshots(),
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      return ListView.builder(
+                        itemCount: snapshot.data!.docs.length,
+                        itemBuilder: (context, index) {
+                          //get message
+                          final post = snapshot.data!.docs[index];
+                          return Posts(
+                            message: post['Message'],
+                            user: post['UserEmail'],
+                            postId: post.id,
+                            likes: List<String>.from(post['Likes'] ?? []),
+                            time: formatDate(post['TimeStamp']),
+                            commentsCount: post['commentsCount'] ??
+                                0, // Pass comments count
+                          );
+                        },
+                      );
+                    } else if (snapshot.hasError) {
+                      return Center(
+                        child: Text('Error: ${snapshot.error}'),
+                      );
+                    }
 
-                  return const Center(
-                    child: CircularProgressIndicator(),
-                  );
-                },
+                    return const Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  },
+                ),
               ),
-            ),
 
-            //post message
-            Padding(
-              padding: const EdgeInsets.all(25.0),
-              child: Row(
-                children: [
-                  Expanded(
-                    child: MyTextField(
-                      controller: textController,
-                      hintText: 'Write something...',
-                      obscureText: false,
+              //post message
+              Padding(
+                padding: const EdgeInsets.all(25.0),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: MyTextField(
+                        controller: textController,
+                        hintText: 'Write something...',
+                        obscureText: false,
+                      ),
                     ),
-                  ),
 
-                  //post button
-                  IconButton(
-                    onPressed: postMessage,
-                    icon: const Icon(Icons.arrow_circle_up),
-                    color: textColor,
-                  )
-                ],
+                    //post button
+                    IconButton(
+                      onPressed: postMessage,
+                      icon: const Icon(Icons.arrow_circle_up),
+                      color: textColor,
+                    )
+                  ],
+                ),
               ),
-            ),
 
-            //logged in as
-            Text(
-              "Logged in as: ${currentUser.email!}",
-              style: TextStyle(color: lightBlueColor),
-            ),
+              //logged in as
+              Text(
+                "Logged in as: ${currentUser.email!}",
+                style: TextStyle(color: textColor),
+              ),
 
-            const SizedBox(height: 50),
-          ],
+              const SizedBox(height: 50),
+            ],
+          ),
         ),
       ),
     );
