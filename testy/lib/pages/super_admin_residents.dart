@@ -1,16 +1,16 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:testy/pages/admin_page.dart';
+import 'package:testy/pages/super_admin_page.dart';
 
-class Residents extends StatefulWidget {
-  const Residents({super.key});
+class SuperAdminResidents extends StatefulWidget {
+  const SuperAdminResidents({super.key});
 
   @override
-  State<Residents> createState() => _ResidentsState();
+  State<SuperAdminResidents> createState() => _SuperAdminResidentsState();
 }
 
-class _ResidentsState extends State<Residents> {
+class _SuperAdminResidentsState extends State<SuperAdminResidents> {
   List _allResults = [];
   List _resultList = [];
   final TextEditingController _searchController = TextEditingController();
@@ -78,7 +78,7 @@ class _ResidentsState extends State<Residents> {
           icon: Icon(Icons.arrow_back, color: textColor),
           onPressed: () => Navigator.of(context).pushReplacement(
             MaterialPageRoute(
-              builder: (context) => AdminPage(),
+              builder: (context) => SuperAdminPage(),
             ),
           ),
         ),

@@ -2,15 +2,16 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:testy/components/text_box.dart';
+import 'package:testy/pages/super_admin_page.dart';
 
-class ProfilePage extends StatefulWidget {
-  const ProfilePage({super.key});
+class SuperAdminProfilePage extends StatefulWidget {
+  const SuperAdminProfilePage({super.key});
 
   @override
-  State<ProfilePage> createState() => _ProfilePageState();
+  State<SuperAdminProfilePage> createState() => _SuperAdminProfilePageState();
 }
 
-class _ProfilePageState extends State<ProfilePage> {
+class _SuperAdminProfilePageState extends State<SuperAdminProfilePage> {
   final currentUser = FirebaseAuth.instance.currentUser!;
   final usersCollection = FirebaseFirestore.instance.collection("Users");
 
@@ -78,7 +79,8 @@ class _ProfilePageState extends State<ProfilePage> {
         iconTheme: IconThemeData(color: textColor),
         leading: IconButton(
           icon: Icon(Icons.arrow_back, color: textColor),
-          onPressed: () => Navigator.pop,
+          onPressed: () => Navigator.of(context).pushReplacement(
+              MaterialPageRoute(builder: (context) => SuperAdminPage())),
         ),
       ),
       body: StreamBuilder<DocumentSnapshot>(

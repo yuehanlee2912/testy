@@ -5,6 +5,7 @@ import 'package:testy/pages/admin_page.dart';
 import 'package:testy/pages/forgot_password.dart';
 import 'package:testy/pages/home_page.dart';
 import 'package:testy/pages/register_page.dart';
+import 'package:testy/pages/super_admin_page.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -264,11 +265,18 @@ class _LoginPageState extends State<LoginPage> {
         .get()
         .then((DocumentSnapshot documentSnapshot) {
       if (documentSnapshot.exists) {
-        if (documentSnapshot.get('role') == "Admin") {
+        if (documentSnapshot.get('role') == "Guard") {
           Navigator.pushReplacement(
             context,
             MaterialPageRoute(
               builder: (context) => AdminPage(),
+            ),
+          );
+        } else if (documentSnapshot.get('role') == "Admin") {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (context) => SuperAdminPage(),
             ),
           );
         } else {

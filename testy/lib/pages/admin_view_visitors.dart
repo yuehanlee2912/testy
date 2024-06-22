@@ -3,14 +3,14 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:testy/pages/admin_page.dart';
 
-class Residents extends StatefulWidget {
-  const Residents({super.key});
+class ViewVisitors extends StatefulWidget {
+  const ViewVisitors({super.key});
 
   @override
-  State<Residents> createState() => _ResidentsState();
+  State<ViewVisitors> createState() => _ViewVisitorsState();
 }
 
-class _ResidentsState extends State<Residents> {
+class _ViewVisitorsState extends State<ViewVisitors> {
   List _allResults = [];
   List _resultList = [];
   final TextEditingController _searchController = TextEditingController();
@@ -90,37 +90,19 @@ class _ResidentsState extends State<Residents> {
       body: ListView.builder(
         itemCount: _resultList.length,
         itemBuilder: (context, index) {
-          var visitorData = _resultList[index].data();
-
-          return Container(
-            margin: EdgeInsets.symmetric(vertical: 4.0),
-            decoration: BoxDecoration(
-              border: Border.all(color: accentColor, width: 1.0),
-              borderRadius: BorderRadius.circular(5.0),
-              color: accentColor,
+          return ListTile(
+            title: Text(
+              _resultList[index]['name'],
+              style: TextStyle(color: textColor),
             ),
-            child: ListTile(
-              title: Text(
-                visitorData['name'],
-                style: TextStyle(color: textColor),
-              ),
-              subtitle: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    "Residence: " + visitorData['address'],
-                    style: TextStyle(color: textColor),
-                  ),
-                  Text(
-                    "\nEmail: " + visitorData['email'],
-                    style: TextStyle(color: textColor),
-                  ),
-                ],
-              ),
-              trailing: Text(
-                visitorData['phone'],
-                style: TextStyle(color: textColor),
-              ),
+            tileColor: accentColor,
+            subtitle: Text(
+              _resultList[index]['address'],
+              style: TextStyle(color: textColor),
+            ),
+            trailing: Text(
+              _resultList[index]['phone'],
+              style: TextStyle(color: textColor),
             ),
           );
         },

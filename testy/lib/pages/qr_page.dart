@@ -47,10 +47,10 @@ class _QrPageState extends State<QrPage> {
       appBar: AppBar(
         title: Text(
           "Book A Visitor",
-          style: TextStyle(color: lightBlueColor),
+          style: TextStyle(color: textColor),
         ),
         backgroundColor: bgColor,
-        iconTheme: IconThemeData(color: lightBlueColor),
+        iconTheme: IconThemeData(color: textColor),
       ),
       body: Padding(
         padding: const EdgeInsets.only(left: 65.0),

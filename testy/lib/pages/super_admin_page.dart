@@ -1,25 +1,24 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:testy/components/admin_drawer.dart';
+import 'package:testy/components/super_admin_drawer.dart';
 import 'package:testy/pages/admin_profile_page.dart';
-import 'package:testy/pages/carpark_page.dart';
+import 'package:testy/pages/create_admin.dart';
 import 'package:testy/pages/login_page.dart';
-import 'package:testy/pages/message_board.dart';
 import 'package:testy/pages/residents.dart';
+import 'package:testy/pages/super_admin_profile_page.dart';
 import 'package:testy/pages/admin_view_visitors.dart';
-import 'package:testy/pages/visitors.dart';
-import 'package:testy/pages/scan_qr.dart';
+import 'package:testy/pages/super_admin_residents.dart';
+import 'package:testy/pages/super_admin_visitors.dart';
 
-class AdminPage extends StatefulWidget {
-  const AdminPage({super.key});
+class SuperAdminPage extends StatefulWidget {
+  const SuperAdminPage({super.key});
 
   @override
-  State<AdminPage> createState() => _AdminPageState();
+  State<SuperAdminPage> createState() => _SuperAdminPageState();
 }
 
-class _AdminPageState extends State<AdminPage> {
+class _SuperAdminPageState extends State<SuperAdminPage> {
   @override
   Widget build(BuildContext context) {
     Color accentColor = Color.fromARGB(255, 5, 25, 86);
@@ -33,34 +32,29 @@ class _AdminPageState extends State<AdminPage> {
           MaterialPageRoute(builder: (context) => LoginPage()));
     }
 
-    void goToResidents() {
+    void goToProfile() {
       Navigator.of(context).pushReplacement(
-          MaterialPageRoute(builder: (context) => Residents()));
+          MaterialPageRoute(builder: (context) => AdminProfilePage()));
     }
 
-    void goToVisitors() {
-      Navigator.of(context)
-          .pushReplacement(MaterialPageRoute(builder: (context) => Visitors()));
-    }
-
-    void goToCarpark() {
+    void createAdmin() {
       Navigator.of(context).pushReplacement(
-          MaterialPageRoute(builder: (context) => CarparkPage()));
+          MaterialPageRoute(builder: (context) => CreateAdmin()));
     }
 
-    void goToScanQr() {
-      Navigator.of(context)
-          .pushReplacement(MaterialPageRoute(builder: (context) => ScanQr()));
-    }
-
-    void goToCommunityBoard() {
+    void manageUsers() {
       Navigator.of(context).pushReplacement(
-          MaterialPageRoute(builder: (context) => MessageBoard()));
+          MaterialPageRoute(builder: (context) => SuperAdminResidents()));
+    }
+
+    void viewVisitors() {
+      Navigator.of(context).pushReplacement(
+          MaterialPageRoute(builder: (context) => SuperAdminVisitors()));
     }
 
     void goToProfilePage() {
       Navigator.of(context).pushReplacement(
-          MaterialPageRoute(builder: (context) => AdminProfilePage()));
+          MaterialPageRoute(builder: (context) => SuperAdminProfilePage()));
     }
 
     //user
@@ -83,13 +77,11 @@ class _AdminPageState extends State<AdminPage> {
           )
         ],
       ),
-      drawer: MyAdminDrawer(
-        onResidentTap: goToResidents,
+      drawer: MySuperAdminDrawer(
+        onUsersTap: manageUsers,
         onSignOut: signOut,
-        onVisitorTap: goToVisitors,
-        oncarparkTap: goToCarpark,
-        onBoardTap: goToCommunityBoard,
-        onQrTap: goToScanQr,
+        onAdminTap: createAdmin,
+        onProfileTap: goToProfile,
       ),
       body: StreamBuilder<DocumentSnapshot>(
         stream: FirebaseFirestore.instance
@@ -127,7 +119,7 @@ class _AdminPageState extends State<AdminPage> {
                           children: [
                             Row(
                               children: [
-                                Text("Guard Dashboard",
+                                Text("Admin Dashboard",
                                     style: TextStyle(
                                         color: lightBlueColor,
                                         fontWeight: FontWeight.bold,
@@ -136,15 +128,15 @@ class _AdminPageState extends State<AdminPage> {
                             ),
                             const SizedBox(height: 30),
                             GestureDetector(
-                              onTap: goToScanQr,
+                              onTap: manageUsers,
                               child: Container(
                                 decoration: BoxDecoration(
                                     color: bgColor,
                                     borderRadius: BorderRadius.circular(20)),
                                 child: ListTile(
-                                  leading:
-                                      Icon(Icons.qr_code, color: textColor),
-                                  title: Text("Scan QR",
+                                  leading: Icon(Icons.supervised_user_circle,
+                                      color: textColor),
+                                  title: Text("Search Users",
                                       style: TextStyle(
                                           color: textColor,
                                           fontWeight: FontWeight.bold)),
@@ -153,7 +145,24 @@ class _AdminPageState extends State<AdminPage> {
                             ),
                             const SizedBox(height: 20),
                             GestureDetector(
-                              onTap: goToVisitors,
+                              onTap: createAdmin,
+                              child: Container(
+                                decoration: BoxDecoration(
+                                    color: bgColor,
+                                    borderRadius: BorderRadius.circular(20)),
+                                child: ListTile(
+                                  leading: Icon(Icons.admin_panel_settings,
+                                      color: textColor),
+                                  title: Text("Create Admin",
+                                      style: TextStyle(
+                                          color: textColor,
+                                          fontWeight: FontWeight.bold)),
+                                ),
+                              ),
+                            ),
+                            const SizedBox(height: 20),
+                            GestureDetector(
+                              onTap: viewVisitors,
                               child: Container(
                                 decoration: BoxDecoration(
                                     color: bgColor,
@@ -161,56 +170,6 @@ class _AdminPageState extends State<AdminPage> {
                                 child: ListTile(
                                   leading: Icon(Icons.group, color: textColor),
                                   title: Text("View Visitors",
-                                      style: TextStyle(
-                                          color: textColor,
-                                          fontWeight: FontWeight.bold)),
-                                ),
-                              ),
-                            ),
-                            const SizedBox(height: 20),
-                            GestureDetector(
-                              onTap: goToResidents,
-                              child: Container(
-                                decoration: BoxDecoration(
-                                    color: bgColor,
-                                    borderRadius: BorderRadius.circular(20)),
-                                child: ListTile(
-                                  leading: Icon(Icons.house, color: textColor),
-                                  title: Text("View Residents",
-                                      style: TextStyle(
-                                          color: textColor,
-                                          fontWeight: FontWeight.bold)),
-                                ),
-                              ),
-                            ),
-                            const SizedBox(height: 20),
-                            GestureDetector(
-                              onTap: goToCarpark,
-                              child: Container(
-                                decoration: BoxDecoration(
-                                    color: bgColor,
-                                    borderRadius: BorderRadius.circular(20)),
-                                child: ListTile(
-                                  leading:
-                                      Icon(Icons.car_crash, color: textColor),
-                                  title: Text("View Carpark Availability",
-                                      style: TextStyle(
-                                          color: textColor,
-                                          fontWeight: FontWeight.bold)),
-                                ),
-                              ),
-                            ),
-                            const SizedBox(height: 20),
-                            GestureDetector(
-                              onTap: goToCommunityBoard,
-                              child: Container(
-                                decoration: BoxDecoration(
-                                    color: bgColor,
-                                    borderRadius: BorderRadius.circular(20)),
-                                child: ListTile(
-                                  leading:
-                                      Icon(Icons.message, color: textColor),
-                                  title: Text("Community Board",
                                       style: TextStyle(
                                           color: textColor,
                                           fontWeight: FontWeight.bold)),

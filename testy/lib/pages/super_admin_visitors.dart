@@ -2,15 +2,16 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:testy/pages/admin_page.dart';
+import 'package:testy/pages/super_admin_page.dart';
 
-class Residents extends StatefulWidget {
-  const Residents({super.key});
+class SuperAdminVisitors extends StatefulWidget {
+  const SuperAdminVisitors({super.key});
 
   @override
-  State<Residents> createState() => _ResidentsState();
+  State<SuperAdminVisitors> createState() => _SuperAdminVisitorsState();
 }
 
-class _ResidentsState extends State<Residents> {
+class _SuperAdminVisitorsState extends State<SuperAdminVisitors> {
   List _allResults = [];
   List _resultList = [];
   final TextEditingController _searchController = TextEditingController();
@@ -30,7 +31,7 @@ class _ResidentsState extends State<Residents> {
     var showResults = [];
     if (_searchController.text != "") {
       for (var clientSnapshot in _allResults) {
-        var name = clientSnapshot['name'].toString().toLowerCase();
+        var name = clientSnapshot['visitor name'].toString().toLowerCase();
         if (name.contains(_searchController.text.toLowerCase())) {
           showResults.add(clientSnapshot);
         }
@@ -46,8 +47,8 @@ class _ResidentsState extends State<Residents> {
 
   getClientStream() async {
     var data = await FirebaseFirestore.instance
-        .collection('Users')
-        .orderBy('name')
+        .collection('Visitors')
+        .orderBy('visitor name')
         .get();
 
     setState(() {
@@ -78,7 +79,7 @@ class _ResidentsState extends State<Residents> {
           icon: Icon(Icons.arrow_back, color: textColor),
           onPressed: () => Navigator.of(context).pushReplacement(
             MaterialPageRoute(
-              builder: (context) => AdminPage(),
+              builder: (context) => SuperAdminPage(),
             ),
           ),
         ),
@@ -101,24 +102,24 @@ class _ResidentsState extends State<Residents> {
             ),
             child: ListTile(
               title: Text(
-                visitorData['name'],
+                visitorData['visitor name'],
                 style: TextStyle(color: textColor),
               ),
               subtitle: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    "Residence: " + visitorData['address'],
+                    "Visiting: " + visitorData['Resident Address'],
                     style: TextStyle(color: textColor),
                   ),
                   Text(
-                    "\nEmail: " + visitorData['email'],
+                    "\nIC Number: " + visitorData['IC Number'],
                     style: TextStyle(color: textColor),
                   ),
                 ],
               ),
               trailing: Text(
-                visitorData['phone'],
+                visitorData['Phone Number'],
                 style: TextStyle(color: textColor),
               ),
             ),

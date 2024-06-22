@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:testy/components/dashboard_button.dart';
 import 'package:testy/components/dashboard_services.dart';
 import 'package:testy/components/drawer.dart';
+import 'package:testy/pages/book_food_services.dart';
 import 'package:testy/pages/login_page.dart';
 import 'package:testy/pages/profile_page.dart';
 import 'package:testy/pages/message_board.dart';
@@ -41,6 +42,15 @@ class _HomePageState extends State<HomePage> {
       context,
       MaterialPageRoute(
         builder: (context) => const MessageBoard(),
+      ),
+    );
+  }
+
+  void foodServices() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => const BookFoodServices(),
       ),
     );
   }
@@ -200,10 +210,13 @@ class _HomePageState extends State<HomePage> {
                     child: Column(
                       children: [
                         //food services
-                        DashboardServices(
-                            iconImagePath: 'lib/assets/food.png',
-                            tileSubTitle: 'For food deliveries',
-                            tileTitle: 'Food Services'),
+                        GestureDetector(
+                          onTap: foodServices,
+                          child: DashboardServices(
+                              iconImagePath: 'lib/assets/food.png',
+                              tileSubTitle: 'For food deliveries',
+                              tileTitle: 'Food Services'),
+                        ),
 
                         //maintainence services
                         DashboardServices(

@@ -2,22 +2,18 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:testy/components/my_list_tile.dart';
 
-class MyAdminDrawer extends StatelessWidget {
+class MySuperAdminDrawer extends StatelessWidget {
   final void Function()? onSignOut;
-  final void Function()? onVisitorTap;
-  final void Function()? oncarparkTap;
-  final void Function()? onResidentTap;
-  final void Function()? onBoardTap;
-  final void Function()? onQrTap;
+  final void Function()? onUsersTap;
+  final void Function()? onAdminTap;
+  final void Function()? onProfileTap;
 
-  const MyAdminDrawer({
+  const MySuperAdminDrawer({
     super.key,
-    required this.onVisitorTap,
+    required this.onUsersTap,
     required this.onSignOut,
-    required this.oncarparkTap,
-    required this.onResidentTap,
-    required this.onBoardTap,
-    required this.onQrTap,
+    required this.onAdminTap,
+    required this.onProfileTap,
   });
 
   @override
@@ -72,33 +68,18 @@ class MyAdminDrawer extends StatelessWidget {
                 const SizedBox(height: 50),
                 MyListTile(
                   icon: Icons.home,
-                  text: "C O N S O L E",
+                  text: "D A S H B O A R D",
                   onTap: () => Navigator.pop(context),
                 ),
                 MyListTile(
-                  icon: Icons.qr_code,
-                  text: "S C A N  Q R",
-                  onTap: onQrTap,
-                ),
-                MyListTile(
                   icon: Icons.group,
-                  text: "V I S I T O R S",
-                  onTap: onVisitorTap,
-                ),
-                MyListTile(
-                  icon: Icons.house,
                   text: "U S E R S",
-                  onTap: onResidentTap,
+                  onTap: onUsersTap,
                 ),
                 MyListTile(
-                  icon: Icons.car_crash,
-                  text: "C A R P A R K",
-                  onTap: oncarparkTap,
-                ),
-                MyListTile(
-                  icon: Icons.message,
-                  text: "M E S S A G E  B O A R D",
-                  onTap: onBoardTap,
+                  icon: Icons.admin_panel_settings,
+                  text: "C R E A T E  A D M I N",
+                  onTap: onAdminTap,
                 ),
               ],
             ),

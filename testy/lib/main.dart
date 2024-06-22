@@ -1,10 +1,14 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:testy/components/Admin.dart';
+import 'package:testy/pages/admin_page.dart';
 import 'package:testy/pages/register_page.dart';
 import 'package:testy/firebase_options.dart';
 import 'package:testy/pages/login_page.dart';
-import 'package:testy/pages/home_page.dart'; // Assuming you have a HomePage for logged-in users
+import 'package:testy/pages/home_page.dart';
+import 'package:testy/pages/super_admin_page.dart'; // Assuming you have a HomePage for logged-in users
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -37,7 +41,30 @@ class AuthWrapper extends StatelessWidget {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return SplashScreen(); // Show splash screen while checking auth status
         } else if (snapshot.hasData) {
-          return HomePage(); // User is logged in
+          // User is logged in
+          return FutureBuilder<DocumentSnapshot>(
+            future: FirebaseFirestore.instance
+                .collection('users')
+                .doc(snapshot.data!.uid)
+                .get(),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return SplashScreen(); // Show splash screen while fetching user data
+              } else if (snapshot.hasData && snapshot.data!.exists) {
+                // User data exists
+                final userRole = snapshot.data!['role'];
+                if (userRole == 'Admin') {
+                  return SuperAdminPage(); // Navigate to Admin Page
+                } else if (userRole == 'Guard') {
+                  return AdminPage(); // Navigate to Guard Page
+                } else {
+                  return HomePage(); // Navigate to User Page
+                }
+              } else {
+                return LoginPage(); // If no user data, navigate to login
+              }
+            },
+          );
         } else {
           return LoginPage(); // User is not logged in
         }
