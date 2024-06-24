@@ -6,16 +6,17 @@ import 'package:testy/components/button.dart';
 import 'package:testy/components/text_field.dart';
 import 'package:testy/pages/qr_page.dart';
 
-class BookFoodServices extends StatefulWidget {
-  const BookFoodServices({super.key});
+class BookMaintainence extends StatefulWidget {
+  const BookMaintainence({super.key});
 
   @override
-  State<BookFoodServices> createState() => _BookFoodServicesState();
+  State<BookMaintainence> createState() => _BookMaintainenceState();
 }
 
-class _BookFoodServicesState extends State<BookFoodServices> {
+class _BookMaintainenceState extends State<BookMaintainence> {
   final numberPlateTextController = TextEditingController();
   final nameTextController = TextEditingController();
+  final contactTextController = TextEditingController();
 
   String currentUser() {
     final User? user = FirebaseAuth.instance.currentUser;
@@ -62,10 +63,11 @@ class _BookFoodServicesState extends State<BookFoodServices> {
         await FirebaseFirestore.instance.collection("Visitors").add({
           'visitor name': nameTextController.text,
           'Car Plate Number': numberPlateTextController.text,
+          'Phone Number': contactTextController.text,
           "Resident Address": data['address'],
           'Time Booked': timeBooked(),
           'Resident UUID': currentUser(),
-          'Type': "Food Services"
+          'Type': "Maintainence",
         });
 
         goToQrPage();
@@ -98,7 +100,7 @@ class _BookFoodServicesState extends State<BookFoodServices> {
             Padding(
               padding: const EdgeInsets.only(left: 25.0),
               child: Text(
-                'Please insert your \ndriver\'s details:',
+                'Please insert your \nvisitor\'s details:',
                 style: TextStyle(
                     fontSize: 24,
                     fontWeight: FontWeight.bold,
@@ -112,13 +114,21 @@ class _BookFoodServicesState extends State<BookFoodServices> {
                 children: [
                   MyTextField(
                     controller: nameTextController,
-                    hintText: 'Driver Name',
+                    hintText: 'Name',
                     obscureText: false,
                   ),
                   const SizedBox(height: 15),
                   MyTextField(
                     controller: numberPlateTextController,
-                    hintText: 'Driver Number Plate',
+                    hintText: 'Number Plate',
+                    obscureText: false,
+                  ),
+                  const SizedBox(
+                    height: 15,
+                  ),
+                  MyTextField(
+                    controller: contactTextController,
+                    hintText: 'Contact: ',
                     obscureText: false,
                   ),
                   const SizedBox(height: 40),

@@ -1,19 +1,20 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:testy/components/Admin.dart';
 import 'package:testy/components/text_field.dart';
 import 'package:testy/components/posts.dart';
 import 'package:testy/helper/helper_methods.dart';
-import 'package:testy/pages/home_page.dart';
+import 'package:testy/pages/guard_page.dart';
 
-class MessageBoard extends StatefulWidget {
-  const MessageBoard({super.key});
+class GuardMessageBoard extends StatefulWidget {
+  const GuardMessageBoard({super.key});
 
   @override
-  State<MessageBoard> createState() => _MessageBoardState();
+  State<GuardMessageBoard> createState() => _GuardMessageBoardState();
 }
 
-class _MessageBoardState extends State<MessageBoard> {
+class _GuardMessageBoardState extends State<GuardMessageBoard> {
   //user
   final currentUser = FirebaseAuth.instance.currentUser!;
 
@@ -55,7 +56,7 @@ class _MessageBoardState extends State<MessageBoard> {
         leading: IconButton(
           icon: Icon(Icons.arrow_back, color: textColor),
           onPressed: () => Navigator.of(context).pushReplacement(
-              MaterialPageRoute(builder: (context) => HomePage())),
+              MaterialPageRoute(builder: (context) => AdminPage())),
         ),
       ),
       body: Container(

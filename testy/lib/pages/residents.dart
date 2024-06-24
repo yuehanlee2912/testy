@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:testy/pages/admin_page.dart';
+import 'package:testy/pages/guard_page.dart';
 
 class Residents extends StatefulWidget {
   const Residents({super.key});
@@ -50,8 +50,16 @@ class _ResidentsState extends State<Residents> {
         .orderBy('name')
         .get();
 
+    print("Data Retrieved: ${data.docs.length}");
+    for (var doc in data.docs) {
+      print(doc.data()); // Print out each document data
+    }
+
+    // Filter data manually if .where clause is not working
+    var filteredData = data.docs.where((doc) => doc['role'] == 'User').toList();
+
     setState(() {
-      _allResults = data.docs;
+      _allResults = filteredData;
       _resultList = List.from(_allResults);
     });
   }
@@ -87,44 +95,51 @@ class _ResidentsState extends State<Residents> {
           controller: _searchController,
         ),
       ),
-      body: ListView.builder(
-        itemCount: _resultList.length,
-        itemBuilder: (context, index) {
-          var visitorData = _resultList[index].data();
+      body: _resultList.isEmpty
+          ? Center(
+              child: Text(
+                'No results found',
+                style: TextStyle(color: textColor),
+              ),
+            )
+          : ListView.builder(
+              itemCount: _resultList.length,
+              itemBuilder: (context, index) {
+                var visitorData = _resultList[index].data();
 
-          return Container(
-            margin: EdgeInsets.symmetric(vertical: 4.0),
-            decoration: BoxDecoration(
-              border: Border.all(color: accentColor, width: 1.0),
-              borderRadius: BorderRadius.circular(5.0),
-              color: accentColor,
-            ),
-            child: ListTile(
-              title: Text(
-                visitorData['name'],
-                style: TextStyle(color: textColor),
-              ),
-              subtitle: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    "Residence: " + visitorData['address'],
-                    style: TextStyle(color: textColor),
+                return Container(
+                  margin: EdgeInsets.symmetric(vertical: 4.0),
+                  decoration: BoxDecoration(
+                    border: Border.all(color: accentColor, width: 1.0),
+                    borderRadius: BorderRadius.circular(5.0),
+                    color: accentColor,
                   ),
-                  Text(
-                    "\nEmail: " + visitorData['email'],
-                    style: TextStyle(color: textColor),
+                  child: ListTile(
+                    title: Text(
+                      visitorData['name'],
+                      style: TextStyle(color: textColor),
+                    ),
+                    subtitle: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          "Residence: " + visitorData['address'],
+                          style: TextStyle(color: textColor),
+                        ),
+                        Text(
+                          "\nEmail: " + visitorData['email'],
+                          style: TextStyle(color: textColor),
+                        ),
+                      ],
+                    ),
+                    trailing: Text(
+                      visitorData['phone'],
+                      style: TextStyle(color: textColor),
+                    ),
                   ),
-                ],
-              ),
-              trailing: Text(
-                visitorData['phone'],
-                style: TextStyle(color: textColor),
-              ),
+                );
+              },
             ),
-          );
-        },
-      ),
     );
   }
 }

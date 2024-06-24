@@ -3,7 +3,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:testy/components/Admin.dart';
-import 'package:testy/pages/admin_page.dart';
+import 'package:testy/pages/guard_page.dart';
 import 'package:testy/pages/register_page.dart';
 import 'package:testy/firebase_options.dart';
 import 'package:testy/pages/login_page.dart';

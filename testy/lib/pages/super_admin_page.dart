@@ -2,12 +2,12 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:testy/components/super_admin_drawer.dart';
-import 'package:testy/pages/admin_profile_page.dart';
+import 'package:testy/pages/guard_profile_page.dart';
 import 'package:testy/pages/create_admin.dart';
 import 'package:testy/pages/login_page.dart';
 import 'package:testy/pages/residents.dart';
 import 'package:testy/pages/super_admin_profile_page.dart';
-import 'package:testy/pages/admin_view_visitors.dart';
+import 'package:testy/pages/guard_view_visitors.dart';
 import 'package:testy/pages/super_admin_residents.dart';
 import 'package:testy/pages/super_admin_visitors.dart';
 

@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:testy/pages/admin_page.dart';
+import 'package:testy/pages/guard_page.dart';
 import 'package:testy/pages/super_admin_page.dart';
 
 class SuperAdminVisitors extends StatefulWidget {
@@ -91,37 +91,38 @@ class _SuperAdminVisitorsState extends State<SuperAdminVisitors> {
       body: ListView.builder(
         itemCount: _resultList.length,
         itemBuilder: (context, index) {
-          var visitorData = _resultList[index].data();
-
+          var visitor = _resultList[index];
           return Container(
-            margin: EdgeInsets.symmetric(vertical: 4.0),
+            margin: EdgeInsets.symmetric(
+              vertical: 4.0,
+            ),
+            padding: EdgeInsets.all(8.0),
             decoration: BoxDecoration(
+              color: accentColor,
               border: Border.all(color: accentColor, width: 1.0),
               borderRadius: BorderRadius.circular(5.0),
-              color: accentColor,
             ),
-            child: ListTile(
-              title: Text(
-                visitorData['visitor name'],
-                style: TextStyle(color: textColor),
-              ),
-              subtitle: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    "Visiting: " + visitorData['Resident Address'],
-                    style: TextStyle(color: textColor),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  visitor['visitor name'],
+                  style: TextStyle(
+                    color: textColor,
+                    fontWeight: FontWeight.bold,
                   ),
-                  Text(
-                    "\nIC Number: " + visitorData['IC Number'],
-                    style: TextStyle(color: textColor),
-                  ),
-                ],
-              ),
-              trailing: Text(
-                visitorData['Phone Number'],
-                style: TextStyle(color: textColor),
-              ),
+                ),
+                SizedBox(height: 4.0),
+                Text(
+                  "Time Booked: " + visitor['Time Booked'],
+                  style: TextStyle(color: textColor),
+                ),
+                SizedBox(height: 2.0),
+                Text(
+                  "Visiting: " + visitor['Resident Address'],
+                  style: TextStyle(color: textColor),
+                ),
+              ],
             ),
           );
         },

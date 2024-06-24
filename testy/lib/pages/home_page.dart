@@ -5,6 +5,7 @@ import 'package:testy/components/dashboard_button.dart';
 import 'package:testy/components/dashboard_services.dart';
 import 'package:testy/components/drawer.dart';
 import 'package:testy/pages/book_food_services.dart';
+import 'package:testy/pages/book_maintainence.dart';
 import 'package:testy/pages/login_page.dart';
 import 'package:testy/pages/profile_page.dart';
 import 'package:testy/pages/message_board.dart';
@@ -52,6 +53,15 @@ class _HomePageState extends State<HomePage> {
       context,
       MaterialPageRoute(
         builder: (context) => const BookFoodServices(),
+      ),
+    );
+  }
+
+  void maintainenceServices() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => const BookMaintainence(),
       ),
     );
   }
@@ -226,10 +236,13 @@ class _HomePageState extends State<HomePage> {
                         ),
 
                         //maintainence services
-                        DashboardServices(
-                            iconImagePath: 'lib/assets/maintainence.png',
-                            tileSubTitle: 'For maintainence services',
-                            tileTitle: 'Maintainence'),
+                        GestureDetector(
+                          onTap: maintainenceServices,
+                          child: DashboardServices(
+                              iconImagePath: 'lib/assets/maintainence.png',
+                              tileSubTitle: 'For maintainence services',
+                              tileTitle: 'Maintainence'),
+                        ),
                       ],
                     ),
                   ),

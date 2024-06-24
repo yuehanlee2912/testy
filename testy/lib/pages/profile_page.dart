@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:testy/components/text_box.dart';
+import 'package:testy/pages/home_page.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -78,7 +79,8 @@ class _ProfilePageState extends State<ProfilePage> {
         iconTheme: IconThemeData(color: textColor),
         leading: IconButton(
           icon: Icon(Icons.arrow_back, color: textColor),
-          onPressed: () => Navigator.pop,
+          onPressed: () => Navigator.of(context).pushReplacement(
+              MaterialPageRoute(builder: (context) => HomePage())),
         ),
       ),
       body: StreamBuilder<DocumentSnapshot>(

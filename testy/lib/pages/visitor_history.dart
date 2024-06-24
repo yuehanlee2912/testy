@@ -111,8 +111,8 @@ class _VisitorHistoryState extends State<VisitorHistory> {
             ),
             child: ListTile(
               title: Text(
-                visitorData['visitor name'],
-                style: TextStyle(color: textColor),
+                visitorData['visitor name'] + " (" + visitorData['Type'] + ")",
+                style: TextStyle(color: textColor, fontWeight: FontWeight.bold),
               ),
               subtitle: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -122,14 +122,10 @@ class _VisitorHistoryState extends State<VisitorHistory> {
                     style: TextStyle(color: textColor),
                   ),
                   Text(
-                    "\nIC Number: " + visitorData['IC Number'],
+                    "\nCar Plate: " + visitorData['Car Plate Number'],
                     style: TextStyle(color: textColor),
                   ),
                 ],
-              ),
-              trailing: Text(
-                visitorData['Phone Number'],
-                style: TextStyle(color: textColor),
               ),
             ),
           );

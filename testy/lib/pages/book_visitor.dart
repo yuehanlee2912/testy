@@ -68,7 +68,8 @@ class _BookVisitorState extends State<BookVisitor> {
           'Car Plate Number': carPlateTextController.text,
           "Resident Address": data['address'],
           'Time Booked': timeBooked(),
-          'Resident UUID': currentUser()
+          'Resident UUID': currentUser(),
+          'Type': "Visitor",
         });
 
         goToQrPage();
@@ -92,6 +93,7 @@ class _BookVisitorState extends State<BookVisitor> {
       backgroundColor: bgColor,
       appBar: AppBar(
         backgroundColor: bgColor,
+        iconTheme: IconThemeData(color: textColor),
       ),
       body: SingleChildScrollView(
         child: Column(

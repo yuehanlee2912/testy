@@ -3,13 +3,12 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:testy/components/admin_drawer.dart';
-import 'package:testy/pages/admin_profile_page.dart';
+import 'package:testy/pages/guard_message_board.dart';
+import 'package:testy/pages/guard_profile_page.dart';
 import 'package:testy/pages/carpark_page.dart';
 import 'package:testy/pages/login_page.dart';
-import 'package:testy/pages/message_board.dart';
 import 'package:testy/pages/residents.dart';
-import 'package:testy/pages/admin_view_visitors.dart';
-import 'package:testy/pages/visitors.dart';
+import 'package:testy/pages/guard_view_visitors.dart';
 import 'package:testy/pages/scan_qr.dart';
 
 class AdminPage extends StatefulWidget {
@@ -39,8 +38,8 @@ class _AdminPageState extends State<AdminPage> {
     }
 
     void goToVisitors() {
-      Navigator.of(context)
-          .pushReplacement(MaterialPageRoute(builder: (context) => Visitors()));
+      Navigator.of(context).pushReplacement(
+          MaterialPageRoute(builder: (context) => ViewVisitors()));
     }
 
     void goToCarpark() {
@@ -55,7 +54,7 @@ class _AdminPageState extends State<AdminPage> {
 
     void goToCommunityBoard() {
       Navigator.of(context).pushReplacement(
-          MaterialPageRoute(builder: (context) => MessageBoard()));
+          MaterialPageRoute(builder: (context) => GuardMessageBoard()));
     }
 
     void goToProfilePage() {

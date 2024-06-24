@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:testy/pages/admin_page.dart';
+import 'package:testy/pages/guard_page.dart';
 
 class ViewVisitors extends StatefulWidget {
   const ViewVisitors({super.key});
@@ -30,7 +30,7 @@ class _ViewVisitorsState extends State<ViewVisitors> {
     var showResults = [];
     if (_searchController.text != "") {
       for (var clientSnapshot in _allResults) {
-        var name = clientSnapshot['name'].toString().toLowerCase();
+        var name = clientSnapshot['visitor name'].toString().toLowerCase();
         if (name.contains(_searchController.text.toLowerCase())) {
           showResults.add(clientSnapshot);
         }
@@ -46,8 +46,8 @@ class _ViewVisitorsState extends State<ViewVisitors> {
 
   getClientStream() async {
     var data = await FirebaseFirestore.instance
-        .collection('Users')
-        .orderBy('name')
+        .collection('Visitors')
+        .orderBy('visitor name')
         .get();
 
     setState(() {
@@ -90,19 +90,38 @@ class _ViewVisitorsState extends State<ViewVisitors> {
       body: ListView.builder(
         itemCount: _resultList.length,
         itemBuilder: (context, index) {
-          return ListTile(
-            title: Text(
-              _resultList[index]['name'],
-              style: TextStyle(color: textColor),
+          var visitor = _resultList[index];
+          return Container(
+            margin: EdgeInsets.symmetric(
+              vertical: 4.0,
             ),
-            tileColor: accentColor,
-            subtitle: Text(
-              _resultList[index]['address'],
-              style: TextStyle(color: textColor),
+            padding: EdgeInsets.all(8.0),
+            decoration: BoxDecoration(
+              color: accentColor,
+              border: Border.all(color: accentColor, width: 1.0),
+              borderRadius: BorderRadius.circular(5.0),
             ),
-            trailing: Text(
-              _resultList[index]['phone'],
-              style: TextStyle(color: textColor),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  visitor['visitor name'],
+                  style: TextStyle(
+                    color: textColor,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                SizedBox(height: 4.0),
+                Text(
+                  "Time Booked: " + visitor['Time Booked'],
+                  style: TextStyle(color: textColor),
+                ),
+                SizedBox(height: 2.0),
+                Text(
+                  "Visiting: " + visitor['Resident Address'],
+                  style: TextStyle(color: textColor),
+                ),
+              ],
             ),
           );
         },
