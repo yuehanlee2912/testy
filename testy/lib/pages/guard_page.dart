@@ -1,8 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:testy/components/admin_drawer.dart';
+import 'package:testy/pages/check_out.dart';
 import 'package:testy/pages/guard_message_board.dart';
 import 'package:testy/pages/guard_profile_page.dart';
 import 'package:testy/pages/carpark_page.dart';
@@ -55,6 +55,11 @@ class _AdminPageState extends State<AdminPage> {
     void goToCommunityBoard() {
       Navigator.of(context).pushReplacement(
           MaterialPageRoute(builder: (context) => GuardMessageBoard()));
+    }
+
+    void goToCheckOut() {
+      Navigator.of(context)
+          .pushReplacement(MaterialPageRoute(builder: (context) => CheckOut()));
     }
 
     void goToProfilePage() {
@@ -144,6 +149,23 @@ class _AdminPageState extends State<AdminPage> {
                                   leading:
                                       Icon(Icons.qr_code, color: textColor),
                                   title: Text("Scan QR",
+                                      style: TextStyle(
+                                          color: textColor,
+                                          fontWeight: FontWeight.bold)),
+                                ),
+                              ),
+                            ),
+                            const SizedBox(height: 20),
+                            GestureDetector(
+                              onTap: goToCheckOut,
+                              child: Container(
+                                decoration: BoxDecoration(
+                                    color: bgColor,
+                                    borderRadius: BorderRadius.circular(20)),
+                                child: ListTile(
+                                  leading:
+                                      Icon(Icons.exit_to_app, color: textColor),
+                                  title: Text("Check Out",
                                       style: TextStyle(
                                           color: textColor,
                                           fontWeight: FontWeight.bold)),

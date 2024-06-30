@@ -59,11 +59,6 @@ class _MessageBoardState extends State<MessageBoard> {
         ),
       ),
       body: Container(
-        decoration: const BoxDecoration(
-            image: DecorationImage(
-                image: NetworkImage(
-                    'https://i.pinimg.com/originals/d2/bf/d3/d2bfd3ea45910c01255ae022181148c4.png'),
-                fit: BoxFit.cover)),
         child: Center(
           child: Column(
             children: [

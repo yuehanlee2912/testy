@@ -2,9 +2,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:qr_flutter/qr_flutter.dart';
+import 'package:uuid/uuid.dart';
 import 'package:testy/components/button.dart';
 import 'package:testy/components/text_field.dart';
-import 'package:testy/pages/qr_page.dart';
 
 class BookMaintainence extends StatefulWidget {
   const BookMaintainence({super.key});
@@ -18,23 +19,20 @@ class _BookMaintainenceState extends State<BookMaintainence> {
   final nameTextController = TextEditingController();
   final contactTextController = TextEditingController();
 
+  String uniqueId = '';
+  bool showQrCode = false;
+
+  void generateUniqueId() {
+    final uuid = Uuid();
+    uniqueId = uuid.v4();
+  }
+
   String currentUser() {
     final User? user = FirebaseAuth.instance.currentUser;
     if (user == null) {
       throw Exception("No user is currently signed in.");
     }
     return user.uid;
-  }
-
-  void goToQrPage() {
-    Navigator.pop(context);
-
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => const QrPage(),
-      ),
-    );
   }
 
   String timeBooked() {
@@ -46,6 +44,8 @@ class _BookMaintainenceState extends State<BookMaintainence> {
   }
 
   void bookNow() async {
+    generateUniqueId(); // Generate a new unique ID every time the "Book Now" button is pressed
+
     final FirebaseAuth auth = FirebaseAuth.instance;
     final String userUid =
         auth.currentUser!.uid; // shouldnt give error if user is logged in
@@ -60,7 +60,10 @@ class _BookMaintainenceState extends State<BookMaintainence> {
       if (value.exists) {
         Map<String, dynamic> data = value.data() as Map<String, dynamic>;
 
-        await FirebaseFirestore.instance.collection("Visitors").add({
+        await FirebaseFirestore.instance
+            .collection("Visitors")
+            .doc(uniqueId)
+            .set({
           'visitor name': nameTextController.text,
           'Car Plate Number': numberPlateTextController.text,
           'Phone Number': contactTextController.text,
@@ -68,12 +71,21 @@ class _BookMaintainenceState extends State<BookMaintainence> {
           'Time Booked': timeBooked(),
           'Resident UUID': currentUser(),
           'Type': "Maintainence",
+          'QR Id': uniqueId,
+          'Status': 'Booked',
+          'Time Entered': 'N/A',
+          'Time Exited': 'N/A',
         });
 
-        goToQrPage();
-
+        // Clear text fields after booking
         nameTextController.clear();
         numberPlateTextController.clear();
+        contactTextController.clear();
+
+        // Set state to show the QR code
+        setState(() {
+          showQrCode = true;
+        });
       }
     }).catchError((e) {});
   }
@@ -135,7 +147,20 @@ class _BookMaintainenceState extends State<BookMaintainence> {
                   MyButton(
                     onTap: bookNow,
                     text: 'Book Now',
-                  )
+                  ),
+                  const SizedBox(height: 100),
+                  if (showQrCode && uniqueId.isNotEmpty)
+                    Center(
+                      child: QrImageView(
+                        data: uniqueId,
+                        size: 280,
+                        backgroundColor: Colors.white,
+                        embeddedImageStyle: QrEmbeddedImageStyle(
+                          size: const Size(100, 100),
+                        ),
+                      ),
+                    ),
+                  const SizedBox(height: 100),
                 ],
               ),
             )
