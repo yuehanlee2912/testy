@@ -379,11 +379,44 @@ class _RegisterState extends State<Register> {
   void signUp(String email, String password, String role) async {
     CircularProgressIndicator();
     if (_formkey.currentState!.validate()) {
-      await _auth
-          .createUserWithEmailAndPassword(email: email, password: password)
-          .then((value) => {postDetailsToFirestore(email, role)})
-          .catchError((e) {});
+      try {
+        await _auth.createUserWithEmailAndPassword(
+            email: email, password: password);
+        postDetailsToFirestore(email, role);
+      } on FirebaseAuthException catch (e) {
+        if (e.code == 'email-already-in-use') {
+          showAlertDialog(context, 'Email already registered!');
+        } else {
+          showAlertDialog(context, 'An error occurred: ${e.message}');
+        }
+      } catch (e) {
+        showAlertDialog(context, 'An unknown error occurred');
+      } finally {
+        setState(() {
+          showProgress = false;
+        });
+      }
     }
+  }
+
+  void showAlertDialog(BuildContext context, String message) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text("Error"),
+          content: Text(message),
+          actions: [
+            TextButton(
+              child: Text("OK"),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
   }
 
   postDetailsToFirestore(String email, String role) async {
