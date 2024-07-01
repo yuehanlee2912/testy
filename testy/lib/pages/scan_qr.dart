@@ -18,16 +18,22 @@ class _ScanQrState extends State<ScanQr> {
   Color purpleColor = const Color.fromARGB(255, 179, 27, 219);
 
   String _scanResult = '';
+  bool _isScanning = false; // Flag to track if scanning is in progress
 
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   @override
   void initState() {
     super.initState();
-    // Optionally, you can start scanning immediately here
   }
 
   void _onDetect(BarcodeCapture barcode) async {
+    if (_isScanning) return; // If scanning is in progress, do nothing
+
+    setState(() {
+      _isScanning = true; // Set the scanning flag to true
+    });
+
     final String qrId = barcode.barcodes.first.rawValue ?? "Failed to scan";
     setState(() {
       _scanResult = qrId;
@@ -39,13 +45,10 @@ class _ScanQrState extends State<ScanQr> {
           await _firestore.collection('Visitors').doc(qrId).get();
 
       if (doc.exists) {
-        // Get the resident address and status
         String residentAddress = doc.get('Resident Address');
         String status = doc.get('Status');
 
-        // Check if the status is anything but "Booked"
         if (status != 'Booked') {
-          // Show dialog with the error message
           showDialog(
             context: context,
             builder: (BuildContext context) {
@@ -64,15 +67,17 @@ class _ScanQrState extends State<ScanQr> {
                 ],
               );
             },
-          );
+          ).then((_) {
+            setState(() {
+              _isScanning = false; // Reset the scanning flag
+            });
+          });
         } else {
-          // Update the "Time Entered" field
           await _firestore.collection('Visitors').doc(qrId).update({
             'Time Entered': FieldValue.serverTimestamp(),
             'Status': 'Entered'
           });
 
-          // Show dialog with the resident address
           showDialog(
             context: context,
             builder: (BuildContext context) {
@@ -82,7 +87,7 @@ class _ScanQrState extends State<ScanQr> {
                 actions: [
                   TextButton(
                     onPressed: () {
-                      Navigator.of(context).pop(); // Close the dialog
+                      Navigator.of(context).pop();
                       Navigator.of(context).pushReplacement(
                           MaterialPageRoute(builder: (context) => AdminPage()));
                     },
@@ -91,10 +96,13 @@ class _ScanQrState extends State<ScanQr> {
                 ],
               );
             },
-          );
+          ).then((_) {
+            setState(() {
+              _isScanning = false; // Reset the scanning flag
+            });
+          });
         }
       } else {
-        // Handle the case where the document does not exist
         showDialog(
           context: context,
           builder: (BuildContext context) {
@@ -113,11 +121,14 @@ class _ScanQrState extends State<ScanQr> {
               ],
             );
           },
-        );
+        ).then((_) {
+          setState(() {
+            _isScanning = false;
+          });
+        });
       }
     } catch (e) {
       print("Error fetching document: $e");
-      // Handle the error, e.g., show an error dialog
       showDialog(
         context: context,
         builder: (BuildContext context) {
@@ -137,7 +148,11 @@ class _ScanQrState extends State<ScanQr> {
             ],
           );
         },
-      );
+      ).then((_) {
+        setState(() {
+          _isScanning = false; // Reset the scanning flag
+        });
+      });
     }
   }
 
@@ -155,8 +170,6 @@ class _ScanQrState extends State<ScanQr> {
       ),
       body: MobileScanner(
         onDetect: _onDetect,
-        // Optionally, you can specify which camera to use here
-        // cameraFacing: CameraFacing.front, // or CameraFacing.back
       ),
     );
   }
