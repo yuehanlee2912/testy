@@ -7,6 +7,7 @@ import 'package:testy/pages/guard_message_board.dart';
 import 'package:testy/pages/guard_profile_page.dart';
 import 'package:testy/pages/carpark_page.dart';
 import 'package:testy/pages/login_page.dart';
+import 'package:testy/pages/qr_select.dart';
 import 'package:testy/pages/residents.dart';
 import 'package:testy/pages/guard_view_visitors.dart';
 import 'package:testy/pages/scan_qr.dart';
@@ -49,7 +50,7 @@ class _AdminPageState extends State<AdminPage> {
 
     void goToScanQr() {
       Navigator.of(context)
-          .pushReplacement(MaterialPageRoute(builder: (context) => ScanQr()));
+          .pushReplacement(MaterialPageRoute(builder: (context) => QrSelect()));
     }
 
     void goToCommunityBoard() {

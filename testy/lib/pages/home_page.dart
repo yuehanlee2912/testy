@@ -6,6 +6,7 @@ import 'package:testy/components/dashboard_services.dart';
 import 'package:testy/components/drawer.dart';
 import 'package:testy/pages/book_food_services.dart';
 import 'package:testy/pages/book_maintainence.dart';
+import 'package:testy/pages/group_qr.dart';
 import 'package:testy/pages/login_page.dart';
 import 'package:testy/pages/profile_page.dart';
 import 'package:testy/pages/message_board.dart';
@@ -202,9 +203,14 @@ class _HomePageState extends State<HomePage> {
                               buttonText: 'History',
                             ),
                             DashboardButton(
-                              onTap: () {},
-                              iconImagePath: 'lib/assets/guard.png',
-                              buttonText: 'Guard',
+                              onTap: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => const GroupQr()));
+                              },
+                              iconImagePath: 'lib/assets/group.png',
+                              buttonText: 'Group',
                             ),
                           ],
                         ),

@@ -70,7 +70,7 @@ class _GuardMessageBoardState extends State<GuardMessageBoard> {
                       .collection("Message Board")
                       .orderBy(
                         "TimeStamp",
-                        descending: false,
+                        descending: true,
                       )
                       .snapshots(),
                   builder: (context, snapshot) {

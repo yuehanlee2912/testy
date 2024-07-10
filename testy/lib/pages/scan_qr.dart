@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 import 'package:testy/pages/guard_page.dart';
+import 'package:testy/pages/qr_select.dart';
 
 class ScanQr extends StatefulWidget {
   const ScanQr({super.key});
@@ -165,7 +166,7 @@ class _ScanQrState extends State<ScanQr> {
         leading: IconButton(
           icon: Icon(Icons.arrow_back, color: textColor),
           onPressed: () => Navigator.of(context).pushReplacement(
-              MaterialPageRoute(builder: (context) => AdminPage())),
+              MaterialPageRoute(builder: (context) => QrSelect())),
         ),
       ),
       body: MobileScanner(

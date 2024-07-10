@@ -70,7 +70,7 @@ class _CreateAdminState extends State<CreateAdmin> {
         return 1;
       case 'Guard':
         return 2;
-      case 'User':
+      case 'Resident':
       default:
         return 0;
     }
@@ -94,11 +94,11 @@ class _CreateAdminState extends State<CreateAdmin> {
                   itemExtent: 32.0,
                   onSelectedItemChanged: (int index) {
                     setState(() {
-                      selectedRole = ['User', 'Admin', 'Guard'][index];
+                      selectedRole = ['Resident', 'Admin', 'Guard'][index];
                     });
                   },
                   children: const [
-                    Text('User'),
+                    Text('Resident'),
                     Text('Admin'),
                     Text('Guard'),
                   ],

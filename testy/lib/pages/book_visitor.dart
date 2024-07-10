@@ -158,16 +158,24 @@ class _BookVisitorState extends State<BookVisitor> {
                   ),
                   const SizedBox(height: 100),
                   if (showQrCode && uniqueId.isNotEmpty)
-                    Center(
-                      child: QrImageView(
-                        data: uniqueId,
-                        size: 280,
-                        backgroundColor: Colors.white,
-                        embeddedImageStyle: QrEmbeddedImageStyle(
-                          size: const Size(100, 100),
-                        ),
+                    Text('Visitor QR',
+                        style: TextStyle(
+                            color: textColor,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 20)),
+                  const SizedBox(
+                    height: 15,
+                  ),
+                  Center(
+                    child: QrImageView(
+                      data: uniqueId,
+                      size: 280,
+                      backgroundColor: Colors.white,
+                      embeddedImageStyle: QrEmbeddedImageStyle(
+                        size: const Size(100, 100),
                       ),
                     ),
+                  ),
                   const SizedBox(height: 100),
                 ],
               ),

@@ -69,7 +69,7 @@ class _MessageBoardState extends State<MessageBoard> {
                       .collection("Message Board")
                       .orderBy(
                         "TimeStamp",
-                        descending: false,
+                        descending: true,
                       )
                       .snapshots(),
                   builder: (context, snapshot) {

@@ -28,12 +28,6 @@ class _RegisterState extends State<Register> {
   bool _isObscure = true;
   bool _isObscure2 = true;
   File? file;
-  var options = [
-    'User',
-    'Guard',
-  ];
-  var _currentItemSelected = "User";
-  var role = "User";
 
   Color accentColor = Color.fromARGB(255, 5, 25, 86);
   Color bgColor = Color.fromARGB(255, 52, 81, 161);
@@ -271,46 +265,6 @@ class _RegisterState extends State<Register> {
                         SizedBox(
                           height: 20,
                         ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              "role : ",
-                              style: TextStyle(
-                                fontSize: 20,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.white,
-                              ),
-                            ),
-                            DropdownButton<String>(
-                              dropdownColor: Colors.blue[900],
-                              isDense: true,
-                              isExpanded: false,
-                              iconEnabledColor: Colors.white,
-                              focusColor: Colors.white,
-                              items: options.map((String dropDownStringItem) {
-                                return DropdownMenuItem<String>(
-                                  value: dropDownStringItem,
-                                  child: Text(
-                                    dropDownStringItem,
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 20,
-                                    ),
-                                  ),
-                                );
-                              }).toList(),
-                              onChanged: (newValueSelected) {
-                                setState(() {
-                                  _currentItemSelected = newValueSelected!;
-                                  role = newValueSelected;
-                                });
-                              },
-                              value: _currentItemSelected,
-                            ),
-                          ],
-                        ),
                         SizedBox(
                           height: 20,
                         ),
@@ -329,7 +283,7 @@ class _RegisterState extends State<Register> {
                                   showProgress = true;
                                 });
                                 signUp(emailController.text,
-                                    passwordController.text, role);
+                                    passwordController.text);
                               },
                               child: Padding(
                                 padding: const EdgeInsets.symmetric(
@@ -376,13 +330,13 @@ class _RegisterState extends State<Register> {
     );
   }
 
-  void signUp(String email, String password, String role) async {
+  void signUp(String email, String password) async {
     CircularProgressIndicator();
     if (_formkey.currentState!.validate()) {
       try {
         await _auth.createUserWithEmailAndPassword(
             email: email, password: password);
-        postDetailsToFirestore(email, role);
+        postDetailsToFirestore(email);
       } on FirebaseAuthException catch (e) {
         if (e.code == 'email-already-in-use') {
           showAlertDialog(context, 'Email already registered!');
@@ -419,13 +373,13 @@ class _RegisterState extends State<Register> {
     );
   }
 
-  postDetailsToFirestore(String email, String role) async {
+  postDetailsToFirestore(String email) async {
     FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
     var user = _auth.currentUser;
     CollectionReference ref = FirebaseFirestore.instance.collection('Users');
     ref.doc(user!.uid).set({
       'email': emailController.text,
-      'role': role,
+      'role': "Resident",
       'username': emailController.text.split('@')[0],
       'address': 'Not Set',
       'phone': mobile.text,
