@@ -25,6 +25,8 @@ class _RegisterState extends State<Register> {
   final TextEditingController name = new TextEditingController();
   final TextEditingController emailController = new TextEditingController();
   final TextEditingController mobile = new TextEditingController();
+  final TextEditingController address = new TextEditingController();
+
   bool _isObscure = true;
   bool _isObscure2 = true;
   File? file;
@@ -173,6 +175,34 @@ class _RegisterState extends State<Register> {
                           validator: (value) {
                             if (value!.isEmpty) {
                               return "Phone cannot be empty";
+                            } else {
+                              return null;
+                            }
+                          },
+                          onChanged: (value) {},
+                        ),
+                        const SizedBox(height: 20),
+                        TextFormField(
+                          controller: address,
+                          decoration: InputDecoration(
+                            filled: true,
+                            fillColor: Colors.white,
+                            hintText: 'Address',
+                            enabled: true,
+                            contentPadding: const EdgeInsets.only(
+                                left: 14.0, bottom: 8.0, top: 15.0),
+                            focusedBorder: OutlineInputBorder(
+                              borderSide: new BorderSide(color: Colors.white),
+                              borderRadius: new BorderRadius.circular(20),
+                            ),
+                            enabledBorder: UnderlineInputBorder(
+                              borderSide: new BorderSide(color: Colors.white),
+                              borderRadius: new BorderRadius.circular(20),
+                            ),
+                          ),
+                          validator: (value) {
+                            if (value!.isEmpty) {
+                              return "Address cannot be empty";
                             } else {
                               return null;
                             }
@@ -381,7 +411,7 @@ class _RegisterState extends State<Register> {
       'email': emailController.text,
       'role': "Resident",
       'username': emailController.text.split('@')[0],
-      'address': 'Not Set',
+      'address': address.text,
       'phone': mobile.text,
       'name': name.text,
     });
@@ -404,10 +434,9 @@ class ScreenNavigator {
         },
         transitionDuration: Durations.long1,
         transitionsBuilder: (context, animation, secondaryAnimation, child) {
-          // create CurveTween
           const Curve curve = Curves.easeInOut;
           final CurveTween curveTween = CurveTween(curve: curve);
-          // chain Tween with CurveTween
+
           final Animatable<Offset> chainedTween = tween.chain(curveTween);
           final Animation<Offset> offsetAnimation =
               animation.drive(chainedTween);

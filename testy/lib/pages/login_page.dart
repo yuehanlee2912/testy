@@ -259,7 +259,7 @@ class _LoginPageState extends State<LoginPage> {
 
   void route() {
     User? user = FirebaseAuth.instance.currentUser;
-    var kk = FirebaseFirestore.instance
+    FirebaseFirestore.instance
         .collection('Users')
         .doc(user!.uid)
         .get()
@@ -288,7 +288,7 @@ class _LoginPageState extends State<LoginPage> {
           );
         }
       } else {
-        print('Document does not exist on the database');
+        showErrorDialog('No user found for that email.');
       }
     });
   }

@@ -1,19 +1,28 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:testy/pages/super_admin_page.dart';
+import 'package:testy/pages/visitor_select.dart';
 
-class SuperAdminResidents extends StatefulWidget {
-  const SuperAdminResidents({super.key});
+class EventHistory extends StatefulWidget {
+  const EventHistory({super.key});
 
   @override
-  State<SuperAdminResidents> createState() => _SuperAdminResidentsState();
+  State<EventHistory> createState() => _EventHistoryState();
 }
 
-class _SuperAdminResidentsState extends State<SuperAdminResidents> {
+class _EventHistoryState extends State<EventHistory> {
   List _allResults = [];
   List _resultList = [];
   final TextEditingController _searchController = TextEditingController();
+
+  String currentUser() {
+    final User? user = FirebaseAuth.instance.currentUser;
+    if (user == null) {
+      throw Exception("No user is currently signed in.");
+    }
+    return user.uid;
+  }
 
   @override
   void initState() {
@@ -30,7 +39,7 @@ class _SuperAdminResidentsState extends State<SuperAdminResidents> {
     var showResults = [];
     if (_searchController.text != "") {
       for (var clientSnapshot in _allResults) {
-        var name = clientSnapshot['name'].toString().toLowerCase();
+        var name = clientSnapshot['Time Booked'].toString().toLowerCase();
         if (name.contains(_searchController.text.toLowerCase())) {
           showResults.add(clientSnapshot);
         }
@@ -45,9 +54,10 @@ class _SuperAdminResidentsState extends State<SuperAdminResidents> {
   }
 
   getClientStream() async {
+    String userUUID = currentUser();
     var data = await FirebaseFirestore.instance
-        .collection('Users')
-        .orderBy('name')
+        .collection('Event Visitors')
+        .where('Resident UUID', isEqualTo: userUUID)
         .get();
 
     setState(() {
@@ -63,55 +73,20 @@ class _SuperAdminResidentsState extends State<SuperAdminResidents> {
     super.dispose();
   }
 
-  void deleteUser(String docId) async {
-    await FirebaseFirestore.instance.collection('Users').doc(docId).delete();
-    getClientStream(); // Refresh the list after deletion
-  }
-
-  void showDeleteConfirmationDialog(BuildContext context, String docId) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text('Delete User'),
-          content: Text('Are you sure you want to delete this user?'),
-          actions: [
-            TextButton(
-              child: Text('Cancel'),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-            TextButton(
-              child: Text('Delete'),
-              onPressed: () {
-                deleteUser(docId);
-                Navigator.of(context).pop();
-              },
-            ),
-          ],
-        );
-      },
-    );
-  }
-
+  Color accentColor = Color.fromARGB(255, 5, 25, 86);
+  Color bgColor = Color.fromARGB(255, 52, 81, 161);
+  Color textColor = Colors.white;
+  Color lightBlueColor = Color.fromARGB(255, 133, 162, 242);
   @override
   Widget build(BuildContext context) {
-    Color accentColor = Color.fromARGB(255, 5, 25, 86);
-    Color bgColor = Color.fromARGB(255, 52, 81, 161);
-    Color textColor = Colors.white;
-
     return Scaffold(
-      backgroundColor: bgColor,
       appBar: AppBar(
-        backgroundColor: bgColor,
         iconTheme: IconThemeData(color: textColor),
+        backgroundColor: bgColor,
         leading: IconButton(
           icon: Icon(Icons.arrow_back, color: textColor),
           onPressed: () => Navigator.of(context).pushReplacement(
-            MaterialPageRoute(
-              builder: (context) => SuperAdminPage(),
-            ),
+            MaterialPageRoute(builder: (context) => VisitorSelect()),
           ),
         ),
         title: CupertinoSearchTextField(
@@ -119,11 +94,11 @@ class _SuperAdminResidentsState extends State<SuperAdminResidents> {
           controller: _searchController,
         ),
       ),
+      backgroundColor: bgColor,
       body: ListView.builder(
         itemCount: _resultList.length,
         itemBuilder: (context, index) {
-          var visitorData = _resultList[index].data();
-          var docId = _resultList[index].id;
+          var visitorData = _resultList[index].data() as Map<String, dynamic>;
 
           return Container(
             margin: EdgeInsets.symmetric(vertical: 4.0),
@@ -134,33 +109,26 @@ class _SuperAdminResidentsState extends State<SuperAdminResidents> {
             ),
             child: ListTile(
               title: Text(
-                visitorData['name'],
-                style: TextStyle(color: textColor),
+                "Event Time Booked: " +
+                    visitorData['Time Booked'].toString() +
+                    "\n", // Convert to string
+                style: TextStyle(color: textColor, fontWeight: FontWeight.bold),
               ),
               subtitle: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    "Residence: " + visitorData['address'],
+                    "Amount of visitors: " +
+                        visitorData['Amount of Visitors'].toString(),
                     style: TextStyle(color: textColor),
                   ),
                   Text(
-                    "\nEmail: " + visitorData['email'],
+                    "Start Time: " + visitorData['Start Time'],
                     style: TextStyle(color: textColor),
                   ),
-                ],
-              ),
-              trailing: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
                   Text(
-                    visitorData['phone'],
+                    "End Time: " + visitorData['End Time'],
                     style: TextStyle(color: textColor),
-                  ),
-                  IconButton(
-                    icon: Icon(Icons.delete, color: Colors.red),
-                    onPressed: () =>
-                        showDeleteConfirmationDialog(context, docId),
                   ),
                 ],
               ),

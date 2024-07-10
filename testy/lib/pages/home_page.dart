@@ -12,6 +12,7 @@ import 'package:testy/pages/profile_page.dart';
 import 'package:testy/pages/message_board.dart';
 import 'package:testy/pages/book_visitor.dart';
 import 'package:testy/pages/visitor_history.dart';
+import 'package:testy/pages/visitor_select.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -197,7 +198,7 @@ class _HomePageState extends State<HomePage> {
                                     context,
                                     MaterialPageRoute(
                                         builder: (context) =>
-                                            const VisitorHistory()));
+                                            const VisitorSelect()));
                               },
                               iconImagePath: 'lib/assets/history.png',
                               buttonText: 'History',

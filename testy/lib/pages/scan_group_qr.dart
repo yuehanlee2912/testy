@@ -20,10 +20,11 @@ class _ScanGroupQrState extends State<ScanGroupQr> {
   Color purpleColor = const Color.fromARGB(255, 179, 27, 219);
 
   String _scanResult = '';
-  bool _isScanning = false; // Flag to track if scanning is in progress
-  bool _hasScanned = false; // Flag to prevent multiple scans
+  bool _isScanning = false;
+  bool _hasScanned = false;
 
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  final DateFormat _dateTimeFormat = DateFormat('yyyy-MM-dd HH:mm');
   final DateFormat _timeFormat = DateFormat('h:mm a'); // Correct time format
 
   @override
@@ -32,11 +33,10 @@ class _ScanGroupQrState extends State<ScanGroupQr> {
   }
 
   void _onDetect(BarcodeCapture barcode) async {
-    if (_isScanning || _hasScanned)
-      return; // If scanning is in progress or has scanned, do nothing
+    if (_isScanning || _hasScanned) return;
 
     setState(() {
-      _isScanning = true; // Set the scanning flag to true
+      _isScanning = true;
     });
 
     final String qrId =
@@ -46,20 +46,32 @@ class _ScanGroupQrState extends State<ScanGroupQr> {
     });
 
     try {
-      // Fetch the document from Firestore using the scanned QR Id
       DocumentSnapshot doc =
-          await _firestore.collection('Visitors').doc(qrId).get();
+          await _firestore.collection('Event Visitors').doc(qrId).get();
 
       if (doc.exists) {
         String type = doc.get('Type');
         String residentAddress = doc.get('Resident Address');
         String startTimeStr = doc.get('Start Time').trim();
         String endTimeStr = doc.get('End Time').trim();
+        DateTime bookedTime =
+            _dateTimeFormat.parse(doc.get('Time Booked').trim());
         DateTime startTime = _timeFormat.parse(startTimeStr);
         DateTime endTime = _timeFormat.parse(endTimeStr);
-
-        // Extract time portion from DateTime.now()
         DateTime now = DateTime.now();
+        DateTime currentDate = DateTime(now.year, now.month, now.day);
+        DateTime bookedDate =
+            DateTime(bookedTime.year, bookedTime.month, bookedTime.day);
+
+        if (currentDate != bookedDate) {
+          _showDialog(
+            title: "Date Mismatch",
+            content: "The event is not scheduled for today.",
+            route: AdminPage(),
+          );
+          return;
+        }
+
         DateTime nowTime = DateTime(0, 1, 1, now.hour, now.minute);
 
         print("Scanned QR ID: $qrId");
@@ -74,7 +86,7 @@ class _ScanGroupQrState extends State<ScanGroupQr> {
           _showDialog(
             title: "QR Code Scanned",
             content:
-                "Visitor Type: $type\n\nResident Address: $residentAddress",
+                "Visitor Type: $type\n\nResident Address: $residentAddress\n\nStart Time: $startTimeStr\nEnd Time: $endTimeStr",
             route: AdminPage(),
           );
         } else {

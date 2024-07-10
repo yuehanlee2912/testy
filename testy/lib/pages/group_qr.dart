@@ -60,7 +60,7 @@ class _GroupQrState extends State<GroupQr> {
 
         // Use the uniqueId as the document ID
         await FirebaseFirestore.instance
-            .collection("Visitors")
+            .collection("Event Visitors")
             .doc(uniqueId)
             .set({
           'Start Time': selectedStartTime.format(context),

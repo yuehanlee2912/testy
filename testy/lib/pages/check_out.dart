@@ -69,6 +69,33 @@ class _CheckOutState extends State<CheckOut> {
     getClientStream(); // Refresh the list after checkout
   }
 
+  void _showConfirmDialog(BuildContext context, String docId) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text("Confirm Check Out"),
+          content: Text("Are you sure you want to check out this visitor?"),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(); // Close the dialog
+              },
+              child: Text("Cancel"),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(); // Close the dialog
+                checkOutVisitor(docId); // Proceed with checkout
+              },
+              child: Text("Confirm"),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     Color accentColor = const Color.fromARGB(255, 5, 25, 86);
@@ -129,10 +156,9 @@ class _CheckOutState extends State<CheckOut> {
                   style: TextStyle(color: textColor),
                 ),
                 SizedBox(height: 5),
-                if (visitor['Status'] ==
-                    'Entered') // Show the "Check Out" button only for "Entered" status
+                if (visitor['Status'] == 'Entered')
                   ElevatedButton(
-                    onPressed: () => checkOutVisitor(visitor.id),
+                    onPressed: () => _showConfirmDialog(context, visitor.id),
                     style: ElevatedButton.styleFrom(
                         backgroundColor: lightBlueColor),
                     child: Text(
