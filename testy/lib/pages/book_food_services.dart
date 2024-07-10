@@ -138,25 +138,26 @@ class _BookFoodServicesState extends State<BookFoodServices> {
                     text: 'Book Now',
                   ),
                   const SizedBox(height: 40),
-                  if (showQrCode && uniqueId.isNotEmpty)
+                  if (showQrCode && uniqueId.isNotEmpty) ...[
                     Text('Visitor QR',
                         style: TextStyle(
                             color: textColor,
                             fontWeight: FontWeight.bold,
                             fontSize: 20)),
-                  const SizedBox(
-                    height: 15,
-                  ),
-                  Center(
-                    child: QrImageView(
-                      data: uniqueId,
-                      size: 280,
-                      backgroundColor: Colors.white,
-                      embeddedImageStyle: QrEmbeddedImageStyle(
-                        size: const Size(100, 100),
+                    const SizedBox(
+                      height: 15,
+                    ),
+                    Center(
+                      child: QrImageView(
+                        data: uniqueId,
+                        size: 280,
+                        backgroundColor: Colors.white,
+                        embeddedImageStyle: QrEmbeddedImageStyle(
+                          size: const Size(100, 100),
+                        ),
                       ),
                     ),
-                  ),
+                  ],
                 ],
               ),
             )

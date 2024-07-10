@@ -51,6 +51,7 @@ class _ScanGroupQrState extends State<ScanGroupQr> {
           await _firestore.collection('Visitors').doc(qrId).get();
 
       if (doc.exists) {
+        String type = doc.get('Type');
         String residentAddress = doc.get('Resident Address');
         String startTimeStr = doc.get('Start Time').trim();
         String endTimeStr = doc.get('End Time').trim();
@@ -72,7 +73,8 @@ class _ScanGroupQrState extends State<ScanGroupQr> {
         if (nowTime.isAfter(start) && nowTime.isBefore(end)) {
           _showDialog(
             title: "QR Code Scanned",
-            content: "Resident Address: $residentAddress",
+            content:
+                "Visitor Type: $type\n\nResident Address: $residentAddress",
             route: AdminPage(),
           );
         } else {
@@ -98,8 +100,8 @@ class _ScanGroupQrState extends State<ScanGroupQr> {
       );
     } finally {
       setState(() {
-        _isScanning = false; // Reset the scanning flag
-        _hasScanned = true; // Prevent multiple scans
+        _isScanning = false;
+        _hasScanned = true;
       });
     }
   }
@@ -115,7 +117,7 @@ class _ScanGroupQrState extends State<ScanGroupQr> {
           actions: [
             TextButton(
               onPressed: () {
-                Navigator.of(context).pop(); // Close the dialog
+                Navigator.of(context).pop();
                 Navigator.of(context).pushReplacement(
                     MaterialPageRoute(builder: (context) => route));
               },
@@ -125,7 +127,6 @@ class _ScanGroupQrState extends State<ScanGroupQr> {
         );
       },
     ).then((_) {
-      // Reset the hasScanned flag when the dialog is dismissed
       setState(() {
         _hasScanned = false;
       });

@@ -54,8 +54,6 @@ class _GroupQrState extends State<GroupQr> {
         FirebaseFirestore.instance.collection('Users');
     DocumentReference userDoc = usersCollection.doc(userUid);
 
-    print(userDoc.get().then((value) => print(value.data())));
-
     userDoc.get().then((DocumentSnapshot value) async {
       if (value.exists) {
         Map<String, dynamic> data = value.data() as Map<String, dynamic>;
@@ -73,14 +71,20 @@ class _GroupQrState extends State<GroupQr> {
           'Resident UUID': currentUser(),
           'Type': "Event Visitor",
           'QR Id': uniqueId,
-        });
-
-        // Set state to show the QR code
-        setState(() {
-          showQrCode = true;
+        }).then((_) {
+          // Set state to show the QR code only if the booking is successful
+          setState(() {
+            showQrCode = true;
+          });
+        }).catchError((error) {
+          // Handle any errors here, e.g., show a snackbar or a dialog
+          print("Failed to book event: $error");
         });
       }
-    }).catchError((e) {});
+    }).catchError((e) {
+      // Handle any errors here, e.g., show a snackbar or a dialog
+      print("Failed to get user data: $e");
+    });
   }
 
   Color accentColor = Color.fromARGB(255, 5, 25, 86);
@@ -238,7 +242,13 @@ class _GroupQrState extends State<GroupQr> {
                     text: 'Book Now',
                   ),
                   const SizedBox(height: 100),
-                  if (showQrCode && uniqueId.isNotEmpty)
+                  if (showQrCode && uniqueId.isNotEmpty) ...[
+                    Text('Event QR',
+                        style: TextStyle(
+                            color: textColor,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 20)),
+                    const SizedBox(height: 15),
                     Center(
                       child: QrImageView(
                         data: uniqueId,
@@ -249,6 +259,7 @@ class _GroupQrState extends State<GroupQr> {
                         ),
                       ),
                     ),
+                  ],
                   const SizedBox(height: 100),
                 ],
               ),

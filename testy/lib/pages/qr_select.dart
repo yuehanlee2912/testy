@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:testy/pages/guard_page.dart';
-import 'package:testy/pages/guard_view_visitors.dart';
 import 'package:testy/pages/scan_group_qr.dart';
 import 'package:testy/pages/scan_qr.dart';
 
@@ -44,7 +43,7 @@ class _QrSelectState extends State<QrSelect> {
         leading: IconButton(
           icon: Icon(Icons.arrow_back, color: textColor),
           onPressed: () => Navigator.of(context).pushReplacement(
-            MaterialPageRoute(builder: (context) => ViewVisitors()),
+            MaterialPageRoute(builder: (context) => AdminPage()),
           ),
         ),
       ),
@@ -78,13 +77,24 @@ class _QrSelectState extends State<QrSelect> {
                         borderRadius: BorderRadius.circular(10),
                       ),
                       child: Center(
-                        child: Text(
-                          'Visitor',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
-                          ),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(
+                              Icons.person,
+                              color: Colors.white,
+                              size: 40,
+                            ),
+                            SizedBox(height: 10),
+                            Text(
+                              'Visitor',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ],
                         ),
                       ),
                     ),
@@ -101,13 +111,24 @@ class _QrSelectState extends State<QrSelect> {
                         borderRadius: BorderRadius.circular(10),
                       ),
                       child: Center(
-                        child: Text(
-                          'Event QR',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
-                          ),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(
+                              Icons.event,
+                              color: Colors.white,
+                              size: 40,
+                            ),
+                            SizedBox(height: 10),
+                            Text(
+                              'Event QR',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ],
                         ),
                       ),
                     ),
@@ -120,10 +141,4 @@ class _QrSelectState extends State<QrSelect> {
       ),
     );
   }
-}
-
-void main() {
-  runApp(MaterialApp(
-    home: QrSelect(),
-  ));
 }
