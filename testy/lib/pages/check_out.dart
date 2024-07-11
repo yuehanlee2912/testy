@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:testy/pages/guard_page.dart';
 
 class CheckOut extends StatefulWidget {
@@ -64,8 +65,12 @@ class _CheckOutState extends State<CheckOut> {
   }
 
   void checkOutVisitor(String docId) async {
-    await FirebaseFirestore.instance.collection('Visitors').doc(docId).update(
-        {'Status': 'Exited', 'Time Exited': FieldValue.serverTimestamp()});
+    String formattedTimeExited =
+        DateFormat('yyyy-MM-dd HH:mm').format(DateTime.now().toLocal());
+    await FirebaseFirestore.instance
+        .collection('Visitors')
+        .doc(docId)
+        .update({'Status': 'Exited', 'Time Exited': formattedTimeExited});
     getClientStream(); // Refresh the list after checkout
   }
 

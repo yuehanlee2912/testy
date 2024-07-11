@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
+import 'package:intl/intl.dart';
 import 'package:testy/pages/guard_page.dart';
 import 'package:testy/pages/qr_select.dart';
 
@@ -19,7 +20,7 @@ class _ScanQrState extends State<ScanQr> {
   Color purpleColor = const Color.fromARGB(255, 179, 27, 219);
 
   String _scanResult = '';
-  bool _isScanning = false; // Flag to track if scanning is in progress
+  bool _isScanning = false;
 
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
@@ -29,10 +30,10 @@ class _ScanQrState extends State<ScanQr> {
   }
 
   void _onDetect(BarcodeCapture barcode) async {
-    if (_isScanning) return; // If scanning is in progress, do nothing
+    if (_isScanning) return;
 
     setState(() {
-      _isScanning = true; // Set the scanning flag to true
+      _isScanning = true;
     });
 
     final String qrId = barcode.barcodes.first.rawValue ?? "Failed to scan";
@@ -41,7 +42,6 @@ class _ScanQrState extends State<ScanQr> {
     });
 
     try {
-      // Fetch the document from Firestore using the scanned QR Id
       DocumentSnapshot doc =
           await _firestore.collection('Visitors').doc(qrId).get();
 
@@ -59,7 +59,7 @@ class _ScanQrState extends State<ScanQr> {
                 actions: [
                   TextButton(
                     onPressed: () {
-                      Navigator.of(context).pop(); // Close the dialog
+                      Navigator.of(context).pop();
                       Navigator.of(context).pushReplacement(
                           MaterialPageRoute(builder: (context) => AdminPage()));
                     },
@@ -70,14 +70,15 @@ class _ScanQrState extends State<ScanQr> {
             },
           ).then((_) {
             setState(() {
-              _isScanning = false; // Reset the scanning flag
+              _isScanning = false;
             });
           });
         } else {
-          await _firestore.collection('Visitors').doc(qrId).update({
-            'Time Entered': FieldValue.serverTimestamp(),
-            'Status': 'Entered'
-          });
+          String formattedTimeEntered =
+              DateFormat('yyyy-MM-dd HH:mm').format(DateTime.now().toLocal());
+
+          await _firestore.collection('Visitors').doc(qrId).update(
+              {'Time Entered': formattedTimeEntered, 'Status': 'Entered'});
 
           showDialog(
             context: context,
@@ -99,7 +100,7 @@ class _ScanQrState extends State<ScanQr> {
             },
           ).then((_) {
             setState(() {
-              _isScanning = false; // Reset the scanning flag
+              _isScanning = false;
             });
           });
         }
@@ -151,7 +152,7 @@ class _ScanQrState extends State<ScanQr> {
         },
       ).then((_) {
         setState(() {
-          _isScanning = false; // Reset the scanning flag
+          _isScanning = false;
         });
       });
     }
