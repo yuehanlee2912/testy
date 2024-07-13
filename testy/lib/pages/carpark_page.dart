@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:testy/pages/guard_page.dart';
 
 class CarparkPage extends StatefulWidget {
@@ -46,6 +45,7 @@ class _CarparkPageState extends State<CarparkPage> {
         _takenSlots = 0;
       });
     }
+    _updateTakenSlots();
   }
 
   void _fetchVisitorData() async {
@@ -54,11 +54,11 @@ class _CarparkPageState extends State<CarparkPage> {
     int takenSlots = 0;
 
     for (var doc in snapshot.docs) {
-      if (doc['Type'] == 'Visitor' && doc['Status'] == 'Entered') {
+      if ((doc['Type'] == 'Visitor' || doc['Type'] == 'Maintainence') &&
+          doc['Status'] == 'Entered') {
         takenSlots++;
         takenSlotsData.add({
           'carPlateNumber': doc['Car Plate Number'],
-          'timeEntered': doc['Time Entered'],
         });
       }
     }
@@ -67,6 +67,7 @@ class _CarparkPageState extends State<CarparkPage> {
       _takenSlots = takenSlots;
       _takenSlotsData = takenSlotsData;
     });
+    _updateTakenSlots();
   }
 
   void _addCarparkSlot() async {
@@ -91,6 +92,13 @@ class _CarparkPageState extends State<CarparkPage> {
     }
   }
 
+  void _updateTakenSlots() async {
+    await _firestore
+        .collection('Carpark')
+        .doc('slots')
+        .update({'takenSlots': _takenSlots});
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -112,7 +120,9 @@ class _CarparkPageState extends State<CarparkPage> {
           children: [
             SizedBox(height: 20),
             Text(
-              'Available Carparks: ${_carparkSlots - _takenSlots}/$_carparkSlots',
+              _carparkSlots == _takenSlots
+                  ? 'Available Carparks: FULL'
+                  : 'Available Carparks: ${_carparkSlots - _takenSlots}/$_carparkSlots',
               style: TextStyle(fontSize: 24, color: textColor),
             ),
             SizedBox(height: 20),
@@ -151,7 +161,8 @@ class _CarparkPageState extends State<CarparkPage> {
                                 Icon(Icons.directions_car,
                                     size: 40, color: textColor),
                                 Text(
-                                  slotData?['carPlateNumber'] ?? '',
+                                  slotData?['carPlateNumber']?.toUpperCase() ??
+                                      '',
                                   style:
                                       TextStyle(fontSize: 16, color: textColor),
                                 ),

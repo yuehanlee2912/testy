@@ -141,11 +141,15 @@ class _SuperAdminResidentsState extends State<SuperAdminResidents> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    "Residence: " + visitorData['address'],
+                    "\nResidence: " + visitorData['address'],
                     style: TextStyle(color: textColor),
                   ),
                   Text(
-                    "\nEmail: " + visitorData['email'],
+                    "Email: " + visitorData['email'],
+                    style: TextStyle(color: textColor),
+                  ),
+                  Text(
+                    "Phone: " + visitorData['phone'] + "\n",
                     style: TextStyle(color: textColor),
                   ),
                 ],
@@ -153,10 +157,6 @@ class _SuperAdminResidentsState extends State<SuperAdminResidents> {
               trailing: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Text(
-                    visitorData['phone'],
-                    style: TextStyle(color: textColor),
-                  ),
                   IconButton(
                     icon: Icon(Icons.delete, color: Colors.red),
                     onPressed: () =>
