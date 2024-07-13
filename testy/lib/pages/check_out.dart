@@ -67,11 +67,60 @@ class _CheckOutState extends State<CheckOut> {
   void checkOutVisitor(String docId) async {
     String formattedTimeExited =
         DateFormat('yyyy-MM-dd HH:mm').format(DateTime.now().toLocal());
-    await FirebaseFirestore.instance
-        .collection('Visitors')
-        .doc(docId)
-        .update({'Status': 'Exited', 'Time Exited': formattedTimeExited});
-    getClientStream(); // Refresh the list after checkout
+
+    // Start a transaction to ensure atomicity of the checkout process and carpark slot update
+    FirebaseFirestore.instance.runTransaction((transaction) async {
+      DocumentReference visitorRef =
+          FirebaseFirestore.instance.collection('Visitors').doc(docId);
+      DocumentReference carparkRef =
+          FirebaseFirestore.instance.collection('Carpark').doc('slots');
+
+      DocumentSnapshot visitorSnapshot = await transaction.get(visitorRef);
+      DocumentSnapshot carparkSnapshot = await transaction.get(carparkRef);
+
+      if (!visitorSnapshot.exists) {
+        throw Exception("Visitor document does not exist!");
+      }
+
+      if (!carparkSnapshot.exists) {
+        throw Exception("Carpark slots document does not exist!");
+      }
+
+      int takenSlots = carparkSnapshot.get('takenSlots');
+
+      // Update visitor status and time exited
+      transaction.update(
+          visitorRef, {'Status': 'Exited', 'Time Exited': formattedTimeExited});
+
+      // Decrement the carpark slot count
+      if (takenSlots > 0) {
+        transaction.update(carparkRef, {'takenSlots': takenSlots - 1});
+      } else {
+        throw Exception("No carpark slots to release!");
+      }
+    }).then((_) {
+      print("Checkout successful and carpark slot updated.");
+      getClientStream(); // Refresh the list after checkout
+    }).catchError((error) {
+      print("Failed to checkout visitor: $error");
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text("Error"),
+            content: Text("Failed to checkout visitor. Please try again."),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop(); // Close the dialog
+                },
+                child: Text("OK"),
+              ),
+            ],
+          );
+        },
+      );
+    });
   }
 
   void _showConfirmDialog(BuildContext context, String docId) {

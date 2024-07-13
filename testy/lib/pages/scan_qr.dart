@@ -80,6 +80,51 @@ class _ScanQrState extends State<ScanQr> {
           await _firestore.collection('Visitors').doc(qrId).update(
               {'Time Entered': formattedTimeEntered, 'Status': 'Entered'});
 
+          // Update carpark slots
+          DocumentReference carparkRef =
+              _firestore.collection('Carpark').doc('slots');
+          _firestore.runTransaction((transaction) async {
+            DocumentSnapshot carparkSnapshot =
+                await transaction.get(carparkRef);
+            if (!carparkSnapshot.exists) {
+              throw Exception("Carpark slots document does not exist!");
+            }
+
+            int takenSlots = carparkSnapshot.get('takenSlots');
+            int totalSlots = carparkSnapshot.get('amount');
+
+            if (takenSlots < totalSlots) {
+              transaction.update(carparkRef, {'takenSlots': takenSlots + 1});
+            } else {
+              throw Exception("No available carpark slots!");
+            }
+          }).catchError((error) {
+            print("Failed to update carpark slots: $error");
+            showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                return AlertDialog(
+                  title: const Text("Error"),
+                  content: const Text("Failed to update carpark slots."),
+                  actions: [
+                    TextButton(
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                        Navigator.of(context).pushReplacement(MaterialPageRoute(
+                            builder: (context) => AdminPage()));
+                      },
+                      child: const Text("OK"),
+                    ),
+                  ],
+                );
+              },
+            ).then((_) {
+              setState(() {
+                _isScanning = false;
+              });
+            });
+          });
+
           showDialog(
             context: context,
             builder: (BuildContext context) {
