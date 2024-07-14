@@ -18,9 +18,36 @@ class _BookMaintainenceState extends State<BookMaintainence> {
   final numberPlateTextController = TextEditingController();
   final nameTextController = TextEditingController();
   final contactTextController = TextEditingController();
+  final ValueNotifier<bool> isFormValid = ValueNotifier(false);
 
   String uniqueId = '';
   bool showQrCode = false;
+
+  @override
+  void initState() {
+    super.initState();
+    numberPlateTextController.addListener(validateForm);
+    nameTextController.addListener(validateForm);
+    contactTextController.addListener(validateForm);
+  }
+
+  @override
+  void dispose() {
+    numberPlateTextController.removeListener(validateForm);
+    nameTextController.removeListener(validateForm);
+    contactTextController.removeListener(validateForm);
+    numberPlateTextController.dispose();
+    nameTextController.dispose();
+    contactTextController.dispose();
+    isFormValid.dispose();
+    super.dispose();
+  }
+
+  void validateForm() {
+    isFormValid.value = numberPlateTextController.text.isNotEmpty &&
+        nameTextController.text.isNotEmpty &&
+        contactTextController.text.isNotEmpty;
+  }
 
   void generateUniqueId() {
     final uuid = Uuid();
@@ -43,7 +70,32 @@ class _BookMaintainenceState extends State<BookMaintainence> {
     return formatted;
   }
 
+  void showIncompleteFormDialog() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Error'),
+          content: Text('Please fill in all fields before booking.'),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text('OK'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   void bookNow() async {
+    if (!isFormValid.value) {
+      showIncompleteFormDialog();
+      return;
+    }
+
     generateUniqueId(); // Generate a new unique ID every time the "Book Now" button is pressed
 
     final FirebaseAuth auth = FirebaseAuth.instance;
@@ -144,9 +196,14 @@ class _BookMaintainenceState extends State<BookMaintainence> {
                     obscureText: false,
                   ),
                   const SizedBox(height: 40),
-                  MyButton(
-                    onTap: bookNow,
-                    text: 'Book Now',
+                  ValueListenableBuilder<bool>(
+                    valueListenable: isFormValid,
+                    builder: (context, isValid, child) {
+                      return MyButton(
+                        onTap: bookNow,
+                        text: 'Book Now',
+                      );
+                    },
                   ),
                   const SizedBox(height: 100),
                   if (showQrCode && uniqueId.isNotEmpty) ...[

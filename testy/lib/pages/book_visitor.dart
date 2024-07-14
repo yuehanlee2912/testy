@@ -19,9 +19,40 @@ class _BookVisitorState extends State<BookVisitor> {
   final icNumTextController = TextEditingController();
   final phoneNumTextController = TextEditingController();
   final carPlateTextController = TextEditingController();
+  final ValueNotifier<bool> isFormValid = ValueNotifier(false);
 
   String uniqueId = '';
   bool showQrCode = false;
+
+  @override
+  void initState() {
+    super.initState();
+    nameTextController.addListener(validateForm);
+    icNumTextController.addListener(validateForm);
+    phoneNumTextController.addListener(validateForm);
+    carPlateTextController.addListener(validateForm);
+  }
+
+  @override
+  void dispose() {
+    nameTextController.removeListener(validateForm);
+    icNumTextController.removeListener(validateForm);
+    phoneNumTextController.removeListener(validateForm);
+    carPlateTextController.removeListener(validateForm);
+    nameTextController.dispose();
+    icNumTextController.dispose();
+    phoneNumTextController.dispose();
+    carPlateTextController.dispose();
+    isFormValid.dispose();
+    super.dispose();
+  }
+
+  void validateForm() {
+    isFormValid.value = nameTextController.text.isNotEmpty &&
+        icNumTextController.text.isNotEmpty &&
+        phoneNumTextController.text.isNotEmpty &&
+        carPlateTextController.text.isNotEmpty;
+  }
 
   void generateUniqueId() {
     final uuid = Uuid();
@@ -44,7 +75,32 @@ class _BookVisitorState extends State<BookVisitor> {
     return formatted;
   }
 
+  void showIncompleteFormDialog() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Error'),
+          content: Text('Please fill in all fields before booking.'),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text('OK'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   void bookNow() async {
+    if (!isFormValid.value) {
+      showIncompleteFormDialog();
+      return;
+    }
+
     generateUniqueId();
 
     final FirebaseAuth auth = FirebaseAuth.instance;
@@ -148,9 +204,14 @@ class _BookVisitorState extends State<BookVisitor> {
                     obscureText: false,
                   ),
                   const SizedBox(height: 40),
-                  MyButton(
-                    onTap: bookNow,
-                    text: 'Book Now',
+                  ValueListenableBuilder<bool>(
+                    valueListenable: isFormValid,
+                    builder: (context, isValid, child) {
+                      return MyButton(
+                        onTap: bookNow,
+                        text: 'Book Now',
+                      );
+                    },
                   ),
                   const SizedBox(height: 100),
                   if (showQrCode && uniqueId.isNotEmpty) ...[

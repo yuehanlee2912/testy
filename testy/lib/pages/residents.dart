@@ -56,7 +56,8 @@ class _ResidentsState extends State<Residents> {
     }
 
     // Filter data manually if .where clause is not working
-    var filteredData = data.docs.where((doc) => doc['role'] == 'User').toList();
+    var filteredData =
+        data.docs.where((doc) => doc['role'] == 'Resident').toList();
 
     setState(() {
       _allResults = filteredData;
