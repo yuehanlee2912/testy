@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:testy/pages/guard_page.dart';
+import 'package:testy/pages/resident_detail_page.dart';
 
 class Residents extends StatefulWidget {
   const Residents({super.key});
@@ -106,36 +107,46 @@ class _ResidentsState extends State<Residents> {
           : ListView.builder(
               itemCount: _resultList.length,
               itemBuilder: (context, index) {
-                var visitorData = _resultList[index].data();
+                var userData = _resultList[index].data();
 
-                return Container(
-                  margin: EdgeInsets.symmetric(vertical: 4.0),
-                  decoration: BoxDecoration(
-                    border: Border.all(color: accentColor, width: 1.0),
-                    borderRadius: BorderRadius.circular(5.0),
-                    color: accentColor,
-                  ),
-                  child: ListTile(
-                    title: Text(
-                      visitorData['name'],
-                      style: TextStyle(color: textColor),
+                return GestureDetector(
+                  onTap: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) =>
+                            ResidentDetailPage(userData: userData),
+                      ),
+                    );
+                  },
+                  child: Container(
+                    margin: EdgeInsets.symmetric(vertical: 4.0),
+                    decoration: BoxDecoration(
+                      border: Border.all(color: accentColor, width: 1.0),
+                      borderRadius: BorderRadius.circular(5.0),
+                      color: accentColor,
                     ),
-                    subtitle: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          "Residence: " + visitorData['address'],
-                          style: TextStyle(color: textColor),
-                        ),
-                        Text(
-                          "\nEmail: " + visitorData['email'],
-                          style: TextStyle(color: textColor),
-                        ),
-                      ],
-                    ),
-                    trailing: Text(
-                      visitorData['phone'],
-                      style: TextStyle(color: textColor),
+                    child: ListTile(
+                      title: Text(
+                        userData['name'],
+                        style: TextStyle(color: textColor),
+                      ),
+                      subtitle: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            "Residence: " + userData['address'],
+                            style: TextStyle(color: textColor),
+                          ),
+                          Text(
+                            "\nEmail: " + userData['email'],
+                            style: TextStyle(color: textColor),
+                          ),
+                        ],
+                      ),
+                      trailing: Text(
+                        userData['phone'],
+                        style: TextStyle(color: textColor),
+                      ),
                     ),
                   ),
                 );

@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:testy/pages/guard_page.dart';
+import 'package:testy/pages/visitor_detail_page.dart'; // Import the new page
 
 class ViewVisitors extends StatefulWidget {
   const ViewVisitors({super.key});
@@ -91,37 +92,47 @@ class _ViewVisitorsState extends State<ViewVisitors> {
         itemCount: _resultList.length,
         itemBuilder: (context, index) {
           var visitor = _resultList[index];
-          return Container(
-            margin: EdgeInsets.symmetric(
-              vertical: 4.0,
-            ),
-            padding: EdgeInsets.all(8.0),
-            decoration: BoxDecoration(
-              color: accentColor,
-              border: Border.all(color: accentColor, width: 1.0),
-              borderRadius: BorderRadius.circular(5.0),
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  visitor['visitor name'],
-                  style: TextStyle(
-                    color: textColor,
-                    fontWeight: FontWeight.bold,
+          return InkWell(
+            onTap: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) =>
+                      VisitorDetailPage(visitorData: visitor.data()),
+                ),
+              );
+            },
+            child: Container(
+              margin: EdgeInsets.symmetric(
+                vertical: 4.0,
+              ),
+              padding: EdgeInsets.all(8.0),
+              decoration: BoxDecoration(
+                color: accentColor,
+                border: Border.all(color: accentColor, width: 1.0),
+                borderRadius: BorderRadius.circular(5.0),
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    visitor['visitor name'],
+                    style: TextStyle(
+                      color: textColor,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
-                ),
-                SizedBox(height: 4.0),
-                Text(
-                  "Time Booked: " + visitor['Time Booked'],
-                  style: TextStyle(color: textColor),
-                ),
-                SizedBox(height: 2.0),
-                Text(
-                  "Visiting: " + visitor['Resident Address'],
-                  style: TextStyle(color: textColor),
-                ),
-              ],
+                  SizedBox(height: 4.0),
+                  Text(
+                    "Time Booked: " + visitor['Time Booked'],
+                    style: TextStyle(color: textColor),
+                  ),
+                  SizedBox(height: 2.0),
+                  Text(
+                    "Visiting: " + visitor['Resident Address'],
+                    style: TextStyle(color: textColor),
+                  ),
+                ],
+              ),
             ),
           );
         },
