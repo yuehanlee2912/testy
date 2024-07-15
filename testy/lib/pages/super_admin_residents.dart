@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:testy/pages/super_admin_page.dart';
+import 'package:testy/pages/super_admin_resident_details_page.dart'; // Import the new details page
 
 class SuperAdminResidents extends StatefulWidget {
   const SuperAdminResidents({super.key});
@@ -122,47 +123,51 @@ class _SuperAdminResidentsState extends State<SuperAdminResidents> {
       body: ListView.builder(
         itemCount: _resultList.length,
         itemBuilder: (context, index) {
-          var visitorData = _resultList[index].data();
+          var residentData = _resultList[index].data();
           var docId = _resultList[index].id;
 
-          return Container(
-            margin: EdgeInsets.symmetric(vertical: 4.0),
-            decoration: BoxDecoration(
-              border: Border.all(color: accentColor, width: 1.0),
-              borderRadius: BorderRadius.circular(5.0),
-              color: accentColor,
-            ),
-            child: ListTile(
-              title: Text(
-                visitorData['name'],
-                style: TextStyle(color: textColor),
+          return InkWell(
+            onTap: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) => SuperAdminResidentDetailsPage(
+                      residentData: residentData, documentId: docId),
+                ),
+              );
+            },
+            child: Container(
+              margin: EdgeInsets.symmetric(vertical: 4.0),
+              decoration: BoxDecoration(
+                border: Border.all(color: accentColor, width: 1.0),
+                borderRadius: BorderRadius.circular(5.0),
+                color: accentColor,
               ),
-              subtitle: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    "\nResidence: " + visitorData['address'],
-                    style: TextStyle(color: textColor),
-                  ),
-                  Text(
-                    "Email: " + visitorData['email'],
-                    style: TextStyle(color: textColor),
-                  ),
-                  Text(
-                    "Phone: " + visitorData['phone'] + "\n",
-                    style: TextStyle(color: textColor),
-                  ),
-                ],
-              ),
-              trailing: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  IconButton(
-                    icon: Icon(Icons.delete, color: Colors.red),
-                    onPressed: () =>
-                        showDeleteConfirmationDialog(context, docId),
-                  ),
-                ],
+              child: ListTile(
+                title: Text(
+                  residentData['name'],
+                  style: TextStyle(color: textColor),
+                ),
+                subtitle: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "\nResidence: " + residentData['address'],
+                      style: TextStyle(color: textColor),
+                    ),
+                    Text(
+                      "Email: " + residentData['email'],
+                      style: TextStyle(color: textColor),
+                    ),
+                    Text(
+                      "Phone: " + residentData['phone'] + "\n",
+                      style: TextStyle(color: textColor),
+                    ),
+                  ],
+                ),
+                trailing: IconButton(
+                  icon: Icon(Icons.delete, color: Colors.red),
+                  onPressed: () => showDeleteConfirmationDialog(context, docId),
+                ),
               ),
             ),
           );

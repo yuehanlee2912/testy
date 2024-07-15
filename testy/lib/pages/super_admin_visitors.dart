@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:testy/pages/guard_page.dart';
 import 'package:testy/pages/super_admin_page.dart';
+import 'package:testy/pages/super_admin_visitor_details_page.dart';
 
 class SuperAdminVisitors extends StatefulWidget {
   const SuperAdminVisitors({super.key});
@@ -92,37 +93,47 @@ class _SuperAdminVisitorsState extends State<SuperAdminVisitors> {
         itemCount: _resultList.length,
         itemBuilder: (context, index) {
           var visitor = _resultList[index];
-          return Container(
-            margin: EdgeInsets.symmetric(
-              vertical: 4.0,
-            ),
-            padding: EdgeInsets.all(8.0),
-            decoration: BoxDecoration(
-              color: accentColor,
-              border: Border.all(color: accentColor, width: 1.0),
-              borderRadius: BorderRadius.circular(5.0),
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  visitor['visitor name'],
-                  style: TextStyle(
-                    color: textColor,
-                    fontWeight: FontWeight.bold,
+          return InkWell(
+            onTap: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) =>
+                      SuperAdminVisitorDetailsPage(visitorData: visitor.data()),
+                ),
+              );
+            },
+            child: Container(
+              margin: EdgeInsets.symmetric(
+                vertical: 4.0,
+              ),
+              padding: EdgeInsets.all(8.0),
+              decoration: BoxDecoration(
+                color: accentColor,
+                border: Border.all(color: accentColor, width: 1.0),
+                borderRadius: BorderRadius.circular(5.0),
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    visitor['visitor name'],
+                    style: TextStyle(
+                      color: textColor,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
-                ),
-                SizedBox(height: 4.0),
-                Text(
-                  "Time Booked: " + visitor['Time Booked'],
-                  style: TextStyle(color: textColor),
-                ),
-                SizedBox(height: 2.0),
-                Text(
-                  "Visiting: " + visitor['Resident Address'],
-                  style: TextStyle(color: textColor),
-                ),
-              ],
+                  SizedBox(height: 4.0),
+                  Text(
+                    "Time Booked: " + visitor['Time Booked'],
+                    style: TextStyle(color: textColor),
+                  ),
+                  SizedBox(height: 2.0),
+                  Text(
+                    "Visiting: " + visitor['Resident Address'],
+                    style: TextStyle(color: textColor),
+                  ),
+                ],
+              ),
             ),
           );
         },
