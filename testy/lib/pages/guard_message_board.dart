@@ -46,6 +46,18 @@ class _GuardMessageBoardState extends State<GuardMessageBoard> {
   Color textColor = Colors.white;
   Color lightBlueColor = const Color.fromARGB(255, 133, 162, 242);
 
+  Future<String> getUserRole(String userEmail) async {
+    final userDoc = await FirebaseFirestore.instance
+        .collection('Users')
+        .where('email', isEqualTo: userEmail)
+        .get();
+
+    if (userDoc.docs.isNotEmpty) {
+      return userDoc.docs.first['role'] ?? 'Unknown';
+    }
+    return 'Unknown';
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -80,14 +92,26 @@ class _GuardMessageBoardState extends State<GuardMessageBoard> {
                         itemBuilder: (context, index) {
                           //get message
                           final post = snapshot.data!.docs[index];
-                          return Posts(
-                            message: post['Message'],
-                            user: post['UserEmail'],
-                            postId: post.id,
-                            likes: List<String>.from(post['Likes'] ?? []),
-                            time: formatDate(post['TimeStamp']),
-                            commentsCount: post['commentsCount'] ??
-                                0, // Pass comments count
+                          return FutureBuilder<String>(
+                            future: getUserRole(post['UserEmail']),
+                            builder: (context, roleSnapshot) {
+                              if (roleSnapshot.connectionState ==
+                                  ConnectionState.waiting) {
+                                return const Center(
+                                  child: CircularProgressIndicator(),
+                                );
+                              }
+                              return Posts(
+                                message: post['Message'],
+                                user: post['UserEmail'],
+                                role: roleSnapshot.data ??
+                                    'Unknown', // Pass user role
+                                postId: post.id,
+                                likes: List<String>.from(post['Likes'] ?? []),
+                                time: formatDate(post['TimeStamp']),
+                                commentsCount: post['commentsCount'] ?? 0,
+                              );
+                            },
                           );
                         },
                       );
