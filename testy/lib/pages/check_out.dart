@@ -64,66 +64,95 @@ class _CheckOutState extends State<CheckOut> {
     super.dispose();
   }
 
-  void checkOutVisitor(String docId) async {
+  void checkOutVisitor(String docId, String type) async {
     String formattedTimeExited =
         DateFormat('yyyy-MM-dd HH:mm').format(DateTime.now().toLocal());
 
-    // Start a transaction to ensure atomicity of the checkout process and carpark slot update
-    FirebaseFirestore.instance.runTransaction((transaction) async {
-      DocumentReference visitorRef =
-          FirebaseFirestore.instance.collection('Visitors').doc(docId);
-      DocumentReference carparkRef =
-          FirebaseFirestore.instance.collection('Carpark').doc('slots');
+    if (type == 'Food Services') {
+      // Directly update the visitor's status and time exited without updating carpark slots
+      FirebaseFirestore.instance.collection('Visitors').doc(docId).update({
+        'Status': 'Exited',
+        'Time Exited': formattedTimeExited,
+      }).then((_) {
+        print("Checkout successful.");
+        getClientStream(); // Refresh the list after checkout
+      }).catchError((error) {
+        print("Failed to checkout visitor: $error");
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: Text("Error"),
+              content: Text("Failed to checkout visitor. Please try again."),
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: Text("OK"),
+                ),
+              ],
+            );
+          },
+        );
+      });
+    } else {
+      // Start a transaction to ensure atomicity of the checkout process and carpark slot update
+      FirebaseFirestore.instance.runTransaction((transaction) async {
+        DocumentReference visitorRef =
+            FirebaseFirestore.instance.collection('Visitors').doc(docId);
+        DocumentReference carparkRef =
+            FirebaseFirestore.instance.collection('Carpark').doc('slots');
 
-      DocumentSnapshot visitorSnapshot = await transaction.get(visitorRef);
-      DocumentSnapshot carparkSnapshot = await transaction.get(carparkRef);
+        DocumentSnapshot visitorSnapshot = await transaction.get(visitorRef);
+        DocumentSnapshot carparkSnapshot = await transaction.get(carparkRef);
 
-      if (!visitorSnapshot.exists) {
-        throw Exception("Visitor document does not exist!");
-      }
+        if (!visitorSnapshot.exists) {
+          throw Exception("Visitor document does not exist!");
+        }
 
-      if (!carparkSnapshot.exists) {
-        throw Exception("Carpark slots document does not exist!");
-      }
+        if (!carparkSnapshot.exists) {
+          throw Exception("Carpark slots document does not exist!");
+        }
 
-      int takenSlots = carparkSnapshot.get('takenSlots');
+        int takenSlots = carparkSnapshot.get('takenSlots');
 
-      // Update visitor status and time exited
-      transaction.update(
-          visitorRef, {'Status': 'Exited', 'Time Exited': formattedTimeExited});
+        // Update visitor status and time exited
+        transaction.update(visitorRef,
+            {'Status': 'Exited', 'Time Exited': formattedTimeExited});
 
-      // Decrement the carpark slot count
-      if (takenSlots > 0) {
-        transaction.update(carparkRef, {'takenSlots': takenSlots - 1});
-      } else {
-        throw Exception("No carpark slots to release!");
-      }
-    }).then((_) {
-      print("Checkout successful and carpark slot updated.");
-      getClientStream(); // Refresh the list after checkout
-    }).catchError((error) {
-      print("Failed to checkout visitor: $error");
-      showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: Text("Error"),
-            content: Text("Failed to checkout visitor. Please try again."),
-            actions: [
-              TextButton(
-                onPressed: () {
-                  Navigator.of(context).pop(); // Close the dialog
-                },
-                child: Text("OK"),
-              ),
-            ],
-          );
-        },
-      );
-    });
+        if (takenSlots > 0) {
+          transaction.update(carparkRef, {'takenSlots': takenSlots - 1});
+        } else {
+          throw Exception("No carpark slots to release!");
+        }
+      }).then((_) {
+        print("Checkout successful and carpark slot updated.");
+        getClientStream(); // Refresh the list after checkout
+      }).catchError((error) {
+        print("Failed to checkout visitor: $error");
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: Text("Error"),
+              content: Text("Failed to checkout visitor. Please try again."),
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: Text("OK"),
+                ),
+              ],
+            );
+          },
+        );
+      });
+    }
   }
 
-  void _showConfirmDialog(BuildContext context, String docId) {
+  void _showConfirmDialog(BuildContext context, String docId, String type) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -140,7 +169,7 @@ class _CheckOutState extends State<CheckOut> {
             TextButton(
               onPressed: () {
                 Navigator.of(context).pop(); // Close the dialog
-                checkOutVisitor(docId); // Proceed with checkout
+                checkOutVisitor(docId, type); // Proceed with checkout
               },
               child: Text("Confirm"),
             ),
@@ -212,7 +241,8 @@ class _CheckOutState extends State<CheckOut> {
                 SizedBox(height: 5),
                 if (visitor['Status'] == 'Entered')
                   ElevatedButton(
-                    onPressed: () => _showConfirmDialog(context, visitor.id),
+                    onPressed: () => _showConfirmDialog(
+                        context, visitor.id, visitor['Type']),
                     style: ElevatedButton.styleFrom(
                         backgroundColor: lightBlueColor),
                     child: Text(

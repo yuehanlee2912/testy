@@ -125,9 +125,9 @@ class _SuperAdminResidentDetailsPageState
                     TextField(
                       controller: _usernameController,
                       readOnly: true,
-                      style: TextStyle(color: textColor),
+                      style: TextStyle(color: bgColor),
                       decoration: InputDecoration(
-                        labelText: 'Username (not editable)',
+                        labelText: 'Username',
                         labelStyle: TextStyle(color: textColor),
                       ),
                     ),
@@ -135,9 +135,9 @@ class _SuperAdminResidentDetailsPageState
                     TextField(
                       controller: _roleController,
                       readOnly: true,
-                      style: TextStyle(color: textColor),
+                      style: TextStyle(color: bgColor),
                       decoration: InputDecoration(
-                        labelText: 'Role (not editable)',
+                        labelText: 'Role',
                         labelStyle: TextStyle(color: textColor),
                       ),
                     ),

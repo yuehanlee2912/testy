@@ -65,6 +65,7 @@ class _GuardMessageBoardState extends State<GuardMessageBoard> {
       appBar: AppBar(
         backgroundColor: bgColor,
         iconTheme: IconThemeData(color: textColor),
+        title: Text("Community Board", style: TextStyle(color: textColor)),
         leading: IconButton(
           icon: Icon(Icons.arrow_back, color: textColor),
           onPressed: () => Navigator.of(context).pushReplacement(
