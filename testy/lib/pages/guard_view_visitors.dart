@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:testy/pages/guard_page.dart';
+import 'package:testy/pages/guard_visitor_select.dart';
 import 'package:testy/pages/visitor_detail_page.dart'; // Import the new page
 
 class ViewVisitors extends StatefulWidget {
@@ -79,7 +80,7 @@ class _ViewVisitorsState extends State<ViewVisitors> {
           icon: Icon(Icons.arrow_back, color: textColor),
           onPressed: () => Navigator.of(context).pushReplacement(
             MaterialPageRoute(
-              builder: (context) => AdminPage(),
+              builder: (context) => GuardVisitorSelect(),
             ),
           ),
         ),

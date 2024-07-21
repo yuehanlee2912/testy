@@ -6,6 +6,7 @@ import 'package:testy/pages/check_out.dart';
 import 'package:testy/pages/guard_message_board.dart';
 import 'package:testy/pages/guard_profile_page.dart';
 import 'package:testy/pages/carpark_page.dart';
+import 'package:testy/pages/guard_visitor_select.dart';
 import 'package:testy/pages/login_page.dart';
 import 'package:testy/pages/qr_select.dart';
 import 'package:testy/pages/residents.dart';
@@ -40,7 +41,7 @@ class _AdminPageState extends State<AdminPage> {
 
     void goToVisitors() {
       Navigator.of(context).pushReplacement(
-          MaterialPageRoute(builder: (context) => const ViewVisitors()));
+          MaterialPageRoute(builder: (context) => const GuardVisitorSelect()));
     }
 
     void goToCarpark() {

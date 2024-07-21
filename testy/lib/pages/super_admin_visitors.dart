@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:testy/pages/admin_select_history.dart';
 import 'package:testy/pages/guard_page.dart';
 import 'package:testy/pages/super_admin_page.dart';
 import 'package:testy/pages/super_admin_visitor_details_page.dart';
@@ -80,7 +81,7 @@ class _SuperAdminVisitorsState extends State<SuperAdminVisitors> {
           icon: Icon(Icons.arrow_back, color: textColor),
           onPressed: () => Navigator.of(context).pushReplacement(
             MaterialPageRoute(
-              builder: (context) => SuperAdminPage(),
+              builder: (context) => AdminSelectHistory(),
             ),
           ),
         ),

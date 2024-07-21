@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:testy/components/super_admin_drawer.dart';
+import 'package:testy/pages/admin_select_history.dart';
 import 'package:testy/pages/guard_profile_page.dart';
 import 'package:testy/pages/create_admin.dart';
 import 'package:testy/pages/login_page.dart';
@@ -49,7 +50,7 @@ class _SuperAdminPageState extends State<SuperAdminPage> {
 
     void viewVisitors() {
       Navigator.of(context).pushReplacement(
-          MaterialPageRoute(builder: (context) => SuperAdminVisitors()));
+          MaterialPageRoute(builder: (context) => AdminSelectHistory()));
     }
 
     void goToProfilePage() {
