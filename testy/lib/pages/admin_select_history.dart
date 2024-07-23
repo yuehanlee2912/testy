@@ -57,7 +57,7 @@ class _AdminSelectHistoryState extends State<AdminSelectHistory> {
             Padding(
               padding: const EdgeInsets.only(top: 80, bottom: 70.0),
               child: Text(
-                'Please select visitor\nhistory type:',
+                'Please select visitor type:',
                 style: TextStyle(
                     fontSize: 24,
                     fontWeight: FontWeight.bold,

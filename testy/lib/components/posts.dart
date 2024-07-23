@@ -34,11 +34,17 @@ class _PostsState extends State<Posts> {
   final currentUser = FirebaseAuth.instance.currentUser!;
   bool isLiked = false;
   final _commentTextController = TextEditingController();
+  final _isCommentTextNotEmpty = ValueNotifier<bool>(false);
 
   @override
   void initState() {
     super.initState();
     isLiked = widget.likes.contains(currentUser.email!);
+
+    // Add listener to text controller to update ValueNotifier
+    _commentTextController.addListener(() {
+      _isCommentTextNotEmpty.value = _commentTextController.text.isNotEmpty;
+    });
   }
 
   void toggleLike() {
@@ -96,13 +102,20 @@ class _PostsState extends State<Posts> {
             },
             child: Text("Cancel"),
           ),
-          TextButton(
-            onPressed: () {
-              addComment(_commentTextController.text);
-              Navigator.pop(context);
-              _commentTextController.clear();
+          ValueListenableBuilder<bool>(
+            valueListenable: _isCommentTextNotEmpty,
+            builder: (context, isNotEmpty, child) {
+              return TextButton(
+                onPressed: isNotEmpty
+                    ? () {
+                        addComment(_commentTextController.text);
+                        Navigator.pop(context);
+                        _commentTextController.clear();
+                      }
+                    : null,
+                child: Text("Post"),
+              );
             },
-            child: Text("Post"),
           ),
         ],
       ),
@@ -213,5 +226,11 @@ class _PostsState extends State<Posts> {
         ],
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    _commentTextController.dispose();
+    super.dispose();
   }
 }

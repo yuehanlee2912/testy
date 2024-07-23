@@ -25,7 +25,7 @@ class _ScanGroupQrState extends State<ScanGroupQr> {
 
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final DateFormat _dateTimeFormat = DateFormat('yyyy-MM-dd HH:mm');
-  final DateFormat _timeFormat = DateFormat('h:mm a'); // Correct time format
+  final DateFormat _timeFormat = DateFormat('HH:mm'); // Use 24-hour format
 
   @override
   void initState() {

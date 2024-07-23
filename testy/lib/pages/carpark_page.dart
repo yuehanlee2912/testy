@@ -99,6 +99,10 @@ class _CarparkPageState extends State<CarparkPage> {
         .update({'takenSlots': _takenSlots});
   }
 
+  String _generateCarparkLabel(int index) {
+    return 'P${index + 1}';
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -140,6 +144,7 @@ class _CarparkPageState extends State<CarparkPage> {
                   bool isTaken = index < _takenSlots;
                   Map<String, dynamic>? slotData =
                       isTaken ? _takenSlotsData[index] : null;
+                  String label = _generateCarparkLabel(index);
 
                   return Container(
                     decoration: BoxDecoration(
@@ -166,10 +171,29 @@ class _CarparkPageState extends State<CarparkPage> {
                                   style:
                                       TextStyle(fontSize: 16, color: textColor),
                                 ),
+                                Text(
+                                  label,
+                                  style: TextStyle(
+                                      fontSize: 16,
+                                      color: textColor,
+                                      fontWeight: FontWeight.bold),
+                                ),
                               ],
                             )
-                          : Icon(Icons.local_parking,
-                              size: 40, color: textColor),
+                          : Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(Icons.local_parking,
+                                    size: 40, color: textColor),
+                                Text(
+                                  label,
+                                  style: TextStyle(
+                                      fontSize: 16,
+                                      color: textColor,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                              ],
+                            ),
                     ),
                   );
                 },

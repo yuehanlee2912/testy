@@ -127,14 +127,6 @@ class _SuperAdminResidentsState extends State<SuperAdminResidents> {
           var docId = _resultList[index].id;
 
           return InkWell(
-            onTap: () {
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (context) => SuperAdminResidentDetailsPage(
-                      residentData: residentData, documentId: docId),
-                ),
-              );
-            },
             child: Container(
               margin: EdgeInsets.symmetric(vertical: 4.0),
               decoration: BoxDecoration(
@@ -161,6 +153,22 @@ class _SuperAdminResidentsState extends State<SuperAdminResidents> {
                     Text(
                       "Phone: " + residentData['phone'] + "\n",
                       style: TextStyle(color: textColor),
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (context) => SuperAdminResidentDetailsPage(
+                                residentData: residentData, documentId: docId),
+                          ),
+                        );
+                      },
+                      child: Text(
+                        "More Info",
+                        style: TextStyle(
+                          color: Colors.lightBlue,
+                        ),
+                      ),
                     ),
                   ],
                 ),

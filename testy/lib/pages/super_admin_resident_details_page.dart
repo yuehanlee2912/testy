@@ -45,7 +45,6 @@ class _SuperAdminResidentDetailsPageState
         .update({
       'name': _nameController.text,
       'address': _addressController.text,
-      'email': _emailController.text,
       'phone': _phoneController.text,
     });
 
@@ -106,7 +105,8 @@ class _SuperAdminResidentDetailsPageState
                     SizedBox(height: 10),
                     TextField(
                       controller: _emailController,
-                      style: TextStyle(color: textColor),
+                      readOnly: true,
+                      style: TextStyle(color: bgColor),
                       decoration: InputDecoration(
                         labelText: 'Email',
                         labelStyle: TextStyle(color: textColor),
