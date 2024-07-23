@@ -48,7 +48,6 @@ class _CheckOutState extends State<CheckOut> {
   getClientStream() async {
     var data = await FirebaseFirestore.instance
         .collection('Visitors')
-        .where("Status", isEqualTo: "Entered")
         .orderBy('visitor name')
         .get();
 
@@ -205,67 +204,57 @@ class _CheckOutState extends State<CheckOut> {
           controller: _searchController,
         ),
       ),
-      body: _resultList.isEmpty
-          ? Center(
-              child: Text(
-                "No current visitors",
-                style: TextStyle(
-                  color: textColor,
-                  fontSize: 18,
-                ),
-              ),
-            )
-          : ListView.builder(
-              itemCount: _resultList.length,
-              itemBuilder: (context, index) {
-                var visitor = _resultList[index];
-                return Container(
-                  margin: EdgeInsets.symmetric(
-                    vertical: 4.0,
-                  ),
-                  padding: EdgeInsets.all(8.0),
-                  decoration: BoxDecoration(
-                    color: accentColor,
-                    border: Border.all(color: accentColor, width: 1.0),
-                    borderRadius: BorderRadius.circular(5.0),
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        visitor['visitor name'],
-                        style: TextStyle(
-                          color: textColor,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      SizedBox(height: 5),
-                      Text(
-                        "Visiting: " + visitor['Resident Address'],
-                        style: TextStyle(color: textColor),
-                      ),
-                      SizedBox(height: 5),
-                      Text(
-                        "Number Plate: " + visitor['Car Plate Number'],
-                        style: TextStyle(color: textColor),
-                      ),
-                      SizedBox(height: 5),
-                      if (visitor['Status'] == 'Entered')
-                        ElevatedButton(
-                          onPressed: () => _showConfirmDialog(
-                              context, visitor.id, visitor['Type']),
-                          style: ElevatedButton.styleFrom(
-                              backgroundColor: lightBlueColor),
-                          child: Text(
-                            'Check Out',
-                            style: TextStyle(color: textColor),
-                          ),
-                        ),
-                    ],
-                  ),
-                );
-              },
+      body: ListView.builder(
+        itemCount: _resultList.length,
+        itemBuilder: (context, index) {
+          var visitor = _resultList[index];
+          return Container(
+            margin: EdgeInsets.symmetric(
+              vertical: 4.0,
             ),
+            padding: EdgeInsets.all(8.0),
+            decoration: BoxDecoration(
+              color: accentColor,
+              border: Border.all(color: accentColor, width: 1.0),
+              borderRadius: BorderRadius.circular(5.0),
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  visitor['visitor name'],
+                  style: TextStyle(
+                    color: textColor,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                SizedBox(height: 5),
+                Text(
+                  "Visiting: " + visitor['Resident Address'],
+                  style: TextStyle(color: textColor),
+                ),
+                SizedBox(height: 5),
+                Text(
+                  "Number Plate: " + visitor['Car Plate Number'],
+                  style: TextStyle(color: textColor),
+                ),
+                SizedBox(height: 5),
+                if (visitor['Status'] == 'Entered')
+                  ElevatedButton(
+                    onPressed: () => _showConfirmDialog(
+                        context, visitor.id, visitor['Type']),
+                    style: ElevatedButton.styleFrom(
+                        backgroundColor: lightBlueColor),
+                    child: Text(
+                      'Check Out',
+                      style: TextStyle(color: textColor),
+                    ),
+                  ),
+              ],
+            ),
+          );
+        },
+      ),
     );
   }
 }
