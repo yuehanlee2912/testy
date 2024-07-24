@@ -53,7 +53,7 @@ class _LoginPageState extends State<LoginPage> {
           decoration: const BoxDecoration(
               image: DecorationImage(
                   image: NetworkImage(
-                      'https://img.freepik.com/free-vector/dark-graphic-wavy-wallpaper_23-2148400270.jpg?size=626&ext=jpg&ga=GA1.1.2116175301.1717804800&semt=ais_user'),
+                      'https://i0.wp.com/css-tricks.com/wp-content/uploads/2018/07/scrolling-gradient.png?fit=1200%2C600&ssl=1'),
                   fit: BoxFit.cover)),
           constraints: BoxConstraints(
             minHeight: MediaQuery.of(context).size.height,
@@ -69,10 +69,12 @@ class _LoginPageState extends State<LoginPage> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     const SizedBox(
-                      height: 30,
+                      height: 20,
                     ),
+                    Text("⛉",
+                        style: TextStyle(fontSize: 100, color: Colors.white)),
                     Text(
-                      "Login",
+                      "Bridge",
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         color: Colors.white,
@@ -82,7 +84,7 @@ class _LoginPageState extends State<LoginPage> {
                     const SizedBox(
                       height: 5,
                     ),
-                    Text("Sign in to continue",
+                    Text("Sign In",
                         style: TextStyle(color: textColor, fontSize: 20)),
                     const SizedBox(height: 40),
                     TextFormField(
@@ -224,7 +226,7 @@ class _LoginPageState extends State<LoginPage> {
                             style: TextStyle(
                                 fontWeight: FontWeight.bold,
                                 fontSize: 15,
-                                color: lightBlueColor)),
+                                color: textColor)),
                         GestureDetector(
                           onTap: () {
                             Navigator.push(context, _createRoute(Register()));

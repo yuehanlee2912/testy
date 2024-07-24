@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:testy/pages/home_page.dart';
+import 'package:testy/pages/visitor_select.dart';
 
 class VisitorHistory extends StatefulWidget {
   const VisitorHistory({super.key});
@@ -88,7 +89,7 @@ class _VisitorHistoryState extends State<VisitorHistory> {
           icon: Icon(Icons.arrow_back, color: textColor),
           onPressed: () => Navigator.of(context).pushReplacement(
             MaterialPageRoute(
-              builder: (context) => HomePage(),
+              builder: (context) => VisitorSelect(),
             ),
           ),
         ),

@@ -53,7 +53,7 @@ class _RegisterState extends State<Register> {
               decoration: const BoxDecoration(
                   image: DecorationImage(
                       image: NetworkImage(
-                          'https://img.freepik.com/free-vector/dark-graphic-wavy-wallpaper_23-2148400270.jpg?size=626&ext=jpg&ga=GA1.1.2116175301.1717804800&semt=ais_user'),
+                          'https://i0.wp.com/css-tricks.com/wp-content/uploads/2018/07/scrolling-gradient.png?fit=1200%2C600&ssl=1'),
                       fit: BoxFit.cover)),
               width: MediaQuery.of(context).size.width,
               height: MediaQuery.of(context).size.height,
@@ -338,7 +338,7 @@ class _RegisterState extends State<Register> {
                           children: [
                             Text("Already have an account?    ",
                                 style: TextStyle(
-                                    color: lightBlueColor,
+                                    color: Colors.white,
                                     fontWeight: FontWeight.bold)),
                             GestureDetector(
                                 onTap: goToLoginPage,
