@@ -66,7 +66,7 @@ class _SuperAdminResidentsState extends State<SuperAdminResidents> {
 
   void deleteUser(String docId) async {
     await FirebaseFirestore.instance.collection('Users').doc(docId).delete();
-    getClientStream(); // Refresh the list after deletion
+    getClientStream(); 
   }
 
   void showDeleteConfirmationDialog(BuildContext context, String docId) {

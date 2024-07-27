@@ -137,25 +137,28 @@ class _HomePageState extends State<HomePage> {
                         borderRadius: BorderRadius.circular(20)),
                     margin: const EdgeInsets.symmetric(horizontal: 25),
                     padding: const EdgeInsets.all(15),
-                    child: Row(
-                      children: [
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              "Current Residence",
-                              style: TextStyle(
-                                  fontSize: 15, color: lightBlueColor),
-                            ),
-                            const SizedBox(height: 10),
-                            Text(userData['address'],
+                    child: GestureDetector(
+                      onTap: goToProfilePage,
+                      child: Row(
+                        children: [
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                "Current Residence",
                                 style: TextStyle(
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.white)),
-                          ],
-                        ),
-                      ],
+                                    fontSize: 15, color: lightBlueColor),
+                              ),
+                              const SizedBox(height: 10),
+                              Text(userData['address'],
+                                  style: TextStyle(
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.white)),
+                            ],
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                   const SizedBox(height: 30),

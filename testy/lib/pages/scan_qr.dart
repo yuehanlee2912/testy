@@ -155,7 +155,7 @@ class _ScanQrState extends State<ScanQr> {
           builder: (BuildContext context) {
             return AlertDialog(
               title: const Text("Error"),
-              content: const Text("No such visitor found."),
+              content: const Text("No record of booking visitor."),
               actions: [
                 TextButton(
                   onPressed: () {

@@ -124,87 +124,90 @@ class _AdminPageState extends State<AdminPage> {
                     ),
                   ),
                   const SizedBox(height: 10),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 0),
-                    child: StreamBuilder<DocumentSnapshot>(
-                      stream: FirebaseFirestore.instance
-                          .collection('Carpark')
-                          .doc('slots')
-                          .snapshots(),
-                      builder: (context, snapshot) {
-                        if (snapshot.connectionState ==
-                            ConnectionState.waiting) {
-                          return Padding(
-                            padding: const EdgeInsets.all(16.0),
-                            child: CircularProgressIndicator(),
-                          );
-                        }
+                  GestureDetector(
+                    onTap: goToCarpark,
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 0),
+                      child: StreamBuilder<DocumentSnapshot>(
+                        stream: FirebaseFirestore.instance
+                            .collection('Carpark')
+                            .doc('slots')
+                            .snapshots(),
+                        builder: (context, snapshot) {
+                          if (snapshot.connectionState ==
+                              ConnectionState.waiting) {
+                            return Padding(
+                              padding: const EdgeInsets.all(16.0),
+                              child: CircularProgressIndicator(),
+                            );
+                          }
 
-                        if (snapshot.hasError) {
-                          return Padding(
-                            padding: const EdgeInsets.all(16.0),
-                            child: Text(
-                              'Error: ${snapshot.error}',
-                              style: TextStyle(color: Colors.red),
+                          if (snapshot.hasError) {
+                            return Padding(
+                              padding: const EdgeInsets.all(16.0),
+                              child: Text(
+                                'Error: ${snapshot.error}',
+                                style: TextStyle(color: Colors.red),
+                              ),
+                            );
+                          }
+
+                          if (!snapshot.hasData || !snapshot.data!.exists) {
+                            return Padding(
+                              padding: const EdgeInsets.all(16.0),
+                              child: Text(
+                                'No carpark data available',
+                                style: TextStyle(color: textColor),
+                              ),
+                            );
+                          }
+
+                          final carparkData =
+                              snapshot.data!.data() as Map<String, dynamic>;
+                          final int availableSlots =
+                              carparkData['amount'] - carparkData['takenSlots'];
+                          final int totalSlots = carparkData['amount'];
+
+                          return Container(
+                            decoration: BoxDecoration(
+                              color: accentColor,
+                              borderRadius: BorderRadius.circular(20),
                             ),
-                          );
-                        }
-
-                        if (!snapshot.hasData || !snapshot.data!.exists) {
-                          return Padding(
-                            padding: const EdgeInsets.all(16.0),
-                            child: Text(
-                              'No carpark data available',
-                              style: TextStyle(color: textColor),
-                            ),
-                          );
-                        }
-
-                        final carparkData =
-                            snapshot.data!.data() as Map<String, dynamic>;
-                        final int availableSlots =
-                            carparkData['amount'] - carparkData['takenSlots'];
-                        final int totalSlots = carparkData['amount'];
-
-                        return Container(
-                          decoration: BoxDecoration(
-                            color: accentColor,
-                            borderRadius: BorderRadius.circular(20),
-                          ),
-                          margin: const EdgeInsets.only(
-                              left: 25, right: 25, top: 10),
-                          padding: const EdgeInsets.all(10),
-                          child: Column(
-                            children: [
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Padding(
-                                    padding: const EdgeInsets.only(
-                                        left: 5, right: 195.0),
-                                    child: Text(
-                                      'Available Carparks: ',
-                                      style: TextStyle(
-                                        color: lightBlueColor,
-                                        fontSize: 15,
+                            margin: const EdgeInsets.only(
+                                left: 25, right: 25, top: 10),
+                            padding: const EdgeInsets.all(10),
+                            child: Column(
+                              children: [
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Padding(
+                                      padding: const EdgeInsets.only(
+                                          left: 5, right: 195.0),
+                                      child: Text(
+                                        'Available Carparks: ',
+                                        style: TextStyle(
+                                          color: lightBlueColor,
+                                          fontSize: 15,
+                                        ),
                                       ),
                                     ),
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.only(
-                                        left: 150.0, bottom: 5, top: 5),
-                                    child: Text("$availableSlots/$totalSlots",
-                                        style: TextStyle(
-                                            color: textColor,
-                                            fontSize: 25,
-                                            fontWeight: FontWeight.bold)),
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
-                        );
-                      },
+                                    Padding(
+                                      padding: const EdgeInsets.only(
+                                          left: 150.0, bottom: 5, top: 5),
+                                      child: Text("$availableSlots/$totalSlots",
+                                          style: TextStyle(
+                                              color: textColor,
+                                              fontSize: 25,
+                                              fontWeight: FontWeight.bold)),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          );
+                        },
+                      ),
                     ),
                   ),
                   const SizedBox(height: 30),
