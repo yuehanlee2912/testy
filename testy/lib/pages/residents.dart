@@ -53,10 +53,9 @@ class _ResidentsState extends State<Residents> {
 
     print("Data Retrieved: ${data.docs.length}");
     for (var doc in data.docs) {
-      print(doc.data()); // Print out each document data
+      print(doc.data());
     }
 
-    // Filter data manually if .where clause is not working
     var filteredData =
         data.docs.where((doc) => doc['role'] == 'Resident').toList();
 

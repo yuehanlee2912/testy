@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:testy/pages/super_admin_page.dart';
-import 'package:testy/pages/super_admin_resident_details_page.dart'; // Import the new details page
+import 'package:testy/pages/super_admin_resident_details_page.dart';
 
 class SuperAdminResidents extends StatefulWidget {
   const SuperAdminResidents({super.key});
@@ -27,6 +27,7 @@ class _SuperAdminResidentsState extends State<SuperAdminResidents> {
     searchResultList();
   }
 
+  //search bar
   searchResultList() {
     var showResults = [];
     if (_searchController.text != "") {
@@ -45,6 +46,7 @@ class _SuperAdminResidentsState extends State<SuperAdminResidents> {
     });
   }
 
+  //retrieve data
   getClientStream() async {
     var data = await FirebaseFirestore.instance
         .collection('Users')
@@ -66,9 +68,10 @@ class _SuperAdminResidentsState extends State<SuperAdminResidents> {
 
   void deleteUser(String docId) async {
     await FirebaseFirestore.instance.collection('Users').doc(docId).delete();
-    getClientStream(); 
+    getClientStream();
   }
 
+  //dialog confirmation
   void showDeleteConfirmationDialog(BuildContext context, String docId) {
     showDialog(
       context: context,

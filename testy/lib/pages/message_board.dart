@@ -91,8 +91,7 @@ class _MessageBoardState extends State<MessageBoard> {
                               return Posts(
                                 message: post['Message'],
                                 user: post['UserEmail'],
-                                role: roleSnapshot.data ??
-                                    'Unknown', // Pass user role
+                                role: roleSnapshot.data ?? 'Unknown',
                                 postId: post.id,
                                 likes: List<String>.from(post['Likes'] ?? []),
                                 time: formatDate(post['TimeStamp']),

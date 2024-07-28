@@ -14,6 +14,8 @@ class AdminEventHistory extends StatefulWidget {
 class _AdminEventHistoryState extends State<AdminEventHistory> {
   List _allResults = [];
   List _resultList = [];
+
+  //search controller
   final TextEditingController _searchController = TextEditingController();
 
   @override
@@ -27,6 +29,7 @@ class _AdminEventHistoryState extends State<AdminEventHistory> {
     searchResultList();
   }
 
+  //search by time booked
   searchResultList() {
     var showResults = [];
     if (_searchController.text != "") {
@@ -46,6 +49,7 @@ class _AdminEventHistoryState extends State<AdminEventHistory> {
     });
   }
 
+  //fetch data
   getEventVisitors() async {
     var data =
         await FirebaseFirestore.instance.collection('Event Visitors').get();

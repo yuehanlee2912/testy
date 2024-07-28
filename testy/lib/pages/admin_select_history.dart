@@ -11,6 +11,7 @@ class AdminSelectHistory extends StatefulWidget {
 }
 
 class _AdminSelectHistoryState extends State<AdminSelectHistory> {
+  //go to visitor history page
   void goToVisitorHistory() {
     Navigator.push(
       context,
@@ -20,6 +21,7 @@ class _AdminSelectHistoryState extends State<AdminSelectHistory> {
     );
   }
 
+  //go to event history page
   void goToEventHistory() {
     Navigator.push(
       context,

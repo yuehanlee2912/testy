@@ -69,13 +69,12 @@ class _CheckOutState extends State<CheckOut> {
         DateFormat('yyyy-MM-dd HH:mm').format(DateTime.now().toLocal());
 
     if (type == 'Food Services') {
-      // Directly update the visitor's status and time exited without updating carpark slots
       FirebaseFirestore.instance.collection('Visitors').doc(docId).update({
         'Status': 'Exited',
         'Time Exited': formattedTimeExited,
       }).then((_) {
         print("Checkout successful.");
-        getClientStream(); // Refresh the list after checkout
+        getClientStream();
       }).catchError((error) {
         print("Failed to checkout visitor: $error");
         showDialog(
@@ -97,7 +96,6 @@ class _CheckOutState extends State<CheckOut> {
         );
       });
     } else {
-      // Start a transaction to ensure atomicity of the checkout process and carpark slot update
       FirebaseFirestore.instance.runTransaction((transaction) async {
         DocumentReference visitorRef =
             FirebaseFirestore.instance.collection('Visitors').doc(docId);
@@ -116,8 +114,6 @@ class _CheckOutState extends State<CheckOut> {
         }
 
         int takenSlots = carparkSnapshot.get('takenSlots');
-
-        // Update visitor status and time exited
         transaction.update(visitorRef,
             {'Status': 'Exited', 'Time Exited': formattedTimeExited});
 
@@ -128,7 +124,7 @@ class _CheckOutState extends State<CheckOut> {
         }
       }).then((_) {
         print("Checkout successful and carpark slot updated.");
-        getClientStream(); // Refresh the list after checkout
+        getClientStream();
       }).catchError((error) {
         print("Failed to checkout visitor: $error");
         showDialog(
@@ -152,6 +148,7 @@ class _CheckOutState extends State<CheckOut> {
     }
   }
 
+  //pop confirm check out dialog
   void _showConfirmDialog(BuildContext context, String docId, String type) {
     showDialog(
       context: context,
@@ -162,14 +159,14 @@ class _CheckOutState extends State<CheckOut> {
           actions: [
             TextButton(
               onPressed: () {
-                Navigator.of(context).pop(); // Close the dialog
+                Navigator.of(context).pop();
               },
               child: Text("Cancel"),
             ),
             TextButton(
               onPressed: () {
-                Navigator.of(context).pop(); // Close the dialog
-                checkOutVisitor(docId, type); // Proceed with checkout
+                Navigator.of(context).pop();
+                checkOutVisitor(docId, type);
               },
               child: Text("Confirm"),
             ),

@@ -38,6 +38,7 @@ class _SuperAdminResidentDetailsPageState
     _roleController = TextEditingController(text: widget.residentData['role']);
   }
 
+  //update button function
   void _updateResidentDetails() async {
     await FirebaseFirestore.instance
         .collection('Users')

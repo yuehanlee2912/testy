@@ -3,7 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:testy/pages/guard_page.dart';
 import 'package:testy/pages/guard_visitor_select.dart';
-import 'package:testy/pages/visitor_detail_page.dart'; // Import the new page
+import 'package:testy/pages/visitor_detail_page.dart';
 
 class ViewVisitors extends StatefulWidget {
   const ViewVisitors({super.key});

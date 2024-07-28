@@ -91,11 +91,10 @@ class _BookFoodServicesState extends State<BookFoodServices> {
       return;
     }
 
-    generateUniqueId(); // Generate a new unique ID every time the "Book Now" button is pressed
+    generateUniqueId();
 
     final FirebaseAuth auth = FirebaseAuth.instance;
-    final String userUid =
-        auth.currentUser!.uid; // shouldnt give error if user is logged in
+    final String userUid = auth.currentUser!.uid;
 
     CollectionReference usersCollection =
         FirebaseFirestore.instance.collection('Users');
@@ -123,11 +122,9 @@ class _BookFoodServicesState extends State<BookFoodServices> {
           'Time Exited': 'N/A',
         });
 
-        // Clear text fields after booking
         nameTextController.clear();
         numberPlateTextController.clear();
 
-        // Set state to show the QR code
         setState(() {
           showQrCode = true;
         });

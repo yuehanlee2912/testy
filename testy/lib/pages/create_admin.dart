@@ -19,6 +19,7 @@ class _CreateAdminState extends State<CreateAdmin> {
   Color textColor = Colors.white;
   Color lightBlueColor = Color.fromARGB(255, 133, 162, 242);
 
+  //store data and search bar
   List _allResults = [];
   List _resultList = [];
   final TextEditingController _searchController = TextEditingController();
@@ -34,6 +35,7 @@ class _CreateAdminState extends State<CreateAdmin> {
     searchResultList();
   }
 
+  //search by email
   searchResultList() {
     var showResults = [];
     if (_searchController.text != "") {
@@ -52,6 +54,7 @@ class _CreateAdminState extends State<CreateAdmin> {
     });
   }
 
+  //retrieve data from firebase
   getClientStream() async {
     var data = await FirebaseFirestore.instance
         .collection('Users')
@@ -64,6 +67,7 @@ class _CreateAdminState extends State<CreateAdmin> {
     });
   }
 
+  //initially set to user's current role
   int _getRoleIndex(String role) {
     switch (role) {
       case 'Admin':
@@ -76,6 +80,7 @@ class _CreateAdminState extends State<CreateAdmin> {
     }
   }
 
+  //change role
   void _changeRole(String userId, String currentRole) {
     showModalBottomSheet(
       context: context,

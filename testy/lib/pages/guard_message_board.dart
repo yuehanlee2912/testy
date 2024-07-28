@@ -31,7 +31,7 @@ class _GuardMessageBoardState extends State<GuardMessageBoard> {
         'Message': textController.text,
         'TimeStamp': Timestamp.now(),
         'Likes': [],
-        'commentsCount': 0, // Initialize comments count to 0
+        'commentsCount': 0,
       });
     }
 
@@ -105,8 +105,7 @@ class _GuardMessageBoardState extends State<GuardMessageBoard> {
                               return Posts(
                                 message: post['Message'],
                                 user: post['UserEmail'],
-                                role: roleSnapshot.data ??
-                                    'Unknown', // Pass user role
+                                role: roleSnapshot.data ?? 'Unknown',
                                 postId: post.id,
                                 likes: List<String>.from(post['Likes'] ?? []),
                                 time: formatDate(post['TimeStamp']),

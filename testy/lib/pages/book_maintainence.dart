@@ -128,12 +128,10 @@ class _BookMaintainenceState extends State<BookMaintainence> {
           'Time Exited': 'N/A',
         });
 
-        // Clear text fields after booking
         nameTextController.clear();
         numberPlateTextController.clear();
         contactTextController.clear();
 
-        // Set state to show the QR code
         setState(() {
           showQrCode = true;
         });

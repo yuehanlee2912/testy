@@ -29,6 +29,7 @@ class _SuperAdminVisitorsState extends State<SuperAdminVisitors> {
     searchResultList();
   }
 
+  //search bar
   searchResultList() {
     var showResults = [];
     if (_searchController.text != "") {
@@ -47,6 +48,7 @@ class _SuperAdminVisitorsState extends State<SuperAdminVisitors> {
     });
   }
 
+  //retrieve data from firebase
   getClientStream() async {
     var data = await FirebaseFirestore.instance
         .collection('Visitors')
