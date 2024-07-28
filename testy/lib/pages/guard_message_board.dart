@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:testy/components/Admin.dart';
 import 'package:testy/components/text_field.dart';
 import 'package:testy/components/posts.dart';
 import 'package:testy/helper/helper_methods.dart';

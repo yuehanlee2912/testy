@@ -9,7 +9,7 @@ import 'package:testy/helper/helper_methods.dart';
 class Posts extends StatefulWidget {
   final String message;
   final String user;
-  final String role; // New parameter for user role
+  final String role;
   final String time;
   final String postId;
   final List<String> likes;
@@ -19,7 +19,7 @@ class Posts extends StatefulWidget {
     super.key,
     required this.message,
     required this.user,
-    required this.role, // Pass user role
+    required this.role,
     required this.postId,
     required this.likes,
     required this.time,
@@ -41,7 +41,6 @@ class _PostsState extends State<Posts> {
     super.initState();
     isLiked = widget.likes.contains(currentUser.email!);
 
-    // Add listener to text controller to update ValueNotifier
     _commentTextController.addListener(() {
       _isCommentTextNotEmpty.value = _commentTextController.text.isNotEmpty;
     });
@@ -147,7 +146,7 @@ class _PostsState extends State<Posts> {
               Row(
                 children: [
                   Text(
-                    "${widget.user} (${widget.role})", // Display user role
+                    "${widget.user} (${widget.role})",
                     style: TextStyle(color: lightBlueColor),
                   ),
                   Text(

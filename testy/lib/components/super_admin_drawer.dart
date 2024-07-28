@@ -36,10 +36,8 @@ class MySuperAdminDrawer extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Container(
-                  padding: const EdgeInsets.only(
-                      top: 150.0,
-                      bottom: 15.0,
-                      left: 30), // Adjust padding as needed
+                  padding:
+                      const EdgeInsets.only(top: 150.0, bottom: 15.0, left: 30),
                   child: Icon(
                     Icons.person,
                     color: Colors.white,
