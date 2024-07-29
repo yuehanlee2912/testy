@@ -22,6 +22,7 @@ class _SuperAdminResidentDetailsPageState
   late TextEditingController _phoneController;
   late TextEditingController _usernameController;
   late TextEditingController _roleController;
+  bool _isLoading = false;
 
   @override
   void initState() {
@@ -38,20 +39,49 @@ class _SuperAdminResidentDetailsPageState
     _roleController = TextEditingController(text: widget.residentData['role']);
   }
 
+  bool _validateInputs() {
+    if (_nameController.text.isEmpty ||
+        _addressController.text.isEmpty ||
+        _phoneController.text.isEmpty) {
+      return false;
+    }
+    return true;
+  }
+
   //update button function
   void _updateResidentDetails() async {
-    await FirebaseFirestore.instance
-        .collection('Users')
-        .doc(widget.documentId)
-        .update({
-      'name': _nameController.text,
-      'address': _addressController.text,
-      'phone': _phoneController.text,
-    });
+    if (_validateInputs()) {
+      setState(() {
+        _isLoading = true;
+      });
 
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text('Details updated successfully')),
-    );
+      try {
+        await FirebaseFirestore.instance
+            .collection('Users')
+            .doc(widget.documentId)
+            .update({
+          'name': _nameController.text,
+          'address': _addressController.text,
+          'phone': _phoneController.text,
+        });
+
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Details updated successfully')),
+        );
+      } catch (e) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Error updating details: $e')),
+        );
+      } finally {
+        setState(() {
+          _isLoading = false;
+        });
+      }
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Please fill in all required fields')),
+      );
+    }
   }
 
   @override
@@ -82,76 +112,79 @@ class _SuperAdminResidentDetailsPageState
             width: 500,
             child: Padding(
               padding: const EdgeInsets.all(16.0),
-              child: SingleChildScrollView(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    TextField(
-                      controller: _nameController,
-                      style: TextStyle(color: textColor),
-                      decoration: InputDecoration(
-                        labelText: 'Name',
-                        labelStyle: TextStyle(color: textColor),
+              child: _isLoading
+                  ? Center(child: CircularProgressIndicator())
+                  : SingleChildScrollView(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          TextField(
+                            controller: _nameController,
+                            style: TextStyle(color: textColor),
+                            decoration: InputDecoration(
+                              labelText: 'Name',
+                              labelStyle: TextStyle(color: textColor),
+                            ),
+                          ),
+                          SizedBox(height: 10),
+                          TextField(
+                            controller: _addressController,
+                            style: TextStyle(color: textColor),
+                            decoration: InputDecoration(
+                              labelText: 'Address',
+                              labelStyle: TextStyle(color: textColor),
+                            ),
+                          ),
+                          SizedBox(height: 10),
+                          TextField(
+                            controller: _emailController,
+                            readOnly: true,
+                            style: TextStyle(color: bgColor),
+                            decoration: InputDecoration(
+                              labelText: 'Email',
+                              labelStyle: TextStyle(color: textColor),
+                            ),
+                          ),
+                          SizedBox(height: 10),
+                          TextField(
+                            controller: _phoneController,
+                            style: TextStyle(color: textColor),
+                            decoration: InputDecoration(
+                              labelText: 'Phone',
+                              labelStyle: TextStyle(color: textColor),
+                            ),
+                          ),
+                          SizedBox(height: 10),
+                          TextField(
+                            controller: _usernameController,
+                            readOnly: true,
+                            style: TextStyle(color: bgColor),
+                            decoration: InputDecoration(
+                              labelText: 'Username',
+                              labelStyle: TextStyle(color: textColor),
+                            ),
+                          ),
+                          SizedBox(height: 10),
+                          TextField(
+                            controller: _roleController,
+                            readOnly: true,
+                            style: TextStyle(color: bgColor),
+                            decoration: InputDecoration(
+                              labelText: 'Role',
+                              labelStyle: TextStyle(color: textColor),
+                            ),
+                          ),
+                          SizedBox(height: 20),
+                          ElevatedButton(
+                            onPressed: _updateResidentDetails,
+                            child: Text('Update Details',
+                                style: TextStyle(color: textColor)),
+                            style: ElevatedButton.styleFrom(
+                                backgroundColor: bgColor),
+                          ),
+                        ],
                       ),
                     ),
-                    SizedBox(height: 10),
-                    TextField(
-                      controller: _addressController,
-                      style: TextStyle(color: textColor),
-                      decoration: InputDecoration(
-                        labelText: 'Address',
-                        labelStyle: TextStyle(color: textColor),
-                      ),
-                    ),
-                    SizedBox(height: 10),
-                    TextField(
-                      controller: _emailController,
-                      readOnly: true,
-                      style: TextStyle(color: bgColor),
-                      decoration: InputDecoration(
-                        labelText: 'Email',
-                        labelStyle: TextStyle(color: textColor),
-                      ),
-                    ),
-                    SizedBox(height: 10),
-                    TextField(
-                      controller: _phoneController,
-                      style: TextStyle(color: textColor),
-                      decoration: InputDecoration(
-                        labelText: 'Phone',
-                        labelStyle: TextStyle(color: textColor),
-                      ),
-                    ),
-                    SizedBox(height: 10),
-                    TextField(
-                      controller: _usernameController,
-                      readOnly: true,
-                      style: TextStyle(color: bgColor),
-                      decoration: InputDecoration(
-                        labelText: 'Username',
-                        labelStyle: TextStyle(color: textColor),
-                      ),
-                    ),
-                    SizedBox(height: 10),
-                    TextField(
-                      controller: _roleController,
-                      readOnly: true,
-                      style: TextStyle(color: bgColor),
-                      decoration: InputDecoration(
-                        labelText: 'Role',
-                        labelStyle: TextStyle(color: textColor),
-                      ),
-                    ),
-                    SizedBox(height: 20),
-                    ElevatedButton(
-                      onPressed: _updateResidentDetails,
-                      child: Text('Update Details',
-                          style: TextStyle(color: textColor)),
-                      style: ElevatedButton.styleFrom(backgroundColor: bgColor),
-                    ),
-                  ],
-                ),
-              ),
             ),
           ),
         ),

@@ -20,19 +20,17 @@ class _SuperAdminResidentsState extends State<SuperAdminResidents> {
   void initState() {
     super.initState();
     _searchController.addListener(_onSearchChanged);
-    getClientStream();
   }
 
   _onSearchChanged() {
     searchResultList();
   }
 
-  //search bar
   searchResultList() {
     var showResults = [];
     if (_searchController.text != "") {
       for (var clientSnapshot in _allResults) {
-        var name = clientSnapshot['name'].toString().toLowerCase();
+        var name = clientSnapshot['email'].toString().toLowerCase();
         if (name.contains(_searchController.text.toLowerCase())) {
           showResults.add(clientSnapshot);
         }
@@ -46,32 +44,10 @@ class _SuperAdminResidentsState extends State<SuperAdminResidents> {
     });
   }
 
-  //retrieve data
-  getClientStream() async {
-    var data = await FirebaseFirestore.instance
-        .collection('Users')
-        .orderBy('name')
-        .get();
-
-    setState(() {
-      _allResults = data.docs;
-      _resultList = List.from(_allResults);
-    });
-  }
-
-  @override
-  void dispose() {
-    _searchController.removeListener(_onSearchChanged);
-    _searchController.dispose();
-    super.dispose();
-  }
-
   void deleteUser(String docId) async {
     await FirebaseFirestore.instance.collection('Users').doc(docId).delete();
-    getClientStream();
   }
 
-  //dialog confirmation
   void showDeleteConfirmationDialog(BuildContext context, String docId) {
     showDialog(
       context: context,
@@ -100,6 +76,13 @@ class _SuperAdminResidentsState extends State<SuperAdminResidents> {
   }
 
   @override
+  void dispose() {
+    _searchController.removeListener(_onSearchChanged);
+    _searchController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     Color accentColor = Color.fromARGB(255, 5, 25, 86);
     Color bgColor = Color.fromARGB(255, 52, 81, 161);
@@ -123,64 +106,88 @@ class _SuperAdminResidentsState extends State<SuperAdminResidents> {
           controller: _searchController,
         ),
       ),
-      body: ListView.builder(
-        itemCount: _resultList.length,
-        itemBuilder: (context, index) {
-          var residentData = _resultList[index].data();
-          var docId = _resultList[index].id;
+      body: StreamBuilder<QuerySnapshot>(
+        stream: FirebaseFirestore.instance
+            .collection('Users')
+            .orderBy('name')
+            .snapshots(),
+        builder: (context, snapshot) {
+          if (!snapshot.hasData) {
+            return Center(child: CircularProgressIndicator());
+          }
 
-          return InkWell(
-            child: Container(
-              margin: EdgeInsets.symmetric(vertical: 4.0),
-              decoration: BoxDecoration(
-                border: Border.all(color: accentColor, width: 1.0),
-                borderRadius: BorderRadius.circular(5.0),
-                color: accentColor,
-              ),
-              child: ListTile(
-                title: Text(
-                  residentData['name'],
-                  style: TextStyle(color: textColor),
-                ),
-                subtitle: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      "\nResidence: " + residentData['address'],
+          _allResults = snapshot.data!.docs;
+          _resultList = _searchController.text.isEmpty
+              ? _allResults
+              : _allResults.where((doc) {
+                  var name = doc['email'].toString().toLowerCase();
+                  return name.contains(_searchController.text.toLowerCase());
+                }).toList();
+
+          return ListView.builder(
+            itemCount: _resultList.length,
+            itemBuilder: (context, index) {
+              var residentData =
+                  _resultList[index].data() as Map<String, dynamic>;
+              var docId = _resultList[index].id;
+
+              return InkWell(
+                child: Container(
+                  margin: EdgeInsets.symmetric(vertical: 4.0),
+                  decoration: BoxDecoration(
+                    border: Border.all(color: accentColor, width: 1.0),
+                    borderRadius: BorderRadius.circular(5.0),
+                    color: accentColor,
+                  ),
+                  child: ListTile(
+                    title: Text(
+                      residentData['name'],
                       style: TextStyle(color: textColor),
                     ),
-                    Text(
-                      "Email: " + residentData['email'],
-                      style: TextStyle(color: textColor),
-                    ),
-                    Text(
-                      "Phone: " + residentData['phone'] + "\n",
-                      style: TextStyle(color: textColor),
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        Navigator.of(context).push(
-                          MaterialPageRoute(
-                            builder: (context) => SuperAdminResidentDetailsPage(
-                                residentData: residentData, documentId: docId),
-                          ),
-                        );
-                      },
-                      child: Text(
-                        "More Info",
-                        style: TextStyle(
-                          color: Colors.lightBlue,
+                    subtitle: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          "\nResidence: " + residentData['address'],
+                          style: TextStyle(color: textColor),
                         ),
-                      ),
+                        Text(
+                          "Email: " + residentData['email'],
+                          style: TextStyle(color: textColor),
+                        ),
+                        Text(
+                          "Phone: " + residentData['phone'] + "\n",
+                          style: TextStyle(color: textColor),
+                        ),
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (context) =>
+                                    SuperAdminResidentDetailsPage(
+                                        residentData: residentData,
+                                        documentId: docId),
+                              ),
+                            );
+                          },
+                          child: Text(
+                            "More Info",
+                            style: TextStyle(
+                              color: Colors.lightBlue,
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
-                  ],
+                    trailing: IconButton(
+                      icon: Icon(Icons.delete, color: Colors.red),
+                      onPressed: () =>
+                          showDeleteConfirmationDialog(context, docId),
+                    ),
+                  ),
                 ),
-                trailing: IconButton(
-                  icon: Icon(Icons.delete, color: Colors.red),
-                  onPressed: () => showDeleteConfirmationDialog(context, docId),
-                ),
-              ),
-            ),
+              );
+            },
           );
         },
       ),
