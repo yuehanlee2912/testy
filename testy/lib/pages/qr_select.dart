@@ -87,7 +87,7 @@ class _QrSelectState extends State<QrSelect> {
                             ),
                             SizedBox(height: 10),
                             Text(
-                              'Visitor',
+                              'Visitor QR',
                               style: TextStyle(
                                 color: Colors.white,
                                 fontSize: 20,
