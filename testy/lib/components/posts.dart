@@ -147,15 +147,15 @@ class _PostsState extends State<Posts> {
                 children: [
                   Text(
                     "${widget.user} (${widget.role})",
-                    style: TextStyle(color: lightBlueColor),
+                    style: TextStyle(color: lightBlueColor, fontSize: 11),
                   ),
                   Text(
                     " • ",
-                    style: TextStyle(color: lightBlueColor),
+                    style: TextStyle(color: lightBlueColor, fontSize: 11),
                   ),
                   Text(
                     widget.time,
-                    style: TextStyle(color: lightBlueColor),
+                    style: TextStyle(color: lightBlueColor, fontSize: 11),
                   ),
                 ],
               ),
