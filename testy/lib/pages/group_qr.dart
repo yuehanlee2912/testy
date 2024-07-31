@@ -43,6 +43,13 @@ class _GroupQrState extends State<GroupQr> {
     return formatted;
   }
 
+  String formatTimeOfDay(TimeOfDay time) {
+    final now = DateTime.now();
+    final dt = DateTime(now.year, now.month, now.day, time.hour, time.minute);
+    final format = DateFormat('HH:mm'); // Use 'H' to remove leading zeros
+    return format.format(dt);
+  }
+
   void bookNow() async {
     generateUniqueId(); // Generate a new unique ID every time the "Book Now" button is pressed
 
@@ -63,8 +70,8 @@ class _GroupQrState extends State<GroupQr> {
             .collection("Event Visitors")
             .doc(uniqueId)
             .set({
-          'Start Time': selectedStartTime.format(context),
-          'End Time': selectedEndTime.format(context),
+          'Start Time': formatTimeOfDay(selectedStartTime),
+          'End Time': formatTimeOfDay(selectedEndTime),
           'Amount of Visitors': selectedVisitorCount,
           "Resident Address": data['address'],
           'Time Booked': timeBooked(),

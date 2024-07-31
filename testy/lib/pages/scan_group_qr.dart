@@ -25,8 +25,7 @@ class _ScanGroupQrState extends State<ScanGroupQr> {
 
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final DateFormat _dateTimeFormat = DateFormat('yyyy-MM-dd HH:mm');
-  final DateFormat _timeFormat = DateFormat('HH:mm'); // Use 24-hour format
-
+  final DateFormat _timeFormat = DateFormat('HH:mm');
   @override
   void initState() {
     super.initState();
@@ -78,7 +77,6 @@ class _ScanGroupQrState extends State<ScanGroupQr> {
         print(
             "Document found: Start Time: $startTimeStr, End Time: $endTimeStr");
 
-        // Create DateTime objects for start and end time using a common date
         DateTime start = DateTime(0, 1, 1, startTime.hour, startTime.minute);
         DateTime end = DateTime(0, 1, 1, endTime.hour, endTime.minute);
 
