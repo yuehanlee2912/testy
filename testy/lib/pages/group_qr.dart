@@ -46,12 +46,12 @@ class _GroupQrState extends State<GroupQr> {
   String formatTimeOfDay(TimeOfDay time) {
     final now = DateTime.now();
     final dt = DateTime(now.year, now.month, now.day, time.hour, time.minute);
-    final format = DateFormat('HH:mm'); // Use 'H' to remove leading zeros
+    final format = DateFormat('HH:mm');
     return format.format(dt);
   }
 
   void bookNow() async {
-    generateUniqueId(); // Generate a new unique ID every time the "Book Now" button is pressed
+    generateUniqueId();
 
     final FirebaseAuth auth = FirebaseAuth.instance;
     final String userUid =
@@ -65,7 +65,6 @@ class _GroupQrState extends State<GroupQr> {
       if (value.exists) {
         Map<String, dynamic> data = value.data() as Map<String, dynamic>;
 
-        // Use the uniqueId as the document ID
         await FirebaseFirestore.instance
             .collection("Event Visitors")
             .doc(uniqueId)
@@ -79,17 +78,14 @@ class _GroupQrState extends State<GroupQr> {
           'Type': "Event Visitor",
           'QR Id': uniqueId,
         }).then((_) {
-          // Set state to show the QR code only if the booking is successful
           setState(() {
             showQrCode = true;
           });
         }).catchError((error) {
-          // Handle any errors here, e.g., show a snackbar or a dialog
           print("Failed to book event: $error");
         });
       }
     }).catchError((e) {
-      // Handle any errors here, e.g., show a snackbar or a dialog
       print("Failed to get user data: $e");
     });
   }
